@@ -1,0 +1,10 @@
+ENV VARIABLES PER CONFIG DI FIREBASE E ADMIN 
+
+ancora se ce un link nella pagina, la dashboard non e protetta. non chiama hooks un link interno. -> nella load della index mettere controllo, sennò?
++page.js/ts: Load function associated with a page. Load data first, then hand it over to the page and render the page. If page is is visited as first page, load runs on the server. If page is visited via client-side nav, load runs on the client.
+
+
+la logout non elimina la sessione su firebase, se non sono loggato e metto nei cookies la mia sessione precedente funziona ancora...
+appunto, implementare il refresh token
+
+login viene alla prima volta id null quando faccio login, devo fare refresh, mettere invalidateall dopo goto?
