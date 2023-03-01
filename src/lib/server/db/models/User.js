@@ -23,9 +23,6 @@ const UserSchema = new mongoose.Schema(
           ref: "Locale"
         }
     ]
-  },
-  {
-    timestamps: true,
   }
 );
 

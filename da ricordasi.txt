@@ -8,3 +8,12 @@ la logout non elimina la sessione su firebase, se non sono loggato e metto nei c
 appunto, implementare il refresh token
 
 login viene alla prima volta id null quando faccio login, devo fare refresh, mettere invalidateall dopo goto?
+
+al momento singup non funziona la parte di aggiunta dello user nel database, fa timeout...
+devo fare che se ce errore nella aggiunta nel db cancello l'utente in firebase auth, creo una azione in singup server e con Admin cancello l'utente con l'id
+POTREI FARE GIA TUTTO IN SINGUP
+
+
+creare l'utente con admin sdk potrebbe essere una soluzione, cosi creo utente, prendo uid, creo database user e se ce errore lo elimino
+almeno forse elimino il login automatico, che non da fastidio pero boh
+la login penso vada bene farla sul client

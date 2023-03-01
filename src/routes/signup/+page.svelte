@@ -34,27 +34,26 @@
 
             const result = deserialize(await response.text());
 
-            if (result.type === 'success') { //register successful
+            if (result.data.success == true) { //register successful
                 signOut(auth) // per prevenire il singin automatico
                 await invalidateAll() // per richiamare la load, cosí aggiorna user.locals e lo store authUser
                 goto("/");
             } // altrimenti mando errore
             else { // questo punto se il db ha fallito, ho comunque creato un utente su fb
               // fare api route per eliminare l'utente
-              // fetch("/eliminaUser")
-              throw new Error(result.message);
+              // fetch("/eliminaUser") OPPURE POTREI FARE GIA TUTTO IN SINGUP
+              throw new Error(result.data.message);
             }
-            goto("/singup")
           })
           .catch((error) => { // qui prendo l'errore, faccio logout e setto il messaggio nel loginform
-            err = error.message;
-            signOut(auth).then(() => {
-                console.log("Error in singup, loggin out")
-            })
-            .catch((err) => {
-                err = error.message;
-                console.err(err)
-            })
+            err = error.message | "Errore nella creazione dell utente nel db";
+            // signOut(auth).then(() => {
+            //     console.log("Error in singup, loggin out")
+            // })
+            // .catch((err) => {
+            //     err = error.message;
+            //     console.err(err)
+            // })
         });
         })
     }

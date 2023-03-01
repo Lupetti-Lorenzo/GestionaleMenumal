@@ -1,5 +1,5 @@
 import { UserModel } from "$lib/server/db/models/User.js"
-//import { dbConnect, dbDisconnect } from "$lib/server/db/db.js"
+import { dbConnect } from "$lib/server/db/db.js"
 
 export const actions = {
     default: async ({ request }) => { // singup
@@ -13,10 +13,19 @@ export const actions = {
             userAPI: "l.lupetti",
             passAPI: "12345678"
         }
+        //console.log("new user:  " + JSON.stringify(newUser))
          // crea l'utente nel database
-        await UserModel.create(newUser)
-        return { success: true };
-  }
+         await dbConnect()
+         UserModel.create(newUser).then(() => {
+            console.log("creato user ")
+            return { success: true };
+         }).catch((e) => {
+            console.log("errore nella creazione dell'utente: \n" + e.message)
+            return { error: true, message: e.message }
+        })
+        
+            
+    }
 }
 
 
