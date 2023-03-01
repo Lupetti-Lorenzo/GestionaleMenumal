@@ -18,11 +18,11 @@
 
 <nav>
     <a href="/">Home</a>
-	{#if logged}
+	<a href="/signup" data-sveltekit-prefetch>signup</a> 
+	<a href="/login" data-sveltekit-prefetch>login</a> 
+	{#if logged}	
 		<button on:click|preventDefault={logout} href='/login'>LOGOUT</button> 
-	{:else}
-		<a href="/login" data-sveltekit-prefetch>login</a> 
-		<a href="/signup" data-sveltekit-prefetch>signup</a> 
+		
 	{/if}
 	<!-- con il flag data-sveltekit-prefetch fa il prefetch quando l'utente fa hover sul link -->
 </nav>

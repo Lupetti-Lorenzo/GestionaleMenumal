@@ -1,4 +1,4 @@
-import { dbConnect } from "$lib/server/db.js"
+import { dbConnect } from "$lib/server/db/db.js"
 
 export const POST = (async () => {
     await dbConnect()
