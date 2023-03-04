@@ -4,7 +4,7 @@ import { page } from '$app/stores';
  export const authUser = derived(
     page,
     ($page, set) => {
-        const { user } = $page.data;
+        const user  = $page.data;
         if (!user) {
             set(null);
             return;

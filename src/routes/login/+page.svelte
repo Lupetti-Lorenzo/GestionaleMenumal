@@ -25,13 +25,12 @@
             //  login successfull
             //  prendo id token dell'utente
             const token = await  userCredentials.user.getIdToken();
+            const uid = userCredentials.user.uid
             // creo un form con id token, da mandare all'azione default nel page.server.js
             const formData = new FormData();
             formData.set('token', token);
-            // stampo form
-            // for (var pair of formData.entries()) {
-            //     console.log(pair[0]+ ', ' + pair[1]); 
-            // }
+            formData.set('uid', uid)
+            
             // mando il messaggio, l'azione setta i cookies
             const response = await fetch(this.action, {
                 method: 'POST',
@@ -89,9 +88,6 @@
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
         <p>err: {err}</p>
-        <p class="float-end mt-3">
-        Not a user? <a href="/signup" class="card-link">Sign Up</a>
-        </p>
       </div>
     </div>
   </div>

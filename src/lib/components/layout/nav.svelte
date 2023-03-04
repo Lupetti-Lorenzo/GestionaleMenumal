@@ -6,8 +6,8 @@
 	const { auth } = getFirebase()
 
 	import { authUser } from "$lib/client/auth"
-    
-    $: logged = $authUser !== null
+
+    $: logged =  JSON.stringify($authUser) !== '{}'
 
 	const logout = async () => {
 		await signOut(auth)
@@ -22,7 +22,6 @@
 	<a href="/login" data-sveltekit-prefetch>login</a> 
 	{#if logged}	
 		<button on:click|preventDefault={logout} href='/login'>LOGOUT</button> 
-		
 	{/if}
 	<!-- con il flag data-sveltekit-prefetch fa il prefetch quando l'utente fa hover sul link -->
 </nav>

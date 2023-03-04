@@ -33,8 +33,8 @@
             });
 
             const result = deserialize(await response.text());
-
-            if (result.data.success == true) { //register successful
+            console.log(result)
+            if (result.type == 'success') { //register successful
                 signOut(auth) // per prevenire il singin automatico
                 await invalidateAll() // per richiamare la load, cosí aggiorna user.locals e lo store authUser
                 goto("/");

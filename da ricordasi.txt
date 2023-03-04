@@ -9,7 +9,6 @@ appunto, implementare il refresh token
 
 login viene alla prima volta id null quando faccio login, devo fare refresh, mettere invalidateall dopo goto?
 
-al momento singup non funziona la parte di aggiunta dello user nel database, fa timeout...
 devo fare che se ce errore nella aggiunta nel db cancello l'utente in firebase auth, creo una azione in singup server e con Admin cancello l'utente con l'id
 POTREI FARE GIA TUTTO IN SINGUP
 
@@ -17,3 +16,14 @@ POTREI FARE GIA TUTTO IN SINGUP
 creare l'utente con admin sdk potrebbe essere una soluzione, cosi creo utente, prendo uid, creo database user e se ce errore lo elimino
 almeno forse elimino il login automatico, che non da fastidio pero boh
 la login penso vada bene farla sul client
+
+su server.js devo ritornare una risposta costruita meglio, {success: true} non vuol di nulla
+
+in login controllare se l'utente esiste in mongodb
+
+-- METTERE I DATI DEL DB NEI COOKIE ALLA LOGIN, cosi non faccio richiesta nella layout.server, al momento i dati del db servono solo per la backdoor
+
+
+
+db connect e disconnect che devo fa
+o connect in layout oppure disconnect e connect ogni volta, ma la disconnect non sembra funzionare

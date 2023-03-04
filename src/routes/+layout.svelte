@@ -11,11 +11,15 @@
     
     import  Nav  from "$lib/components/layout/nav.svelte"
 
-    $: uid = $authUser
+    $: user = $authUser
+    $: logged =  JSON.stringify($authUser) !== '{}'
 
 </script>
 
 <Nav />
+{#if logged}
+    <p>userID: {user.id}</p>
+    <p>mail: {user.email}</p>
+{/if}
 
-<p>userID: {uid}</p>
 <slot></slot>

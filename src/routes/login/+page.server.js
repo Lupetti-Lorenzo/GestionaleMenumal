@@ -1,12 +1,20 @@
 import { createSessionCookie } from "$lib/server/adminFirebase.js"
 import { SESSION_COOKIE_NAME } from "$lib/constants.js"
+import { UserModel } from "$lib/server/db/models/User.js"
+import { dbConnect } from "$lib/server/db/db.js"
 
 export const actions = {
     default: async ({ request, cookies }) => { // login
         console.log("action login")
-        // get token from request form
-        const formData = await request.formData();
-        const token = await formData.get('token')?.valueOf();
+        // get token and uid from request form
+        const formData = await request.formData()
+        const token = await formData.get('token')?.valueOf()
+        const id = await formData.get('uid')?.valueOf()
+        // check if user exists in mongoDB
+        await dbConnect()
+        let dbRes = await UserModel.find({uidFireBase: id})
+        let dbUsers = JSON.parse(JSON.stringify(dbRes))
+        if (JSON.stringify(dbUsers) === '[]') return { error: true }
 
         // check token
         if (!token) return { error: true, message: "no token provided" }

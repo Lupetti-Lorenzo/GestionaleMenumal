@@ -23,8 +23,6 @@ export const actions = {
             console.log("errore nella creazione dell'utente: \n" + e.message)
             return { error: true, message: e.message }
         })
-        
-            
     }
 }
 

@@ -4,22 +4,20 @@ import { redirect } from '@sveltejs/kit';
 import { SESSION_COOKIE_NAME } from "$lib/constants.js"
 
 const unProtectedRoutes= [
-    '/login',
-    '/singup',
+    '/login'
 ];
 
 
 // funzione chiamata ad ogni interazione con il server, per controllare se l'utente è loggato e autenticato
 export async function handle({ event, resolve }) {
     const session = event.cookies.get(SESSION_COOKIE_NAME);
-    // console.log("session: " + session)
     // proteggere admin routes e se non sono loggato
     if (!session && !unProtectedRoutes.includes(event.url.pathname))
             throw redirect(303 ,'/login');
     
-    // verifico il token se ce una sessione
+    // verifico la sessione
     if (session) {
-        verifySessionCookie(session).then((decodedClaims) => {
+        verifySessionCookie(session).then(async (decodedClaims) => {
             console.log("session cookie verified!")
             event.locals.user = JSON.stringify(decodedClaims.user_id)
         })
