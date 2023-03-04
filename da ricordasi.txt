@@ -22,8 +22,13 @@ su server.js devo ritornare una risposta costruita meglio, {success: true} non v
 in login controllare se l'utente esiste in mongodb
 
 -- METTERE I DATI DEL DB NEI COOKIE ALLA LOGIN, cosi non faccio richiesta nella layout.server, al momento i dati del db servono solo per la backdoor
-
+NO, NON METTO QUEI DATI ALLA LOGIN, FACCIO CHIAMATA NELLA LAYOUT - AL MOMENTO NON SERVE NEMMENO, TOGLIERLA E PER ORA RITORNARE SOLO TURE O FALSE SE SONO LOGGATO O MENO
 
 
 db connect e disconnect che devo fa
 o connect in layout oppure disconnect e connect ogni volta, ma la disconnect non sembra funzionare
+
+usare res.json invece di deserialize
+
+
+

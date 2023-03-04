@@ -6,7 +6,7 @@
 	const { auth } = getFirebase()
 
 	import { authUser } from "$lib/client/auth"
-
+	
     $: logged =  JSON.stringify($authUser) !== '{}'
 
 	const logout = async () => {
