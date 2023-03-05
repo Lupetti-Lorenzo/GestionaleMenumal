@@ -12,7 +12,7 @@
     import  Nav  from "$lib/components/layout/nav.svelte"
 
     $: user = $authUser
-    $: logged =  JSON.stringify($authUser) !== '{}'
+    $: logged = user != undefined
 
 </script>
 

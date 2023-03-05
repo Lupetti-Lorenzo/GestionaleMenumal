@@ -7,7 +7,7 @@
 
 	import { authUser } from "$lib/client/auth"
 	
-    $: logged =  JSON.stringify($authUser) !== '{}'
+    $: logged =  $authUser != undefined
 
 	const logout = async () => {
 		await signOut(auth)

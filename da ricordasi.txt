@@ -1,34 +1,19 @@
 ENV VARIABLES PER CONFIG DI FIREBASE E ADMIN 
 
-ancora se ce un link nella pagina, la dashboard non e protetta. non chiama hooks un link interno. -> nella load della index mettere controllo, sennò?
-+page.js/ts: Load function associated with a page. Load data first, then hand it over to the page and render the page. If page is is visited as first page, load runs on the server. If page is visited via client-side nav, load runs on the client.
-
-
 la logout non elimina la sessione su firebase, se non sono loggato e metto nei cookies la mia sessione precedente funziona ancora...
-appunto, implementare il refresh token
+session cookie non possono essere revocati, come fo? consigliano di gestirlo nel database con un array di toke e se sono expired dalla logout
 
-login viene alla prima volta id null quando faccio login, devo fare refresh, mettere invalidateall dopo goto?
-
-devo fare che se ce errore nella aggiunta nel db cancello l'utente in firebase auth, creo una azione in singup server e con Admin cancello l'utente con l'id
-POTREI FARE GIA TUTTO IN SINGUP
-
-
+in singup server includere anche la creazione dell'utente con adminsdk
 creare l'utente con admin sdk potrebbe essere una soluzione, cosi creo utente, prendo uid, creo database user e se ce errore lo elimino
-almeno forse elimino il login automatico, che non da fastidio pero boh
-la login penso vada bene farla sul client
 
-su server.js devo ritornare una risposta costruita meglio, {success: true} non vuol di nulla
+errors.svelte e fare throw error per certe cose
 
-in login controllare se l'utente esiste in mongodb
+fare loader dashboard jobs
 
--- METTERE I DATI DEL DB NEI COOKIE ALLA LOGIN, cosi non faccio richiesta nella layout.server, al momento i dati del db servono solo per la backdoor
-NO, NON METTO QUEI DATI ALLA LOGIN, FACCIO CHIAMATA NELLA LAYOUT - AL MOMENTO NON SERVE NEMMENO, TOGLIERLA E PER ORA RITORNARE SOLO TURE O FALSE SE SONO LOGGATO O MENO
+findone invece di[0]?
 
+const csrfToken = getCookie('csrfToken') per autenticazione
 
-db connect e disconnect che devo fa
-o connect in layout oppure disconnect e connect ogni volta, ma la disconnect non sembra funzionare
+login su safari non va - non mette il cookie - da provare sul pc di qal cun altro
 
-usare res.json invece di deserialize
-
-
-
+filtro jobsa

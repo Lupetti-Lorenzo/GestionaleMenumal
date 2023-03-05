@@ -6,12 +6,12 @@ import { dbConnect } from "$lib/server/db/db.js"
 export const load = (async (event) => {
     getFirebase()
     getAdmin()
+    await dbConnect()
     const id = event.locals.user
     if (!id) return {}
 
     const user = { id }
     // chiamata a database per fornire al client anche i dati non segreti(apiKey) del database
-    await dbConnect()
     let dbRes = await UserModel.find({uidFireBase: JSON.parse(id)})
     let dbUser = JSON.parse(JSON.stringify(dbRes))[0]
     let { email, locali } = dbUser

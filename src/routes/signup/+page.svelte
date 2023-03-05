@@ -14,6 +14,7 @@
     let email, password // bind ai valori dei campi
     // messaggi di errore
     $: err = "";
+    $: res = ""
 
     async function singup() { 
         // creo user con email e password.
@@ -33,11 +34,10 @@
             });
 
             const result = deserialize(await response.text());
-            console.log(result)
-            if (result.type == 'success') { //register successful
-                signOut(auth) // per prevenire il singin automatico
-                await invalidateAll() // per richiamare la load, cosí aggiorna user.locals e lo store authUser
-                goto("/");
+            if (result.data.success) { //register successful
+                signOut(auth)
+                res = "Utente creato con successo!"
+                await invalidateAll()
             } // altrimenti mando errore
             else { // questo punto se il db ha fallito, ho comunque creato un utente su fb
               // fare api route per eliminare l'utente
@@ -45,15 +45,9 @@
               throw new Error(result.data.message);
             }
           })
-          .catch((error) => { // qui prendo l'errore, faccio logout e setto il messaggio nel loginform
-            err = error.message | "Errore nella creazione dell utente nel db";
-            // signOut(auth).then(() => {
-            //     console.log("Error in singup, loggin out")
-            // })
-            // .catch((err) => {
-            //     err = error.message;
-            //     console.err(err)
-            // })
+          .catch((error) => {
+            err = error;
+            //eliminare utente fb
         });
         })
     }
@@ -86,7 +80,12 @@
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-        <p>err: {err}</p>
+        {#if err !== ""}
+          <p style="color: red">{err}</p>
+        {/if}
+        {#if res !== ""}
+          <p style="color: green">{res}</p>
+        {/if}
       </div>
     </div>
   </div>

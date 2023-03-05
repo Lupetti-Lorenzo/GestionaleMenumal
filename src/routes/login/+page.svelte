@@ -24,7 +24,7 @@
           .then(async (userCredentials) => {
             //  login successfull
             //  prendo id token dell'utente
-            const token = await  userCredentials.user.getIdToken();
+            const token = await userCredentials.user.getIdToken();
             const uid = userCredentials.user.uid
             // creo un form con id token, da mandare all'azione default nel page.server.js
             const formData = new FormData();
@@ -32,22 +32,22 @@
             formData.set('uid', uid)
             
             // mando il messaggio, l'azione setta i cookies
-            const response = await fetch(this.action, {
+            const res = await fetch(this.action, {
                 method: 'POST',
                 body: formData
             });
 
             // se sono loggato con successo vado alla dashboard
-            const result = deserialize(await response.text());
-            //console.log("mi ha risposto!" + JSON.stringify(result))
-            if (result.type === 'success') { //login successfull
+            const result = deserialize(await res.text());       
+
+            if (result.data.success) { //login successfull
                 await invalidateAll() // per richiamare la load, cosí aggiorna user.locals e lo store authUser
                 goto("/");
             } // altrimenti mando errore
-            else throw new Error(result.message);
+            else throw new Error(result.data.message);
           })
           .catch((error) => { // qui prendo l'errore, faccio logout e setto il messaggio nel loginform
-            err = error.message;
+            err = error;
             signOut(auth).then(() => {
                 console.log("Error in login, loggin out")
             })
@@ -87,7 +87,9 @@
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-        <p>err: {err}</p>
+        {#if err !== ""}
+          <p style="color: red">{err}</p>
+        {/if}
       </div>
     </div>
   </div>

@@ -47,3 +47,13 @@ export  const createSessionCookie = async (token, maxAge) => {
     const sessionCookie = await admin.auth().createSessionCookie(token, { expiresIn })
     return sessionCookie
 }
+
+export const revokeSessionCookie = async (session) => {
+    getAdmin()
+    admin.auth().verifySessionCookie(session)
+    .then((decodedClaims) => {
+        admin.auth().revokeRefreshTokens(decodedClaims.sub)
+    }).catch((error) => {
+        console.log(error)
+    });
+}
