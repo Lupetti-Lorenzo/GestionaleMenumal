@@ -2,6 +2,7 @@ import { UserModel } from "$lib/server/db/models/User.js"
 
 export const load = (async ({locals}) => {
     const fetchJobs = async () => {
+        console.log("Locals user: "+locals.user)
         // prendo i dati dell'API dello user corrente dal db
         let dbRes = await UserModel.find({uidFireBase: JSON.parse(locals.user)})
         let userDB = JSON.parse(JSON.stringify(dbRes))[0]
