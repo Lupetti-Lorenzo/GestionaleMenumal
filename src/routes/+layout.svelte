@@ -17,9 +17,9 @@
 </script>
 
 <Nav />
-{#if logged}
+<!-- {#if logged}
     <p>userID: {user.id}</p>
     <p>mail: {user.email}</p>
-{/if}
+{/if} -->
 
 <slot></slot>

@@ -17,4 +17,6 @@ const csrfToken = getCookie('csrfToken') per autenticazione
 login su safari non va - non mette il cookie - da provare sul pc di qal cun altro
 localstorage per il cookie?
 
-filtro jobs
+renderla pwa
+
+pulire il database di account pacchi
