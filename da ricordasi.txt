@@ -1,3 +1,5 @@
+
+
 ENV VARIABLES PER CONFIG DI FIREBASE E ADMIN 
 
 la logout non elimina la sessione su firebase, se non sono loggato e metto nei cookies la mia sessione precedente funziona ancora...
@@ -20,3 +22,9 @@ localstorage per il cookie?
 renderla pwa
 
 pulire il database di account pacchi
+
+se sono in singup mettere in nav il link per andare alla home
+
+store sul server per credenziali api per non stare ogni volta a fare richiesta - derived from auth?
+
+pwa icona, ne prendo una online al momento
