@@ -18,4 +18,19 @@ To create a production version of your app:
 
 You can preview the production build with `npm run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+# Docker
+
+## Creare immagine
+
+```bash
+    `docker build -t gestionale ./`
+```
+
+## Avviare il server
+
+```bash
+    `docker run -d -p 3000:3000 \`
+    `-e origin=http://localhost:3000 \`
+    # `--mount type=bind,source="$(pwd)"/data/,target=/app/data/ \`
+    `gestionale`
+```

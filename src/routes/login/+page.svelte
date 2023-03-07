@@ -36,10 +36,10 @@
                 method: 'POST',
                 body: formData
             });
-
+            console.log(JSON.stringify(res))
             // se sono loggato con successo vado alla dashboard
-            const result = deserialize(await res.text());       
-
+            const result = deserialize(await res.text());  
+            console.log(JSON.stringify(res))     
             if (result.data.success) { //login successfull
                 await invalidateAll() // per richiamare la load, cosí aggiorna user.locals e lo store authUser
                 goto("/");
