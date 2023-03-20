@@ -36,7 +36,7 @@
                 method: 'POST',
                 body: formData
             });
-            console.log(JSON.stringify(res))
+            //console.log(JSON.stringify(res))
             // se sono loggato con successo vado alla dashboard
             const result = deserialize(await res.text());  
             console.log(JSON.stringify(res))     
@@ -61,7 +61,7 @@
 </script>
 
 
-<div class="login">
+<!-- <div class="login">
     <div class="card">
       <div class="card-body login-form">
         <h5 class="card-title">Login</h5>
@@ -92,27 +92,55 @@
         {/if}
       </div>
     </div>
-  </div>
-  
-  <style>
-    .card {
-      width: 50%;
-      margin: 0 auto;
-    }
-    .login {
-      margin-top: 50px;
-      margin-bottom: 50px;
-    }
-    .login-form {
-      width: 60%;
-      margin: 0 auto;
-    }
-    @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
-      .login-form {
-        width: 90%;
-      }
-      .card {
-        width: 90%;
-      }
-    }
-  </style>
+  </div> -->
+
+  <section>
+    <div class="flex flex-col items-center justify-start px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <a href="https://www.menumal.it/info.html" class="flex items-center mb-6 text-2xl font-semibold text-gray-900">
+            <!-- <img class="w-8 h-8 mr-2" src="" alt="logo"> -->
+            Menumal    
+        </a>
+        <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
+                    Entra nel tuo account
+                </h1>
+                <form class="space-y-4 md:space-y-6" method="POST" on:submit|preventDefault="{login}">
+                    <div>
+                      <label for="emailInput" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+                      <input bind:value={email}
+                        type="email"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                        id="emailInput"
+                        aria-describedby="emailHelp"
+                        placeholder="Email Address"
+                      />
+                    </div>
+                    <div>
+                      <label for="passInput" class="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
+                      <input bind:value={password}
+                        type="password"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required
+                        id="passInput"
+                        placeholder="Password"
+                      />
+                    </div>
+                    <!-- <div class="flex items-center justify-between">
+                        <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                              <input id="remember" aria-describedby="remember" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 " required="">
+                            </div>
+                            <div class="ml-3 text-sm">
+                              <label for="remember" class="text-gray-500">Remember me</label>
+                            </div>
+                        </div>
+                    </div> -->
+                    <button type="submit" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Login</button> 
+                    {#if err !== ""}
+                      <p style="color: red">{err}</p>
+                    {/if}
+                </form>
+            </div>
+        </div>
+    </div>
+  </section>

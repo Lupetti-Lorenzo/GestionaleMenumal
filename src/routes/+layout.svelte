@@ -4,6 +4,9 @@
 import { onMount } from 'svelte'
 import { pwaInfo } from 'virtual:pwa-info'
 
+//tailwind css
+import "../app.css";
+
 let ReloadPrompt
   
 onMount(async () => {
@@ -36,9 +39,6 @@ onMount(async () => {
     
     import  Nav  from "$lib/components/layout/nav.svelte"
 
-    $: user = $authUser
-    $: logged = user != undefined
-
 </script>
 
 <svelte:head>
@@ -52,10 +52,7 @@ onMount(async () => {
 </svelte:head>
 
 <Nav />
-<!-- {#if logged}
-    <p>userID: {user.id}</p>
-    <p>mail: {user.email}</p>
-{/if} -->
+
 
 {#if ReloadPrompt}
   <svelte:component this={ReloadPrompt} />

@@ -13,19 +13,13 @@
     }
 </script>
 
-<div class="jobItem">
-    <p>{job}</p>
-    <form method="POST" on:submit|preventDefault="{apriBackDoor}">
-        <button type="submit" class="btn btn-primary">Area privata</button>
-    </form>
-</div>
-
-<style>
-    .jobItem {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        width: 200px;
-    }
-</style>
+<tr class="border-b border-gray-200 hover:bg-gray-100">
+    <th scope="row" class="py-3 px-6 text-left whitespace-nowrap">
+        {job}
+    </th>
+    <td class="py-3 px-6 text-left">
+        <form method="POST" on:submit|preventDefault="{apriBackDoor}">
+            <button type="submit" class="inline-flex items-center px-6 py-3 text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-600">Area privata</button>
+        </form>
+    </td>
+</tr>
