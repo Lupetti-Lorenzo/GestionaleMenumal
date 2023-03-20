@@ -1,7 +1,7 @@
 import { initializeApp, cert, getApps, getApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import admin from 'firebase-admin';
-import { FBADMINCLIENTID, FBADMINPRIVATEKEYID, FBADMINPRIVATEKEY } from "$env/static/private"
+import { FBADMINPRIVATEKEYID, FBADMINPRIVATEKEY } from "$env/static/private"
 
 const adminConfig = {
     "type": "service_account",
@@ -9,7 +9,7 @@ const adminConfig = {
     "private_key_id": FBADMINPRIVATEKEYID,
     "private_key": FBADMINPRIVATEKEY,
     "client_email": "firebase-adminsdk-tmqsd@gestionalemenumal.iam.gserviceaccount.com",
-    "client_id": FBADMINCLIENTID,
+    "client_id": "112053687882919517262",
     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
     "token_uri": "https://oauth2.googleapis.com/token",
     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",

@@ -1,7 +1,4 @@
 
-
-ENV VARIABLES PER CONFIG DI FIREBASE E ADMIN 
-
 la logout non elimina la sessione su firebase, se non sono loggato e metto nei cookies la mia sessione precedente funziona ancora...
 session cookie non possono essere revocati, come fo? consigliano di gestirlo nel database con un array di toke e se sono expired dalla logout
 
@@ -17,7 +14,7 @@ findone invece di[0]?
 const csrfToken = getCookie('csrfToken') per autenticazione
 
 login su safari non va - non mette il cookie - da provare sul pc di qal cun altro
-localstorage per il cookie?
+localstorage per il cookie? con https?
 
 renderla pwa
 
@@ -25,6 +22,6 @@ pulire il database di account pacchi
 
 se sono in singup mettere in nav il link per andare alla home
 
-store sul server per credenziali api per non stare ogni volta a fare richiesta - derived from auth?
+chiavi api - nel cookie e hook lo passa ai server.js
 
 pwa icona, ne prendo una online al momento
