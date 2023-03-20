@@ -26,15 +26,12 @@
 
 </script>
 
-{#if $jobsStore.jobs.length == 0}
-        Loading....
-{:else}
 <div class="max-w-md">
     <div class="flex items-start justify-start font-sans overflow-hidden">
         <div>
             <div class="bg-white shadow-md rounded my-6">
                 
-                <input  class="rounded-t focus-within:shadow-lg bg-white min-w-max w-full px-6 py-3 bg-gray-200 text-gray-600 text-sm leading-normal" type="search" placeholder="Search..." bind:value={$jobsStore.search}/>
+                <input  class="rounded-t focus-within:shadow-lg min-w-max w-full px-6 py-3 bg-gray-200 text-gray-600 text-sm leading-normal" type="search" placeholder="Search..." bind:value={$jobsStore.search}/>
                 
                 <table class="min-w-max w-full table-auto">
                     <thead>
@@ -48,13 +45,14 @@
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 text-sm font-light">
-                        {#each $jobsStore.filteredJobs as job}
-                            <JobItem job={job}/>
-                        {/each}
+                        {#if $jobsStore.jobs.length != 0}
+                            {#each $jobsStore.filteredJobs as job}
+                                <JobItem job={job}/>
+                            {/each}
+                        {/if}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
-{/if}
