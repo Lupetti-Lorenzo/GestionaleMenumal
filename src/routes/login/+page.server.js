@@ -28,7 +28,7 @@ export const actions = {
             path: '/',
             httpOnly: true,
             sameSite: 'strict',
-            secure: true,
+            secure: false,
             maxAge: maxAge
         })
 
