@@ -26,12 +26,3 @@
 	{/if}
 	<!-- con il flag data-sveltekit-prefetch fa il prefetch quando l'utente fa hover sul link -->
 </nav>
-
-<style>
-	nav {
-		display: flex;
-	}
-	nav a {
-		margin-right: 1rem;
-	}
-</style>
