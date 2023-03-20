@@ -3,18 +3,21 @@ import { getAuth } from "firebase-admin/auth";
 import admin from 'firebase-admin';
 import { FBADMINPRIVATEKEYID, FBADMINPRIVATEKEY } from "$env/static/private"
 
+const { privateKey } = JSON.parse(FBADMINPRIVATEKEY)
+
+
 const adminConfig = {
     "type": "service_account",
     "project_id": "gestionalemenumal",
     "private_key_id": FBADMINPRIVATEKEYID,
-    "private_key": FBADMINPRIVATEKEY,
+    "private_key": privateKey,
     "client_email": "firebase-adminsdk-tmqsd@gestionalemenumal.iam.gserviceaccount.com",
     "client_id": "112053687882919517262",
     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
     "token_uri": "https://oauth2.googleapis.com/token",
     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
     "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-tmqsd%40gestionalemenumal.iam.gserviceaccount.com"
-  }
+}
   
 
 export const getAdmin = () => {
