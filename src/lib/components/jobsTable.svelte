@@ -7,9 +7,10 @@
 
     let jobsStore = createJobsStore([])
     
+    // richiedo i jobs dall'api e li salvo in jobsStore, da cui viene creata la tabella e abilitata la funzionalita di ricerca
     onMount(async () => {
         const formData = new FormData();
-
+        
         formData.set('uid', $authUser.id)
         const res = await fetch("api/getJobs", {
             method: 'POST',
@@ -29,10 +30,10 @@
 <div class="max-w-md">
     <div class="flex items-start justify-start font-sans overflow-hidden">
         <div>
-            <div class="bg-white shadow-md rounded my-6">
-                
+            <div class="bg-white shadow-md my-6">
+                <!-- SEARCH FIELD -->
                 <input  class="rounded-t focus-within:shadow-lg min-w-max w-full px-6 py-3 bg-gray-200 text-gray-600 text-sm leading-normal" type="search" placeholder="Search..." bind:value={$jobsStore.search}/>
-                
+                <!-- TABLE OF JOBS -->
                 <table class="min-w-max w-full table-auto">
                     <thead>
                         <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
@@ -47,7 +48,7 @@
                     <tbody class="text-gray-600 text-sm font-light">
                         {#if $jobsStore.jobs.length != 0}
                             {#each $jobsStore.filteredJobs as job}
-                                <JobItem job={job}/>
+                                <JobItem {job}/>
                             {/each}
                         {/if}
                     </tbody>

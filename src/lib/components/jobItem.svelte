@@ -19,7 +19,7 @@
     </th>
     <td class="py-3 px-6 text-left">
         <form method="POST" on:submit|preventDefault="{apriBackDoor}">
-            <button type="submit" class="inline-flex items-center px-6 py-3 text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-600">Area privata</button>
+            <button type="submit" class="inline-flex items-center px-6 py-3 text-gray-500 bg-gray-200 rounded-md hover:bg-gray-300 hover:text-gray-600">Area privata</button>
         </form>
     </td>
 </tr>
