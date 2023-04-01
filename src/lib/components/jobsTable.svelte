@@ -3,20 +3,20 @@
 
     import { createJobsStore, searchHandler } from "$lib/client/jobsStore.js"
     import { onMount, onDestroy } from "svelte";
-    import { authUser } from "$lib/client/auth"
+    //import { authUser } from "$lib/client/auth
 
     let jobsStore = createJobsStore([])
     
     // richiedo i jobs dall'api e li salvo in jobsStore, da cui viene creata la tabella e abilitata la funzionalita di ricerca
     onMount(async () => {
-        const formData = new FormData();
-        
-        formData.set('uid', $authUser.id)
+        const formData = await new FormData()
         const res = await fetch("api/getJobs", {
             method: 'POST',
             body: formData
         });
+
         const jobs = await res.json()
+        //console.log(jobs)
         $jobsStore.jobs = jobs
     })
 
@@ -47,7 +47,7 @@
                     </thead>
                     <tbody class="text-gray-600 text-sm font-light">
                         {#if $jobsStore.jobs.length != 0}
-                            {#each $jobsStore.filteredJobs as job}
+                            {#each $jobsStore.jobs as job}
                                 <JobItem {job}/>
                             {/each}
                         {/if}

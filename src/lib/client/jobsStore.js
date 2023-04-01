@@ -14,6 +14,6 @@ export const createJobsStore = (jobs) => {
 	};
 }
 
-export const searchHandler = (store) => {
-	store.filteredJobs = store.jobs.filter((job) => job.toLowerCase().includes(store.search.toLowerCase()))
+export const searchHandler = () => {
+	//store.filteredJobs = store.jobs.filter((job) => job.fields['Opportunity name'].toLowerCase().includes(store.search.toLowerCase()))
 }
