@@ -3,7 +3,6 @@
 
     import { createJobsStore, searchHandler } from "$lib/client/jobsStore.js"
     import { onMount, onDestroy } from "svelte";
-    //import { authUser } from "$lib/client/auth
 
     let jobsStore = createJobsStore([])
     
@@ -16,7 +15,6 @@
         });
 
         const jobs = await res.json()
-        //console.log(jobs)
         $jobsStore.jobs = jobs
     })
 
@@ -32,7 +30,7 @@
         <div>
             <div class="bg-white shadow-md my-6">
                 <!-- SEARCH FIELD -->
-                <input  class="rounded-t focus-within:shadow-lg min-w-max w-full px-6 py-3 bg-gray-200 text-gray-600 text-sm leading-normal" type="search" placeholder="Search..." bind:value={$jobsStore.search}/>
+                <input class="rounded-t focus-within:shadow-lg min-w-max w-full px-6 py-3 bg-gray-200 text-gray-600 text-sm leading-normal" type="search" placeholder="Search..." bind:value={$jobsStore.search}/>
                 <!-- TABLE OF JOBS -->
                 <table class="min-w-max w-full table-auto">
                     <thead>
@@ -47,7 +45,7 @@
                     </thead>
                     <tbody class="text-gray-600 text-sm font-light">
                         {#if $jobsStore.jobs.length != 0}
-                            {#each $jobsStore.jobs as job}
+                            {#each $jobsStore.filteredJobs as job}
                                 <JobItem {job}/>
                             {/each}
                         {/if}
