@@ -33,9 +33,6 @@ onMount(async () => {
 
     $: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : ''
     //--------------//
-
-
-    import { authUser } from "$lib/client/auth"
     
     import  Nav  from "$lib/components/layout/nav.svelte"
 

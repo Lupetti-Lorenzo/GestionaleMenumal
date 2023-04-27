@@ -25,8 +25,8 @@
 
 </script>
 
-<div class="max-w-md">
-    <div class="flex items-start justify-start font-sans overflow-hidden">
+<div id="jobsTable" class="w-full">
+    <div class="flex items-start justify-center font-sans overflow-hidden">
         <div>
             <div class="bg-white shadow-md my-6">
                 <!-- SEARCH FIELD -->
@@ -40,6 +40,12 @@
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 <span class="sr-only">Area Privata</span>
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                <span class="sr-only">Cambia stato</span>
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                <span class="sr-only">Estendi free trial</span>
                             </th>
                         </tr>
                     </thead>

@@ -15,6 +15,6 @@ export const createJobsStore = (jobs) => {
 }
 
 export const searchHandler = (store) => {
+	if (store.search == "") {store.filteredJobs = []; return}
 	store.filteredJobs = store.jobs.filter((job) => job.fields['Opportunity name']?.toLowerCase().includes(store.search.toLowerCase()))
-	if (store.search == "") store.filteredJobs = []
 }

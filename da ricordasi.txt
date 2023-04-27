@@ -4,24 +4,27 @@ session cookie non possono essere revocati, come fo? consigliano di gestirlo nel
 
 in singup server includere anche la creazione dell'utente con adminsdk
 creare l'utente con admin sdk potrebbe essere una soluzione, cosi creo utente, prendo uid, creo database user e se ce errore lo elimino
+singup accedibile solo da admin e opzione per creare un admin/user
+opzione per creare un admin oppure no - admin puo creare utenti e fare certe cose in piu sui locali
 
 errors.svelte e fare throw error per certe cose
 
-fare loader dashboard jobs
+se sono loggato redirect alla dashboard
 
-findone invece di[0]?
-
-const csrfToken = getCookie('csrfToken') per autenticazione
-
-login su safari non va - non mette il cookie - da provare sul pc di qal cun altro
-localstorage per il cookie? con https?
-
-renderla pwa
+fare loader dashboard jobs - skeleton della search e nome locale e bona
 
 pulire il database di account pacchi
 
 se sono in singup mettere in nav il link per andare alla home
 
+pwa icona, ne prendo una online al momento
+
+posso modificare la pagina offline della pwa library?
+invalidateall dopo login? -- oppure modificare userauth subito dopo
+
 chiavi api - nel cookie e hook lo passa ai server.js
 
-pwa icona, ne prendo una online al momento
+store che si occupa del token, ad ogni richiesta se e scaduto ne chiede un altro, almeno riuso lo stesso per mezzora
+
+fare nuovo componente label.svelte, gli passo il numero dello stato e crea una label bellina - da usare accanto al nome e nel popup
+.svelte components per i vari modal

@@ -7,7 +7,7 @@
 
 	import { authUser } from "$lib/client/auth"
 	
-    $: logged =  $authUser != undefined
+    $: logged = $authUser != null
 
 	const logout = async () => {
 		await signOut(auth)
@@ -16,7 +16,7 @@
 	}
 </script>
 
-<nav class="flex row justify-start items-center w-full">
+<nav class="flex row justify-start items-center w-full mb-10">
     <!-- <a href="/">Home</a>
 	<a href="/login" data-sveltekit-prefetch>login</a>  -->
 	{#if logged}	
