@@ -1,18 +1,12 @@
 <script>
     import { authUser } from "$lib/client/auth"
 	import JobState from "./jobState.svelte";
+    import { token } from "../client/tokenMenager"
     
     export let job
 
     async function apriBackDoor() { // fetcho il token e apro la pagina del job selezionato
-        const formData = new FormData();
-        formData.set('uid', $authUser.id)
-        const res = await fetch("api/creaTokenMenumal", {
-            method: 'POST',
-            body: formData
-        });
-        const token = await res.json()
-        window.open(`https://menumal.it/areaprivata/login.php?job=${job.fields['Opportunity name']}&token=${token}`, '_blank');
+        window.open(`https://menumal.it/areaprivata/login.php?job=${job.fields['Opportunity name']}&token=${$token}`, '_blank');
     }
 
     // job.fields['StatoDB'] // numerico, 0 a vita, 1 trial, 2 stripe, 3 manuale, 4 disattivato
@@ -22,8 +16,8 @@
     // trial - estendi
 
 
-
-    async function cambiaStato() {
+//      .../setStatoUser.php
+    async function cambiaStato() { // mandare job, e il nuovo stato, data di fine solo per manuale e trial
         job.fields['Opportunity name']
         job.fields['StatoDB']
 
@@ -41,7 +35,8 @@
 
     }
 
-    async function estendiFreeTrial() { // mandare job e data di fine presa da una datapicker
+    // uso lo stesso endpoint - mando job, 1(stato) e data
+    async function estendiScadenza() { // mandare job e data di fine presa da una datapicker
 
     }
 
@@ -59,16 +54,16 @@
     </td>
 
     <td>
-        <!-- Bottone cambia stato, che apre il modal con il contenuto in content -->
+        <!-- Bottone cambia stato, che apre il popup -->
         <form method="POST" on:submit|preventDefault="{cambiaStato}">
             <button type="submit" class="inline-flex items-center px-6 py-3 text-gray-500 bg-gray-200 rounded-md hover:bg-gray-300 hover:text-gray-600">Cambia Stato</button>
         </form>
     </td>
 
-    <!-- Bottone estendi free trial -->
-    {#if job.fields['statoDB'] == "1"}
+    <!-- Bottone estendi free trial , anche per manuale - datepicker e bottone accanto-->
+    {#if job.fields['statoDB'] == "1" || job.fields['statoDB'] == "3"}
         <td>
-            <form method="POST" on:submit|preventDefault="{estendiFreeTrial}">
+            <form method="POST" on:submit|preventDefault="{estendiScadenza}">
                 <button type="submit" class="inline-flex items-center px-6 py-3 text-gray-500 bg-gray-200 rounded-md hover:bg-gray-300 hover:text-gray-600">Estendi trial</button>
             </form>
         </td>

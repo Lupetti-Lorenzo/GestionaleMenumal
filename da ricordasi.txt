@@ -26,5 +26,4 @@ chiavi api - nel cookie e hook lo passa ai server.js
 
 store che si occupa del token, ad ogni richiesta se e scaduto ne chiede un altro, almeno riuso lo stesso per mezzora
 
-fare nuovo componente label.svelte, gli passo il numero dello stato e crea una label bellina - da usare accanto al nome e nel popup
-.svelte components per i vari modal
+fare popup 
