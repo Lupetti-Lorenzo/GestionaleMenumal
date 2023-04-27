@@ -22,8 +22,8 @@ pwa icona, ne prendo una online al momento
 posso modificare la pagina offline della pwa library?
 invalidateall dopo login? -- oppure modificare userauth subito dopo
 
-chiavi api - nel cookie e hook lo passa ai server.js
-
-store che si occupa del token, ad ogni richiesta se e scaduto ne chiede un altro, almeno riuso lo stesso per mezzora
+togliere pwa library e fare a mano, tanto mi bastano poche cose
 
 fare popup 
+
+meta tags
