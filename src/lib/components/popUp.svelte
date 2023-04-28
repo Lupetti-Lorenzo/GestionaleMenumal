@@ -2,7 +2,7 @@
     
     import { popUpStore } from "$lib/client/popUpStore"
     import JobState from "./jobState.svelte"
-    import DatePicker from "$lib/components/DatePicker.svelte"
+    import DatePicker from "$lib/components/datePicker.svelte"
     import { CODICI_STATODB_MENUMAL } from "$lib/constants"
     import { authUser } from "$lib/client/auth"
     
@@ -31,7 +31,6 @@
 
     async function changeState() {
         // far apparire loader e interrompere l'interazione
-
         // const formData = await new FormData()
         // formData.id = $authUser
         // formData.newState = newState

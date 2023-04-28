@@ -92,9 +92,9 @@
   
   <table>
     <tr>
-      <td class="btn" on:click={() => go(-1)}>&#9664;</td>
+      <td class="btn" on:click={() => go(-1)} on:keypress={() => {}}>&#9664;</td>
       <td colspan=5>{month} {year}</td>
-      <td class="btn" on:click={() => go(+1)}>&#9654;</td>
+      <td class="btn" on:click={() => go(+1)} on:keypress={() => {}}>&#9654;</td>
     </tr>
     <tr>
       {#each days as day}
@@ -104,7 +104,7 @@
     {#each weeks as week}
     <tr>
       {#each week as day}
-      <td class="btn {day.class}" on:click={() => selectDate(day.value)}>{day.date}</td>
+      <td class="btn {day.class}" on:keypress={() => {}} on:click={() => selectDate(day.value)}>{day.date}</td>
       {/each}
     </tr>
     {/each}
