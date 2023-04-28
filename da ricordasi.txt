@@ -7,34 +7,34 @@ creare l'utente con admin sdk potrebbe essere una soluzione, cosi creo utente, p
 singup accedibile solo da admin e opzione per creare un admin/user
 opzione per creare un admin oppure no - admin puo creare utenti e fare certe cose in piu sui locali
 create user in firebaseAdmin
+se sono in singup mettere in nav il link per andare alla home
 
 errors.svelte e fare throw error per certe cose
 
 se sono loggato redirect alla dashboard
 
-fare loader dashboard jobs - skeleton della search e nome locale e bona
-
 pulire il database di account pacchi
 
-se sono in singup mettere in nav il link per andare alla home
-
-pwa icona, ne prendo una online al momento
-
-
-
-
-meta tags
 
 in dashboard if !user await invalidateall invalidateall dopo login? -- oppure modificare userauth subito dopo
 
-convertire in TS!!
-
-api per connesssioni al db
-
-sveltekit/generated vedere che cosa e
-
-stores alla fine dei file store
-
-popup se clicco fuori close
+convertire in TS
 
 messaggi di errore in login
+
+vedere reactive variables se servono in notification e popup
+fare loader dashboard jobs - skeleton della search e nome locale e bona
+
+commentare popup e i nuovi files, vedi ultimi commit - domani prima cosa da fare e commentare
+
+
+bottoni statistica e operativa con icone da switchare nella navbar  o sotto logout in verticale o navbar a destra
+statistica, libreria con grafici fake e chiedere api per 
+
+COLORI
+
+
+
+PWA
+pwa icona, ne prendo una online al momento - chiedere ai raga icona con misure
+prima di tutto vedere video sui service worker su svelte 

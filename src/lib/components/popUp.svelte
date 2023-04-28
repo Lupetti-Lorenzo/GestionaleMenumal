@@ -1,15 +1,20 @@
 <script>
     
     import { popUpStore } from "$lib/client/popUpStore"
+    import { notificationStore } from "$lib/client/notificationStore"
     import JobState from "./jobState.svelte"
     import DatePicker from "$lib/components/datePicker.svelte"
     import { CODICI_STATODB_MENUMAL } from "$lib/constants"
     import { authUser } from "$lib/client/auth"
+
     
 
     const closePopUp = () => $popUpStore.open = false
 
-    // document.querySelector("body").addEventListener("click")
+    const outsideClick = (event) => {
+        if (event.target.id == "popup") closePopUp()
+    }
+
     // variabili contenute nello store popUp
     $: open = $popUpStore.open
     $: whichPopUp = $popUpStore.whichPopUp
@@ -18,22 +23,37 @@
     // $: registerDate = $popUpStore.registerDate
     const registerDate = "2023-04-28"
 
-    let newState = dbState // contente il valore selezionato del nuovo stato bindato al selector
-    var codiciArray = Object.keys(CODICI_STATODB_MENUMAL).map((key) => {return { id: key, value: CODICI_STATODB_MENUMAL[key]}})
-
-    //date picker
-    let newDate = registerDate // data bindata al datepicker
-    const en = {
-        days: "Su|Mo|Tu|We|Th|Fr|Sa".split("|"),
-        months: "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec".split('|'),
-        start: 0,
+    // quando cambia statoDb o la data cambia aggiorno la ui
+    $: $popUpStore.statoDb, aggiornaUI();
+    $: $popUpStore.registerDate, aggiornaUI();
+    function aggiornaUI(){
+        newState = dbState
+        newDate = registerDate
     }
 
-    async function changeState() {
-        // far apparire loader e interrompere l'interazione
+    // variabile per disabilitare il bottone completa se non ho fatto modifiche
+    let edited = false // di default non ci sono modifiche quindi disabilitato, if reattivo che quando ci sono cambiamenti attiva il bottone
+    $: if(newState != dbState || newDate != registerDate) {
+        edited = true
+    }
+    else {edited = false}
+    
+
+    // nuovo stato, selezionato tramite select
+    let newState = dbState // contente il valore selezionato del nuovo stato bindato al selector
+    var codiciArray = Object.keys(CODICI_STATODB_MENUMAL).map((key) => {return { id: Number(key), value: CODICI_STATODB_MENUMAL[key]}})
+
+    //nuova data di scadenza, selezionato con DatePicker
+    let newDate = registerDate // data bindata al datepicker
+
+    let loading = false // variabile per mostrare il loader e disabilitare gli input durante il caricamento
+    async function changeState(type) {
+        loading = true // far apparire loader e interrompere l'interazione
+    
+        await delay(100)
         // const formData = await new FormData()
         // formData.id = $authUser
-        // formData.newState = newState
+        // formData.newState = newState.toString()
         // formData.newDate = newDate
         // formData.job = jobName
 
@@ -44,13 +64,26 @@
 
         // const response = await res.json()
         // console.log(JSON.stringify(response))
+        loading = false
+        if (whichPopUp === "full") {
+            notificationStore.showNotification(`Stato di pagamento di ${jobName} aggiornato a ${CODICI_STATODB_MENUMAL[newState]}`, "success")
+        }
+        else if (whichPopUp === "trial") {
+            notificationStore.showNotification(`Trial di ${jobName} esteso a ${newDate}`, "success")
+        }
+        
         closePopUp()
     }
+
+    function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+
 </script>
 
 {#if open}
     <!-- POPUP TAILWIND CSS -->
-    <div tabindex="-1"  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex flex-col items-center justify-center align-center">
+    <div on:click|preventDefault={outsideClick} on:keypress={() => {}}  id="popup" tabindex="-1"  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex flex-col items-center justify-center align-center">
         <div class="relative w-full max-w-2xl max-h-full">
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow">
@@ -70,7 +103,7 @@
                     <div class="p-7 space-y-6">
                         <h3 class="text-xl font-semibold text-gray-900">Registrato il {registerDate}</h3>
                         <span class="text-xl mr-3 font-semibold text-gray-900">Nuovo stato</span>
-                        <select bind:value={newState} on:change="{() => newDate = registerDate}">
+                        <select bind:value={newState} on:change="{() => newDate = registerDate}" disabled={loading}>
                             {#each codiciArray as codice}
                                 <option value={codice.id}>
                                     {codice.value}
@@ -81,25 +114,44 @@
                         <!-- DatePicker, lo mostro solo se aggiorno lo stato a trial o manuale -->
                         {#if newState == "1" || newState == "3"}
                             <span class="text-xl mr-2 font-semibold text-gray-900">Nuova scadenza</span>
-                            <input type="text" bind:value={newDate} class="mt-4 mb-2 pl-1"/>
-                            <DatePicker bind:value={newDate} locale={en}/>
+                            <input type="text" bind:value={newDate} class="mt-4 mb-2 pl-1" disabled={loading}/>
+                            <DatePicker bind:value={newDate}/>
                         {/if}
                     </div>
                 {:else if whichPopUp=="trial"}
                     <div class="p-7 space-y-6">
                         <h3 class="text-xl font-semibold text-gray-900 ">Registrato il {registerDate}</h3>
                         <span class="text-xl mr-2 font-semibold text-gray-900">Nuova scadenza</span>
-                        <input type="text" bind:value={newDate} class="mt-4 mb-2 pl-1" />
-                        <DatePicker bind:value={newDate} locale={en}/>
+                        <input type="text" bind:value={newDate} class="mt-4 mb-2 pl-1" disabled={loading} />
+                        <DatePicker bind:value={newDate}/>
                     </div>
                 {/if}
                 
                 <!-- Modal footer -->
                 <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
-                    <button on:click|preventDefault={changeState} type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Completa</button>
-                    <button on:click|preventDefault={closePopUp} type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10" on:click|preventDefault={closePopUp}>Annulla</button>
+                    <button disabled={loading || !edited} on:click|preventDefault={changeState} type="button"  class="{loading || !edited ? "disabled" : ""} mr-3 text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        {#if !loading }
+                            Completa
+                        {:else}
+                            <div role="status">
+                                <svg aria-hidden="true" class="inline w-5 h-5 text-gray-200 animate-spin fill-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                                </svg>
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        {/if}
+                    </button>
+                    
+                    <button  on:click|preventDefault={closePopUp} type="button" disabled={loading} class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10" on:click|preventDefault={closePopUp}>Annulla</button>
                 </div>
             </div>
         </div>
     </div>
 {/if}
+
+<style>
+    .disabled{
+        background-color: #9ca3af;
+    }
+</style>
