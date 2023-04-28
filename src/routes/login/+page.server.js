@@ -1,7 +1,6 @@
 import { createSessionCookie } from "$lib/server/adminFirebase.js"
 import { SESSION_COOKIE_NAME } from "$lib/constants.js"
-import { UserModel } from "$lib/server/db/models/User.js"
-//import { json } from "@sveltejs/kit"
+import { getUser } from "$lib/server/db/db"
 
 export const actions = {
     default: async ({ request, cookies }) => { // login
@@ -11,8 +10,7 @@ export const actions = {
         const token = await formData.get('token')?.valueOf()
         const id = await formData.get('uid')?.valueOf()
         // check if user exists in mongoDB
-        let dbRes = await UserModel.find({uidFireBase: id})
-        let dbUsers = JSON.parse(JSON.stringify(dbRes))
+        let dbUsers = await getUser(id)
         if (JSON.stringify(dbUsers) === '[]') return { error: true, message:  "Esiste un utente in firebase auth ma non nel database, non posso loggarti"}
 
         // check token

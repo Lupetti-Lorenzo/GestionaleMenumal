@@ -1,5 +1,6 @@
 {
   "name": "Gestionale Menumal",
+  "short_name": "Menumal",
   "start_url": "/",
   "scope": "/",
   "background_color": "#FFF",

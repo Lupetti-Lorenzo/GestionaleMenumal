@@ -1,13 +1,12 @@
 import { json } from "@sveltejs/kit"
-import { UserModel } from "$lib/server/db/models/User.js"
+import { getUser } from "$lib/server/db/db"
 
 
 export async function POST ({request}) {
     const formDataId = await request.formData()
     const id = await formDataId.get('uid')?.valueOf()
     // prendo i dati dell'API dello user corrente dal db
-    let dbRes = await UserModel.find({uidFireBase: JSON.parse(id)})
-    let userDB = JSON.parse(JSON.stringify(dbRes))[0]
+    const userDB = await getUser(id)
     // setto il form con user e pass API
     const formData = new FormData();
     formData.set('user', userDB.userAPI)

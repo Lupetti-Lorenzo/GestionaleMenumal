@@ -1,5 +1,6 @@
 <script>
     import JobItem from "./jobItem.svelte";
+    import PopUp from "./popUp.svelte";
 
     import { createJobsStore, searchHandler } from "$lib/client/jobsStore.js"
     import { onMount, onDestroy } from "svelte";
@@ -24,6 +25,9 @@
 	});
 
 </script>
+
+<!-- Popup -->
+<PopUp />
 
 <div id="jobsTable" class="w-full">
     <div class="flex items-start justify-center font-sans overflow-hidden">

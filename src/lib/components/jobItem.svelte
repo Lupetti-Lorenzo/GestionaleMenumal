@@ -1,12 +1,19 @@
 <script>
-    import { authUser } from "$lib/client/auth"
-	import JobState from "./jobState.svelte";
-    import { token } from "../client/tokenMenager"
     
+	import JobState from "./jobState.svelte";
+
+    import { token } from "$lib/client/tokenMenager"
+    import { popUpStore } from "$lib/client/popUpStore"
+
     export let job
 
+    const jobName = job.fields['Opportunity name']
+    // const dbState = job.fields['StatoDB'] // stato di pagamento in cui è l'utente, 0 a vita, 1 trial, 2 stripe, 3 manuale, 4 disattivato
+    const dbState = 1 
+    const dataRegistrazione = job.fields['dataRegistrazione']
+
     async function apriBackDoor() { // fetcho il token e apro la pagina del job selezionato
-        window.open(`https://menumal.it/areaprivata/login.php?job=${job.fields['Opportunity name']}&token=${$token}`, '_blank');
+        window.open(`https://menumal.it/areaprivata/login.php?job=${jobName}&token=${$token}`, '_blank');
     }
 
     // job.fields['StatoDB'] // numerico, 0 a vita, 1 trial, 2 stripe, 3 manuale, 4 disattivato
@@ -18,51 +25,45 @@
 
 //      .../setStatoUser.php
     async function cambiaStato() { // mandare job, e il nuovo stato, data di fine solo per manuale e trial
-        job.fields['Opportunity name']
-        job.fields['StatoDB']
-
-        //apro popup
-
-        // prendo il token
-        const formData = new FormData();
-        formData.set('uid', $authUser.id)
-        const res = await fetch("api/creaTokenBackDoor", {
-            method: 'POST',
-            body: formData
-        });
-        const token = await res.json()
-
-
+        $popUpStore.whichPopUp = "full"
+        $popUpStore.statoDb = dbState
+        $popUpStore.jobName = jobName
+        $popUpStore.open = true
+        $popUpStore.registerDate = dataRegistrazione
     }
 
     // uso lo stesso endpoint - mando job, 1(stato) e data
     async function estendiScadenza() { // mandare job e data di fine presa da una datapicker
-
+        $popUpStore.whichPopUp = "trial"
+        $popUpStore.statoDb = dbState
+        $popUpStore.jobName = jobName
+        $popUpStore.open = true
+        $popUpStore.registerDate = dataRegistrazione
     }
 
 </script>
 
-<tr class="border-b border-gray-200 hover:bg-gray-100">
-    <th scope="row" class="py-3 px-6 text-left whitespace-nowrap">
-        {job.fields['Opportunity name']} <JobState dbState={job.fields['StatoDB']} />
+<tr  class="border-b border-gray-200 m hover:bg-gray-100">
+    <th scope="row" class="py-3 px-5 text-left whitespace-nowrap">
+        {jobName} <JobState {dbState} />
     </th>
 
-    <td class="py-3 px-6 text-left">
+    <td class="py-3 px-5 text-left">
         <form method="POST" on:submit|preventDefault="{apriBackDoor}">
             <button type="submit" class="inline-flex items-center px-6 py-3 text-gray-500 bg-gray-200 rounded-md hover:bg-gray-300 hover:text-gray-600">Area privata</button>
         </form>
     </td>
 
-    <td>
+    <td class="py-3 px-5  text-left">
         <!-- Bottone cambia stato, che apre il popup -->
         <form method="POST" on:submit|preventDefault="{cambiaStato}">
-            <button type="submit" class="inline-flex items-center px-6 py-3 text-gray-500 bg-gray-200 rounded-md hover:bg-gray-300 hover:text-gray-600">Cambia Stato</button>
+            <button type="submit" class="inline-flex items-center px-6 py-3 text-gray-500 bg-gray-200 rounded-md hover:bg-gray-300 hover:text-gray-600">Cambia stato</button>
         </form>
     </td>
 
     <!-- Bottone estendi free trial , anche per manuale - datepicker e bottone accanto-->
-    {#if job.fields['statoDB'] == "1" || job.fields['statoDB'] == "3"}
-        <td>
+    {#if dbState == "1" || dbState == "3"}
+        <td class="py-3 px-5  text-left">
             <form method="POST" on:submit|preventDefault="{estendiScadenza}">
                 <button type="submit" class="inline-flex items-center px-6 py-3 text-gray-500 bg-gray-200 rounded-md hover:bg-gray-300 hover:text-gray-600">Estendi trial</button>
             </form>

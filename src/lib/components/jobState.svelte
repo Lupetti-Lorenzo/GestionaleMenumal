@@ -1,28 +1,24 @@
 <script>
+    import { CODICI_STATODB_MENUMAL } from "$lib/constants"
+
     export let dbState
+
+    let bg 
+    if (dbState == "0") bg = "bg-green-700"
+    else if (dbState == "1") bg ="bg-yellow-500"
+    else if (dbState == "2") bg ="bg-sky-500"
+    else if (dbState == "3") bg ="bg-indigo-500"
+    else if (dbState == "4") bg ="bg-red-700"
+
 </script>
 
-{#if dbState == "0"}
-<span class="rounded-md bg-green-700">
-    A vita
-</span>
-{:else if dbState == "1"}
-<span class="rounded-md bg-yellow-500">
-    Trial
-</span>
-{:else if dbState == "2"}
-<span class="rounded-md bg-sky-700">
-    Stripe
-</span>
-{:else if dbState == "3"}
-<span class="rounded-md bg-indigo-700">
-    Manuale
-</span>
-{:else if dbState == "4"}
-<span class="rounded-md bg-red-700">
-    Disattivo
-</span>
+{#if CODICI_STATODB_MENUMAL[dbState] != null}
+    <span class="rounded-md {bg}">
+        {CODICI_STATODB_MENUMAL[dbState]}
+    </span>
 {/if}
+
+
 
 <style>
     span {

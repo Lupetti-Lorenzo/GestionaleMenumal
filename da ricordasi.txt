@@ -6,6 +6,7 @@ in singup server includere anche la creazione dell'utente con adminsdk
 creare l'utente con admin sdk potrebbe essere una soluzione, cosi creo utente, prendo uid, creo database user e se ce errore lo elimino
 singup accedibile solo da admin e opzione per creare un admin/user
 opzione per creare un admin oppure no - admin puo creare utenti e fare certe cose in piu sui locali
+create user in firebaseAdmin
 
 errors.svelte e fare throw error per certe cose
 
@@ -19,11 +20,21 @@ se sono in singup mettere in nav il link per andare alla home
 
 pwa icona, ne prendo una online al momento
 
-posso modificare la pagina offline della pwa library?
-invalidateall dopo login? -- oppure modificare userauth subito dopo
 
-togliere pwa library e fare a mano, tanto mi bastano poche cose
 
-fare popup 
 
 meta tags
+
+in dashboard if !user await invalidateall invalidateall dopo login? -- oppure modificare userauth subito dopo
+
+convertire in TS!!
+
+api per connesssioni al db
+
+sveltekit/generated vedere che cosa e
+
+stores alla fine dei file store
+
+popup se clicco fuori close
+
+messaggi di errore in login
