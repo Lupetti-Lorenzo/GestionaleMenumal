@@ -11,15 +11,18 @@ singup accedibile solo da admin e opzione per creare un admin/user
 opzione per creare un admin oppure no - admin puo creare utenti e fare certe cose in piu sui locali
 create user in firebaseAdmin
 se sono in singup mettere in nav il link per andare alla home
+dopo pulire il database di account pacchi
 
 errors.svelte e fare throw error per certe cose
 LOG server sensati, tipo per login o robe del genere, tipo verifica sbagliata ecc
 
-pulire il database di account pacchi
+
 
 hooks usare il userid in locals invece di passarlo prendendolo da userauth - provai ma non andava vorrrei riprovare
 
 convertire in TS
+
+responsive - rifare la tabella 
 
 messaggi di errore in login
 
@@ -27,9 +30,14 @@ messaggi di errore in login
 
 
 
-bottoni statistica e operativa con icone da switchare nella navbar  o sotto logout in verticale o navbar a destra
+
 statistica, libreria con grafici fake e chiedere api per 
 anche tipo ultimi abbonati o una roba del genere
+
+pure bottoni skeleton loading jobs
+
+la data registrazionen e la fine del manuale/trial
+
 
 COLORI
 

@@ -18,7 +18,7 @@
 	}
 </script>
 
-<nav class="flex row justify-start items-center w-full mb-10">
+<nav class="flex row justify-start items-center w-full mb-4">
     <!-- <a href="/">Home</a>
 	<a href="/login" data-sveltekit-prefetch>login</a>  -->
 	{#if logged}	
