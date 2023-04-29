@@ -13,6 +13,8 @@
     // utilizzo questa sintassi per iscrivere un il search handler ogni volta che cambia jobStore
     $: searchHandler($jobsStore)
 
+    $: loadingJobs = $jobsStore.jobs.length === 0
+
 </script>
 
 <!-- Popup specializzato per le azioni in questa tabella-->
@@ -21,13 +23,13 @@
 <div id="jobsTable" class="w-full">
     <div class="flex items-start justify-center font-sans overflow-hidden">
         <div>
-            <div class="{$jobsStore.jobs.length === 0 ? "animate-pulse": ""} bg-white shadow-md my-6">
+            <div class="{loadingJobs ? "animate-pulse": ""} bg-white shadow-md my-6">
                 <!-- SEARCH FIELD -->
-                <input disabled={$jobsStore.jobs.length === 0} class="rounded-t focus-within:shadow-lg min-w-max w-full px-6 py-3 bg-gray-200 text-gray-600 text-sm leading-normal" type="search" placeholder={$jobsStore.jobs.length === 0 ? "Caricamento...": "Search..."} bind:value={$jobsStore.search}/>
+                <input disabled={loadingJobs} class="rounded-t focus-within:shadow-lg min-w-max w-full px-6 py-3 {loadingJobs ? "bg-gray-300": "bg-gray-200"} text-gray-600 text-sm leading-normal" type="search" placeholder={loadingJobs ? "Caricamento...": "Search..."} bind:value={$jobsStore.search}/>
                 <!-- TABLE OF JOBS -->
                 <table class="min-w-max w-full table-auto">
                     <thead>
-                        <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <tr class="{loadingJobs ? "bg-gray-300": "bg-gray-200"} text-gray-600 uppercase text-sm leading-normal">
                             <th scope="col" class="px-6 py-3">
                                 Nome Locale
                             </th>
@@ -44,7 +46,7 @@
                     </thead>
                     <tbody class="text-gray-600 text-sm font-light">
                         <!-- Mostro i jobs filitrati, inizialmente 0 quindi la tabella risulta chiusa -->
-                        {#if $jobsStore.jobs.length != 0}
+                        {#if !loadingJobs}
                             {#each $jobsStore.filteredJobs as job}
                                 <JobItem {job}/>
                             {/each}

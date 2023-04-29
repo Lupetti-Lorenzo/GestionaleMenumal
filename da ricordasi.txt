@@ -1,6 +1,9 @@
 
 la logout non elimina la sessione su firebase, se non sono loggato e metto nei cookies la mia sessione precedente funziona ancora...
 session cookie non possono essere revocati, come fo? consigliano di gestirlo nel database con un array di toke e se sono expired dalla logout
+in dashboard if !user await invalidateall invalidateall dopo login? -- oppure modificare userauth subito dopo
+- forse risolto ma devo vedere meglio come comunicare con le azioni
+
 
 in singup server includere anche la creazione dell'utente con adminsdk
 creare l'utente con admin sdk potrebbe essere una soluzione, cosi creo utente, prendo uid, creo database user e se ce errore lo elimino
@@ -10,11 +13,13 @@ create user in firebaseAdmin
 se sono in singup mettere in nav il link per andare alla home
 
 errors.svelte e fare throw error per certe cose
+LOG server sensati, tipo per login o robe del genere, tipo verifica sbagliata ecc
 
-se sono loggato redirect alla dashboard
+
 
 pulire il database di account pacchi
 
+hooks usare il userid in locals
 
 
 convertire in TS
@@ -23,11 +28,7 @@ messaggi di errore in login
 
 
 
-
-in dashboard if !user await invalidateall invalidateall dopo login? -- oppure modificare userauth subito dopo
-- forse risolto ma devo vedere meglio come comunicare con le azioni
-vedere reactive variables se servono in notification e popup
-fare loader dashboard jobs - skeleton della search e nome locale e bona
+se sono loggato redirect alla dashboard - no, se sono in login e loggato redirect alla dashboard
 commentare popup e i nuovi files, vedi ultimi commit - domani prima cosa da fare e commentare
 
 

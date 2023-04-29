@@ -15,8 +15,9 @@ export async function handle({ event, resolve }) {
     if (!session && !unProtectedRoutes.includes(event.url.pathname))
             throw redirect(303 ,'/login');
     
-    // verifico la sessione
+    // se ce la sessione, la verifico e poi faccio i redirect
     if (session) {
+        // verifico la sessione
         verifySessionCookie(session).then(async (decodedClaims) => {
             console.log("session cookie verified!")
             event.locals.user = JSON.stringify(decodedClaims.user_id)
@@ -26,6 +27,12 @@ export async function handle({ event, resolve }) {
             // se il token non è valido annullo i cookies
             event.cookies.delete(SESSION_COOKIE_NAME)
         });
+        
+        // REDIRECT
+        // se sono loggato non posso andare nella login
+        if (event.url.pathname === "/login")
+            throw redirect(303 ,'/');
+
     } 
     const response = await resolve(event)
     return response;

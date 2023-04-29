@@ -7,8 +7,6 @@
     import { CODICI_STATODB_MENUMAL } from "$lib/constants"
     import { authUser } from "$lib/client/authStore"
 
-
-
     // chiusura del popup se clicco fuori
     const outsideClick = (event) => {
         if (event.target.id == "popup" && !loading) popUpStore.closePopUp()
@@ -32,7 +30,7 @@
     //nuova data di scadenza, selezionato con DatePicker
     let newDate = registerDate // data bindata al datepicker
 
-    // quando cambia il contenuto del popup aggiorno la ui
+    // quando cambia il contenuto (cioè quando viene aperto il popup) del popup aggiorno la ui
     $: $popUpStore.data, aggiornaUI();
     function aggiornaUI(){
         newState = dbState
@@ -64,20 +62,20 @@
 
         // const response = await res.json()
         // console.log(JSON.stringify(response))
-        loading = false
+        // Notifica all'utente in base al popup e l'esito della chiamata
         if (whichPopUp === "full") {
             notificationStore.showNotification(`Stato di pagamento di ${jobName} aggiornato a ${CODICI_STATODB_MENUMAL[newState]}`, "success")
         }
         else if (whichPopUp === "trial") {
             notificationStore.showNotification(`Trial di ${jobName} esteso a ${newDate}`, "success")
         }
-        
+        loading = false
         popUpStore.closePopUp()
     }
 
-    function delay(time) {
-        return new Promise(resolve => setTimeout(resolve, time));
-    }
+    // function delay(time) {
+    //     return new Promise(resolve => setTimeout(resolve, time));
+    // }
 
 </script>
 
