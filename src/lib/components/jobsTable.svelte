@@ -25,7 +25,7 @@
         <div>
             <div class="{loadingJobs ? "animate-pulse": ""} bg-white shadow-md my-6">
                 <!-- SEARCH FIELD -->
-                <input disabled={loadingJobs} class="rounded-t focus-within:shadow-lg min-w-max w-full px-6 py-3 {loadingJobs ? "bg-gray-300": "bg-gray-200"} text-gray-600 text-sm leading-normal" type="search" placeholder={loadingJobs ? "Caricamento...": "Search..."} bind:value={$jobsStore.search}/>
+                <input disabled={loadingJobs} class="rounded-t focus-within:shadow-lg min-w-max w-full px-6 py-3  {loadingJobs ? "bg-gray-300": "bg-gray-200"} text-gray-600 text-sm leading-normal" type="search" placeholder={loadingJobs ? "Caricamento...": "Search..."} bind:value={$jobsStore.search}/>
                 <!-- TABLE OF JOBS -->
                 <table class="min-w-max w-full table-auto">
                     <thead>

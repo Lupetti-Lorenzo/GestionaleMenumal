@@ -15,26 +15,13 @@ se sono in singup mettere in nav il link per andare alla home
 errors.svelte e fare throw error per certe cose
 LOG server sensati, tipo per login o robe del genere, tipo verifica sbagliata ecc
 
-
-
 pulire il database di account pacchi
 
-hooks usare il userid in locals
-
+hooks usare il userid in locals invece di passarlo prendendolo da userauth - provai ma non andava vorrrei riprovare
 
 convertire in TS
 
 messaggi di errore in login
-
-
-
-se sono loggato redirect alla dashboard - no, se sono in login e loggato redirect alla dashboard
-commentare popup e i nuovi files, vedi ultimi commit - domani prima cosa da fare e commentare
-
-
-
-
-
 
 
 
