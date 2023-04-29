@@ -1,56 +1,56 @@
 <script>
     
-    import { popUpStore } from "$lib/client/popUpStore"
+    import { popUpStore } from "$lib/client/jobPopUpStore"
     import { notificationStore } from "$lib/client/notificationStore"
     import JobState from "./jobState.svelte"
     import DatePicker from "$lib/components/datePicker.svelte"
     import { CODICI_STATODB_MENUMAL } from "$lib/constants"
-    import { authUser } from "$lib/client/auth"
+    import { authUser } from "$lib/client/authStore"
 
-    
 
-    const closePopUp = () => $popUpStore.open = false
 
+    // chiusura del popup se clicco fuori
     const outsideClick = (event) => {
-        if (event.target.id == "popup") closePopUp()
+        if (event.target.id == "popup" && !loading) popUpStore.closePopUp()
     }
 
     // variabili contenute nello store popUp
     $: open = $popUpStore.open
     $: whichPopUp = $popUpStore.whichPopUp
-    $: dbState = $popUpStore.statoDb
-    $: jobName = $popUpStore.jobName
+
+    $: dbState = $popUpStore.data.dbState
+    $: jobName = $popUpStore.data.jobName
     // $: registerDate = $popUpStore.registerDate
     const registerDate = "2023-04-28"
 
-    // quando cambia statoDb o la data cambia aggiorno la ui
-    $: $popUpStore.statoDb, aggiornaUI();
-    $: $popUpStore.registerDate, aggiornaUI();
+
+    // nuovo stato, selezionato tramite select
+    let newState = dbState // contente il valore selezionato del nuovo stato bindato al selector
+    // array con oggetti con id e valore per il selector
+    const codiciMenumalArray = Object.keys(CODICI_STATODB_MENUMAL).map((key) => {return { id: key, value: CODICI_STATODB_MENUMAL[key]}})
+
+    //nuova data di scadenza, selezionato con DatePicker
+    let newDate = registerDate // data bindata al datepicker
+
+    // quando cambia il contenuto del popup aggiorno la ui
+    $: $popUpStore.data, aggiornaUI();
     function aggiornaUI(){
         newState = dbState
         newDate = registerDate
     }
 
     // variabile per disabilitare il bottone completa se non ho fatto modifiche
-    let edited = false // di default non ci sono modifiche quindi disabilitato, if reattivo che quando ci sono cambiamenti attiva il bottone
-    $: if(newState != dbState || newDate != registerDate) {
-        edited = true
-    }
-    else {edited = false}
-    
-
-    // nuovo stato, selezionato tramite select
-    let newState = dbState // contente il valore selezionato del nuovo stato bindato al selector
-    var codiciArray = Object.keys(CODICI_STATODB_MENUMAL).map((key) => {return { id: Number(key), value: CODICI_STATODB_MENUMAL[key]}})
-
-    //nuova data di scadenza, selezionato con DatePicker
-    let newDate = registerDate // data bindata al datepicker
+    let edited = false // di default non ci sono modifiche quindi disabilitato, if reattivo che quando ci sono cambiamenti attiva il bottone o se ritorna allo stato di partenza lo ridisabilita
+    $:  if(newState != dbState || newDate != registerDate)  edited = true
+        else edited = false
 
     let loading = false // variabile per mostrare il loader e disabilitare gli input durante il caricamento
+
+
     async function changeState(type) {
         loading = true // far apparire loader e interrompere l'interazione
     
-        await delay(100)
+        await delay(2000)
         // const formData = await new FormData()
         // formData.id = $authUser
         // formData.newState = newState.toString()
@@ -72,7 +72,7 @@
             notificationStore.showNotification(`Trial di ${jobName} esteso a ${newDate}`, "success")
         }
         
-        closePopUp()
+        popUpStore.closePopUp()
     }
 
     function delay(time) {
@@ -92,8 +92,8 @@
                     <h3 class="text-xl font-semibold text-gray-900">
                         {jobName}  <JobState {dbState}/>
                     </h3>
-                    <h2 class="ml-7 text-xl font-semibold text-gray-900">{whichPopUp=="full" ? "Cambia stato" : "Estendi trial"}</h2>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" on:click|preventDefault="{closePopUp}">
+                    <h2 class="ml-7 text-xl font-semibold text-gray-900">{whichPopUp =="full" ? "Cambia stato" : "Estendi trial"}</h2>
+                    <button on:click|preventDefault="{popUpStore.closePopUp}" disabled={loading} type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
                         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                         <span class="sr-only">Close modal</span>
                     </button>
@@ -104,7 +104,7 @@
                         <h3 class="text-xl font-semibold text-gray-900">Registrato il {registerDate}</h3>
                         <span class="text-xl mr-3 font-semibold text-gray-900">Nuovo stato</span>
                         <select bind:value={newState} on:change="{() => newDate = registerDate}" disabled={loading}>
-                            {#each codiciArray as codice}
+                            {#each codiciMenumalArray as codice}
                                 <option value={codice.id}>
                                     {codice.value}
                                 </option>
@@ -129,10 +129,10 @@
                 
                 <!-- Modal footer -->
                 <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
-                    <button disabled={loading || !edited} on:click|preventDefault={changeState} type="button"  class="{loading || !edited ? "disabled" : ""} mr-3 text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                    <button disabled={loading || !edited} on:click|preventDefault={changeState} type="button"  class="{!edited ? "disabled" : ""} mr-3 text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                         {#if !loading }
                             Completa
-                        {:else}
+                        {:else} <!-- Dopo aver cliccato completa faccio vedere un loader al posto della parola mentre esegue la richiesta-->
                             <div role="status">
                                 <svg aria-hidden="true" class="inline w-5 h-5 text-gray-200 animate-spin fill-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
@@ -143,7 +143,7 @@
                         {/if}
                     </button>
                     
-                    <button  on:click|preventDefault={closePopUp} type="button" disabled={loading} class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10" on:click|preventDefault={closePopUp}>Annulla</button>
+                    <button  on:click|preventDefault={popUpStore.closePopUp} type="button" disabled={loading} class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Annulla</button>
                 </div>
             </div>
         </div>

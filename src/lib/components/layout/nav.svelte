@@ -7,7 +7,7 @@
 
 	const { auth } = getFirebase()
 
-	import { authUser } from "$lib/client/auth"
+	import { authUser } from "$lib/client/authStore"
 	
     $: logged = $authUser != null
 

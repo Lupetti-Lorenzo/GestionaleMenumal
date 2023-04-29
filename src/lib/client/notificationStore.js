@@ -1,5 +1,7 @@
 import { writable } from "svelte/store";
 
+// Notification Store - gestisce la notifica che appare nella navbar, basta importarlo e chiamare showNotification con il messaggio e il tipo per far apparire la notifica
+// Migliorie: parametrizzare la durata, opzione per  mettere x per chiudere
 const createNotificationStore= () => {
 	const { subscribe, set } = writable({
 		message: "",

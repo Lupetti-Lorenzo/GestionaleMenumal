@@ -16,24 +16,34 @@ se sono loggato redirect alla dashboard
 pulire il database di account pacchi
 
 
-in dashboard if !user await invalidateall invalidateall dopo login? -- oppure modificare userauth subito dopo
 
 convertire in TS
 
 messaggi di errore in login
 
+
+
+
+in dashboard if !user await invalidateall invalidateall dopo login? -- oppure modificare userauth subito dopo
+- forse risolto ma devo vedere meglio come comunicare con le azioni
 vedere reactive variables se servono in notification e popup
 fare loader dashboard jobs - skeleton della search e nome locale e bona
-
 commentare popup e i nuovi files, vedi ultimi commit - domani prima cosa da fare e commentare
+
+
+
+
+
+
+
+
 
 
 bottoni statistica e operativa con icone da switchare nella navbar  o sotto logout in verticale o navbar a destra
 statistica, libreria con grafici fake e chiedere api per 
+anche tipo ultimi abbonati o una roba del genere
 
 COLORI
-
-
 
 PWA
 pwa icona, ne prendo una online al momento - chiedere ai raga icona con misure

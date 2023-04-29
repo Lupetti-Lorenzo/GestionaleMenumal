@@ -1,4 +1,4 @@
-import { authUser } from "./auth"
+import { authUser } from "./authStore"
 import { get } from 'svelte/store'
 import { readable } from 'svelte/store';
 
