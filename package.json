@@ -26,6 +26,8 @@
   },
   "type": "module",
   "dependencies": {
+    "@sveltejs/package": "^2.0.2",
+    "@sveltejs/pancake": "^0.0.18",
     "firebase": "^9.17.1",
     "firebase-admin": "^11.5.0",
     "mongoose": "^6.10.0"

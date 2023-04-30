@@ -26,17 +26,7 @@ responsive - rifare la tabella
 
 messaggi di errore in login
 
-
-
-
-
-
-statistica, libreria con grafici fake e chiedere api per 
-anche tipo ultimi abbonati o una roba del genere
-
-pure bottoni skeleton loading jobs
-
-la data registrazionen e la fine del manuale/trial
+api per tot click
 
 
 COLORI
@@ -44,3 +34,5 @@ COLORI
 PWA
 pwa icona, ne prendo una online al momento - chiedere ai raga icona con misure
 prima di tutto vedere video sui service worker su svelte 
+
+modificare notifica e metterla fixed in alto a destra

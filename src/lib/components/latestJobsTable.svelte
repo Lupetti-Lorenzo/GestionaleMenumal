@@ -3,23 +3,15 @@
     import JobState from "./jobState.svelte";
     
     let totJobs = 5
-    $: latestJobs = getLatesJobs($jobsStore.jobs, totJobs)
-    
-    // ritorna jobs filtrati per esistenza del campo data e ordinati per data e limitati per len
-    const getLatesJobs = (jobs, len = 5) => {
-        return jobs.filter(job => job.fields['dataRegistrazioneIT']).sort((job1, job2) => {
-            // ho gia filtrato quelli che non hanno entrambi i campi, con l'if faccio la preferenza su dataRegistrazione
-            const dataRegistrazione1 = job1.fields['dataRegistrazioneIT']
-            const dataRegistrazione2 = job2.fields['dataRegistrazioneIT']
-            ///const dataRegistrazione2 = job.fields['dataRegistrazione'] === undefined ? job.fields['Data registrazione'].replace() : job.fields['dataRegistrazione']
-            job1 = dataRegistrazione1.split('-').reverse().join('');
-            job2 = dataRegistrazione2.split('-').reverse().join('');
-            return job1 > job2 ? 1 : job1 < job2 ? -1 : 0;
-        }).slice(1).slice(-len)
-    }
+    $: latestJobs = $jobsStore.orderedJobs.slice(1).slice(-totJobs)  
 
     // nextJobs, aggiorna latestJobs con 5 risultati in piu
     const nextJobs = () => totJobs+=5
+
+    function parseDate(dateStr) {
+        const [day, month, year] = dateStr.split('-');
+        return new Date(year, month, day);
+    }
 
 </script>
 
@@ -43,13 +35,13 @@
             </tr>
         </thead>
         <tbody>
-            {#each latestJobs as job}
+            {#each latestJobs.reverse() as job}
                 <tr class="bg-white">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                         {job.fields['Opportunity name']} <JobState dbState={job.fields['StatoDB'] || "1"} />
                     </th>
                     <td class="px-6 py-4">
-                        {job.fields['dataRegistrazioneIT']}
+                        {parseDate(job.fields['dataRegistrazioneIT']).toLocaleDateString()}
                     </td>
                     <td class="px-6 py-4">
                         {job.fields['Email']}

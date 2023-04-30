@@ -82,9 +82,9 @@
 {#if open}
     <!-- POPUP TAILWIND CSS -->
     <div on:click|preventDefault={outsideClick} on:keypress={() => {}}  id="popup" tabindex="-1"  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex flex-col items-center justify-center align-center">
-        <div class="relative w-full max-w-2xl max-h-full">
+        <div class="relative w-full max-w-2xl max-h-full ">
             <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow">
+            <div class="relative bg-white rounded-lg shadow border-4 border-grey-400">
                 <!-- Modal header -->
                 <div class="ml-4 flex items-start justify-between p-4 border-b rounded-t">
                     <h3 class="text-xl font-semibold text-gray-900">
