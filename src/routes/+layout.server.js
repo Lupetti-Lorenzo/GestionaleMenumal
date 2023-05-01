@@ -1,8 +1,7 @@
-import { getFirebase } from "$lib/client/firebase"
 import { getAdmin } from "$lib/server/adminFirebase"
 import { dbConnect } from "$lib/server/db/db.js"
 import { getUser } from "$lib/server/db/db"
-
+import { getFirebase } from "$lib/client/firebase"
 
 export const load = (async (event) => {
     getFirebase()
@@ -19,3 +18,4 @@ export const load = (async (event) => {
     user.locali = locali
     return { user }  // questo user aggiorna auth.js
 }) // se non ce id authUser diventa null
+

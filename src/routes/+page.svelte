@@ -7,10 +7,6 @@
     import MenuSwitch from "$lib/components/menuSwitch.svelte";
     import StatisticsTable from "../lib/components/statisticsView.svelte";
 
-    import { authUser } from "../lib/client/authStore";
-
-    import { invalidateAll } from "$app/navigation"
-
     import { jobsStore, searchHandler } from "$lib/client/jobsStore.js"
     import { onMount } from "svelte";
     
@@ -19,9 +15,6 @@
     
     // utilizzo questa sintassi per iscrivere un il search handler ogni volta che cambia jobStore
     $: searchHandler($jobsStore)
-    
-    // controllo per refreshare quando user non autenticato, a volte non passa dalla load e non mostra la navbar
-    $: $authUser, async () => {$authUser == null ? await invalidateAll() : ""};
 
     let menuSelection // variabile per cambiare la dashboard dopo aver cliccato in menuswitch
 

@@ -2,7 +2,7 @@
     <title>Login</title>
 </svelte:head>
 
-
+ 
 <script>
     import { deserialize } from "$app/forms";
     import { goto } from "$app/navigation"
@@ -37,7 +37,7 @@
                 body: formData
             });
             //console.log(JSON.stringify(res))
-            // se sono loggato con successo vado alla dashboard
+            //se sono loggato con successo vado alla dashboard
             const result = deserialize(await res.text());  
             if (result.data.success) { //login successfull
                 await invalidateAll() // per richiamare la load, cosí aggiorna user.locals e lo store authUser

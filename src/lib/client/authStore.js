@@ -4,12 +4,12 @@ import { derived } from 'svelte/store';
  export const authUser = derived(
     page,
     ($page, set) => {
-        const user  = $page.data.user;
+        const user  = $page.data.user
         if (!user) {
-            set(null);
+            set(null)
             return;
         }
-        set(user);
+        set(user)
     },
     null
 );

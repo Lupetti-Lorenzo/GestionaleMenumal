@@ -4,7 +4,6 @@ import { UserModel } from "$lib/server/db/models/User.js"
 
 export const actions = {
     default: async ({ request, cookies }) => { // login
-        console.log("action login")
         // get token and uid from request form
         const formData = await request.formData()
         const token = await formData.get('token')?.valueOf()
@@ -32,7 +31,7 @@ export const actions = {
             maxAge: maxAge
         })
         
-       return { success: true };
+        return {success: true}
   }
 }
 

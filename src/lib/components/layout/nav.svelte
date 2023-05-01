@@ -1,17 +1,11 @@
 <script>
-	import { getFirebase  } from "$lib/client/firebase"
 	import { invalidateAll } from "$app/navigation"
-	import { signOut } from "firebase/auth"
-
-
-	const { auth } = getFirebase()
 
 	import { authUser } from "$lib/client/authStore"
 	
     $: logged = $authUser != null
 
 	const logout = async () => {
-		await signOut(auth)
 		await fetch('/logout', { method: 'POST' })
 		await invalidateAll()
 	}

@@ -19,7 +19,6 @@ export async function handle({ event, resolve }) {
     if (session) {
         // verifico la sessione
         verifySessionCookie(session).then(async (decodedClaims) => {
-            console.log("session cookie verified!")
             event.locals.user = JSON.stringify(decodedClaims.user_id)
         })
         .catch(() => {
