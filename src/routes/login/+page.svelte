@@ -7,19 +7,19 @@
     import { deserialize } from "$app/forms";
     import { goto } from "$app/navigation"
     import { getFirebase } from "$lib/client/firebase"
-    import { signOut, signInWithEmailAndPassword, inMemoryPersistence } from "firebase/auth"
+    import { signInWithEmailAndPassword, inMemoryPersistence } from "firebase/auth"
     import { invalidateAll } from "$app/navigation"
+    import { notificationStore } from "$lib/client/notificationStore"
 
     const { auth } = getFirebase()
 
-    let email, password // bind ai valori dei campi
+    let email, password
     // messaggi di errore
     $: err = "";
 
     async function login() { 
-        //console.log("Premuto login")
         // login con email e password
-        auth.setPersistence(inMemoryPersistence).then(() => {
+        auth.setPersistence(inMemoryPersistence).then(() => { //inMemoryPersistence per non far salvare cookies a firebase
             signInWithEmailAndPassword(auth, email, password)
           .then(async (userCredentials) => {
             //  login successfull
@@ -31,7 +31,7 @@
             formData.set('token', token);
             formData.set('uid', uid)
             
-            // mando il messaggio, l'azione setta i cookies
+            // mando il messaggio, l'azione crea il session token e setta i cookies
             const res = await fetch(this.action, {
                 method: 'POST',
                 body: formData
@@ -39,60 +39,24 @@
             //console.log(JSON.stringify(res))
             // se sono loggato con successo vado alla dashboard
             const result = deserialize(await res.text());  
-            //console.log(JSON.stringify(res))     
             if (result.data.success) { //login successfull
                 await invalidateAll() // per richiamare la load, cosí aggiorna user.locals e lo store authUser
-                goto("/");
+                goto("/")
+                notificationStore.showNotification("Login effettuato con successo!", "success")
             } // altrimenti mando errore
-            else throw new Error(result.data.message);
+            else throw new Error(result.data.message); 
           })
-          .catch((error) => { // qui prendo l'errore, faccio logout e setto il messaggio nel loginform
-            err = error;
-            signOut(auth).then(() => {
-                console.log("Error in login, loggin out")
-            })
-            .catch((err) => {
-                err = error.message;
-                console.err(err)
-            })
+          .catch((error) => { // qui prendo l'errore, setto il messaggio nel loginform
+            err = error.message;
+            if (error.message.includes("user-not-found"))
+                err = "Errore: email non registrata";
+            else if (error.message.includes("password"))
+                err = "Errore: password errata";
         });
         })
     }
 </script>
 
-
-<!-- <div class="login">
-    <div class="card">
-      <div class="card-body login-form">
-        <h5 class="card-title">Login</h5>
-        <form method="POST" on:submit|preventDefault="{login}">
-          <div class="mb-3">
-            <label for="emailInput" class="form-label">Email address</label>
-            <input bind:value={email}
-              type="email"
-              class="form-control"
-              id="emailInput"
-              aria-describedby="emailHelp"
-              placeholder="Email Address"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="passInput" class="form-label">Password</label>
-            <input bind:value={password}
-              type="password"
-              class="form-control"
-              id="passInput"
-              placeholder="Password"
-            />
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        {#if err !== ""}
-          <p style="color: red">{err}</p>
-        {/if}
-      </div>
-    </div>
-  </div> -->
 
   <section>
     <div class="mt-20 flex flex-col items-center justify-start px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -125,16 +89,6 @@
                         placeholder="Password"
                       />
                     </div>
-                    <!-- <div class="flex items-center justify-between">
-                        <div class="flex items-start">
-                            <div class="flex items-center h-5">
-                              <input id="remember" aria-describedby="remember" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 " required="">
-                            </div>
-                            <div class="ml-3 text-sm">
-                              <label for="remember" class="text-gray-500">Remember me</label>
-                            </div>
-                        </div>
-                    </div> -->
                     <button type="submit" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Login</button> 
                     {#if err !== ""}
                       <p style="color: red">{err}</p>

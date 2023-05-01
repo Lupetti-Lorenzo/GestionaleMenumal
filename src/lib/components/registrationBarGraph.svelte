@@ -20,9 +20,9 @@
 				const jobDate = parseDate(item.fields['dataRegistrazioneIT']);
 				return jobDate >= startDate && jobDate <= newEndDate;
 			}).length;
-			// const  [labelStart, labelEnd]  = range.split("-")
-			// const newRange = labelEnd.slice(0, 2)
-			weeksCount.push({ range, count });
+			const  [labelStart, labelEnd]  = range.split("-")
+			const newRange = Number(labelEnd.slice(0, 2))
+			weeksCount.push({ range:newRange, count });
 		}
 		return weeksCount;
 
@@ -45,10 +45,19 @@
 		return maxCount;
 	};
 
+
+
     // CHART DATAS
-	$: chartData = getWeeksCounts($jobsStore.jobs);
-	$: data = chartData.map((week, i) => ({ x: i, y: week.count }));
-	$: vertMaxVal = getMaxCount(chartData);
+	let chartData
+	let data
+	let vertMaxVal
+	$: renderGraph($jobsStore.jobs)
+
+	const renderGraph = (jobs) => {
+		chartData = getWeeksCounts(jobs);
+		data = chartData.map((week, i) => ({ x: i, y: week.count }));
+		vertMaxVal = getMaxCount(chartData);
+	}
 	const barWidth = 0.95; // or use border-left for a more consistent result
 	const xAxisAdjustment = -0.5;
 </script>
@@ -64,7 +73,7 @@
 
 
 <div class="chart mb-8">
-	<Pancake.Chart x1={xAxisAdjustment} x2={data.length - 1} y1={0} y2={vertMaxVal}>
+	<Pancake.Chart x1={xAxisAdjustment} x2={data.length - 1} y1={1} y2={vertMaxVal}>
 		<Pancake.Box x1={xAxisAdjustment} x2={data.length + xAxisAdjustment} y2={vertMaxVal}>
 			<div class="axes" />
 		</Pancake.Box>

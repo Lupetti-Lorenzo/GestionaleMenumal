@@ -16,15 +16,11 @@ dopo pulire il database di account pacchi
 errors.svelte e fare throw error per certe cose
 LOG server sensati, tipo per login o robe del genere, tipo verifica sbagliata ecc
 
-
-
-hooks usare il userid in locals invece di passarlo prendendolo da userauth - provai ma non andava vorrrei riprovare
-
 convertire in TS
 
 aggiorna readme
 
-responsive - rifare la tabella 
+responsive - rifare la tabella  
 
 messaggi di errore in login
 
@@ -35,6 +31,6 @@ COLORI
 
 PWA
 pwa icona, ne prendo una online al momento - chiedere ai raga icona con misure
-prima di tutto vedere video sui service worker su svelte 
+prima di tutto vedere video sui service worker su svelte
 
-modificare notifica e metterla fixed in alto a destra
+togiere .env e mettere repo pubblic

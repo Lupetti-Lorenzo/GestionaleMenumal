@@ -3,6 +3,7 @@ import { getAdmin } from "$lib/server/adminFirebase"
 import { dbConnect } from "$lib/server/db/db.js"
 import { getUser } from "$lib/server/db/db"
 
+
 export const load = (async (event) => {
     getFirebase()
     getAdmin()
@@ -16,6 +17,5 @@ export const load = (async (event) => {
     let { email, locali } = dbUser
     user.email = email
     user.locali = locali
-     
     return { user }  // questo user aggiorna auth.js
 }) // se non ce id authUser diventa null

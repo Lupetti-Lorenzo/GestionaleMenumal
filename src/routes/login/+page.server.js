@@ -9,6 +9,7 @@ export const actions = {
         const formData = await request.formData()
         const token = await formData.get('token')?.valueOf()
         const id = await formData.get('uid')?.valueOf()
+
         // check if user exists in mongoDB
         let dbRes = await UserModel.find({uidFireBase: id})
         let dbUsers = JSON.parse(JSON.stringify(dbRes))
@@ -30,8 +31,8 @@ export const actions = {
             secure: false,
             maxAge: maxAge
         })
-
-        return { success: true };
+        
+       return { success: true };
   }
 }
 

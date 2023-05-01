@@ -2,8 +2,7 @@
 	import { getFirebase  } from "$lib/client/firebase"
 	import { invalidateAll } from "$app/navigation"
 	import { signOut } from "firebase/auth"
-	
-	import Notification from "$lib/components/layout/notification.svelte"
+
 
 	const { auth } = getFirebase()
 
@@ -27,5 +26,4 @@
 		<p class="font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-gray-200"><b>Utente</b>: {$authUser.email}</p>
 	{/if}
 	<!-- con il flag data-sveltekit-prefetch fa il prefetch quando l'utente fa hover sul link -->
-	<Notification />
 </nav>
