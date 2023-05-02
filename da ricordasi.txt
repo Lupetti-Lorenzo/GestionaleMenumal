@@ -22,6 +22,8 @@ aggiorna readme con link al sito online
 
 api per tot click
 
+keyed each dove manca
+getorderedjobs farla solo dove serve, non sempre
 
 COLORI
 

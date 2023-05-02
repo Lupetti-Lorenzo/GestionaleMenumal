@@ -46,7 +46,7 @@
 		<tbody class="text-gray-600 text-sm font-light">
 			<!-- Mostro i jobs filitrati, inizialmente 0 quindi la tabella risulta chiusa -->
 			{#if !loadingJobs}
-				{#each $jobsStore.filteredJobs as job (job.fields["Opportunity name"])}
+				{#each $jobsStore.filteredJobs as job (job)}
 					<JobItem {job} />
 				{/each}
 			{/if}
