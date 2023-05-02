@@ -1,4 +1,5 @@
 import { writable } from "svelte/store"
+import { transformDate } from "$lib/client/utility/dateFormatter"
 
 const createJobsStore = () => {
 	const { subscribe, set, update } = writable({
@@ -16,11 +17,11 @@ const createJobsStore = () => {
 				jobs: [],
 				orderedJobs: [],
 				filteredJobs: [],
-				search: old.search,
+				search: old.search, // mantengo la ricerca
 				loading: true
 			}
 		})
-		// set({ jobs: [], orderedJobs: [], filteredJobs: [], search: "", loading: true })
+		//set({ jobs: [], orderedJobs: [], filteredJobs: [], search: "", loading: true })
 		// chiamo la api/getJobs
 		const res = await fetch("api/getJobs", {
 			method: "POST"
@@ -35,10 +36,11 @@ const createJobsStore = () => {
 			return newJob
 		})
 		update((oldStore) => {
+			const orderedJobs = getOrderedJobs(parsedJobs)
 			return {
 				...oldStore,
 				jobs: parsedJobs,
-				orderedJobs: getOrderedJobs(parsedJobs),
+				orderedJobs,
 				loading: false
 			}
 		})
@@ -65,16 +67,6 @@ const getOrderedJobs = (jobs) => {
 		})
 }
 
-// funzione che trasforma la data dal formato US yyyy-mm-dd a un formato piu leggibile in italiano dd-mm-yyyy
-function transformDate(dateString) {
-	if (!dateString) return ""
-	const parts = dateString.split("-")
-	const year = parts[0]
-	const month = parts[1]
-	const day = parts[2]
-	return `${day}-${month}-${year}`
-}
-
 export const jobsStore = createJobsStore()
 
 export const searchHandler = (store) => {
@@ -82,6 +74,7 @@ export const searchHandler = (store) => {
 		store.filteredJobs = []
 		return
 	}
+
 	store.filteredJobs = store.jobs.filter((job) =>
 		job.fields["Opportunity name"]?.toLowerCase().includes(store.search.toLowerCase())
 	)
