@@ -20,15 +20,20 @@ convertire in TS
 
 aggiorna readme con link al sito online
 
-api per tot click
-
+firebase click
+graph agggiustare che 100 impossibile e testo p  += in settimane
 keyed each dove manca
 getorderedjobs farla solo dove serve, non sempre
 
 COLORI
+
+invalid date in production 
+
 
 PWA
 pwa icona, ne prendo una online al momento - chiedere ai raga icona con misure
 prima di tutto vedere video sui service worker su svelte
 
 togiere .env e mettere repo pubblic
+
+update jobs e updatejobsload, per il completa non voglio loader - lo includo nel caricamento 

@@ -9,7 +9,7 @@
 	const jobName = job.fields["Opportunity name"]
 	const dbState = job.fields["StatoDB"] // stato di pagamento in cui è l'utente, 0 a vita, 1 trial, 2 stripe, 3 manuale, 4 disattivato
 	const registerDate = job.fields["Data registrazione"]
-	const expireDate = job.fields["Data scadenza"]
+	const expireDate = job.fields["dataScadenza"]
 
 	async function apriBackDoor() {
 		// fetcho il token e apro la pagina del job selezionato

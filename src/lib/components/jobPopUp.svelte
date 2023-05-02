@@ -31,7 +31,11 @@
 		whichPopUp = popUpStore.whichPopUp
 		popupData = { ...popUpStore.data }
 		newState = popupData.dbState
-		newDate = popupData.expireDate || parseDateFromSlash(new Date().toLocaleDateString())
+		popupData.expireDate =
+			popupData.expireDate || parseDateFromSlash(new Date().toLocaleDateString())
+		newDate = popupData.expireDate
+		console.log(popupData.expireDate)
+		// errore nella new date, rivedere il flow e la loginca
 	}
 
 	// variabile per disabilitare il bottone completa se non ho fatto modifiche

@@ -4,6 +4,7 @@ export const parseDate = (dateStr) => {
 }
 
 export const parseDateFromSlash = (dateStr) => {
+	if (!dateStr) return ""
 	const [day, month, year] = dateStr.split("/")
 	return `${year}-${month}-${day}`
 }

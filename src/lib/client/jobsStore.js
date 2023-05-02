@@ -1,5 +1,5 @@
 import { writable } from "svelte/store"
-import { transformDate } from "$lib/client/utility/dateFormatter"
+import { transformDate, parseDateFromSlash } from "$lib/client/utility/dateFormatter"
 
 const createJobsStore = () => {
 	const { subscribe, set, update } = writable({
@@ -33,6 +33,7 @@ const createJobsStore = () => {
 			// parso il job per agevolare i componenti
 			const newJob = { ...job }
 			newJob.fields["dataRegistrazioneIT"] = transformDate(newJob.fields["Data registrazione"])
+			newJob.fields["dataScadenza"] = parseDateFromSlash(newJob.fields["Data scadenza"])
 			return newJob
 		})
 		update((oldStore) => {
