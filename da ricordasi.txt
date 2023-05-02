@@ -27,8 +27,6 @@ getorderedjobs farla solo dove serve, non sempre
 
 COLORI
 
-invalid date in production 
-
 
 PWA
 pwa icona, ne prendo una online al momento - chiedere ai raga icona con misure

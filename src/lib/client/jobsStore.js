@@ -10,15 +10,15 @@ const createJobsStore = () => {
 		loading: false
 	})
 
-	const updateJobs = async () => {
+	const updateJobs = async (loading = true) => {
 		// prima resetto tutto per mostrare il loader e disabilitare la input
 		update((old) => {
 			return {
-				jobs: [],
+				jobs: old.filteredJobs,
 				orderedJobs: [],
 				filteredJobs: [],
 				search: old.search, // mantengo la ricerca
-				loading: true
+				loading
 			}
 		})
 		//set({ jobs: [], orderedJobs: [], filteredJobs: [], search: "", loading: true })

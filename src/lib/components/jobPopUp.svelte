@@ -34,7 +34,7 @@
 		popupData.expireDate =
 			popupData.expireDate || parseDateFromSlash(new Date().toLocaleDateString())
 		newDate = popupData.expireDate
-		console.log(popupData.expireDate)
+		//console.log(popupData.expireDate)
 		// errore nella new date, rivedere il flow e la loginca
 	}
 
@@ -87,10 +87,9 @@
 				)
 			}
 		}
-
-		loading = false
+		await jobsStore.updateJobs(false)
 		popUpStore.closePopUp()
-		await jobsStore.updateJobs()
+		loading = false
 	}
 
 	// chiusura del popup se clicco fuori
