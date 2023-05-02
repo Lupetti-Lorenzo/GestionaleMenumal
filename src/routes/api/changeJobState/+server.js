@@ -29,7 +29,7 @@ export async function POST({ request }) {
 		method: "POST",
 		body: formData
 	})
-
+	console.log(await response.text())
 	const response = await res.json()
 	return json(response)
 }
