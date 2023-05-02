@@ -1,85 +1,98 @@
 <script>
-	import { popUpStore } from '$lib/client/jobPopUpStore';
-	import { notificationStore } from '$lib/client/notificationStore';
-	import JobState from './jobState.svelte';
-	import DatePicker from '$lib/components/datePicker.svelte';
-	import LoadingButton from './loadingButton.svelte';
-	
-	import { CODICI_STATODB_MENUMAL } from '$lib/constants';
-	import { authUser } from '$lib/client/authStore';
-
+	import { popUpStore } from "$lib/client/jobPopUpStore"
+	import { notificationStore } from "$lib/client/notificationStore"
+	import JobState from "./jobState.svelte"
+	import DatePicker from "$lib/components/datePicker.svelte"
+	import LoadingButton from "./loadingButton.svelte"
+	import { get } from "svelte/store"
+	import { parseDate, parseDateFromSlash } from "$lib/client/utility/dateFormatter"
+	import { jobsStore } from "$lib/client/jobsStore.js"
+	import { CODICI_STATODB_MENUMAL } from "$lib/constants"
+	import { authUser } from "$lib/client/authStore"
 
 	// variabili usate per renderizzare il popup
 	let open
 	let whichPopUp
-	let dbState 
-	let jobName
-	//let registerDate
-	const registerDate = '2023-04-28';
+	let popupData
+
 	// nuovo stato, selezionato tramite select
-	let newState; // contente il valore selezionato del nuovo stato bindato al selector
+	let newState // contente il valore selezionato del nuovo stato bindato al selector
 	// array con oggetti con id e valore per il selector
 	const codiciMenumalArray = Object.keys(CODICI_STATODB_MENUMAL).map((key) => {
-		return { id: key, value: CODICI_STATODB_MENUMAL[key] };
-	});
+		return { id: key, value: CODICI_STATODB_MENUMAL[key] }
+	})
 	//nuova data di scadenza, selezionato con DatePicker
-	let newDate; // data bindata al datepicker
+	let newDate // data bindata al datepicker
 
 	// quando cambia il contenuto  del popup aggiorno la ui
-	$: aggiornaUI($popUpStore);
+	$: aggiornaUI($popUpStore)
 	function aggiornaUI(popUpStore) {
-		open = popUpStore.open;
-		whichPopUp = popUpStore.whichPopUp;
-		dbState = popUpStore.data.dbState;
-		jobName = popUpStore.data.jobName;
-		//registerDate = popUpStore.registerDate
-		newState = dbState;
-		newDate = registerDate;
+		open = popUpStore.open
+		whichPopUp = popUpStore.whichPopUp
+		popupData = { ...popUpStore.data }
+		newState = popupData.dbState
+		newDate = popupData.expireDate || parseDateFromSlash(new Date().toLocaleDateString())
 	}
 
 	// variabile per disabilitare il bottone completa se non ho fatto modifiche
-	$: edited = newState != dbState || newDate != registerDate; // di default non ci sono modifiche quindi disabilitato
+	$: edited = newState != popupData.dbState || newDate != popupData.expireDate // di default non ci sono modifiche quindi disabilitato
 
-	let loading = false; // variabile per mostrare il loader e disabilitare gli input durante il caricamento
+	let loading = false // variabile per mostrare il loader e disabilitare gli input durante il caricamento
 
-	async function changeState(type) {
-		loading = true; // far apparire loader e interrompere l'interazione
+	async function changeState() {
+		loading = true // far apparire loader e interrompere l'interazione
 
-		await delay(2000);
-		// const formData = await new FormData()
-		// formData.id = $authUser
-		// formData.newState = newState.toString()
-		// formData.newDate = newDate
-		// formData.job = jobName
+		// costruisco il messaggio da mandare all'api
+		const formData = await new FormData()
+		formData.set("id", get(authUser).id)
+		formData.set("newState", newState)
+		formData.set("newDate", newDate + " 00:00:00")
+		formData.set("job", popupData.jobName)
+		formData.set("newDateAT", parseDate(newDate))
 
-		// const res = await fetch("api/changeJobState", {
-		//     method: 'POST',
-		//     body: formData
-		// });
+		const res = await fetch("api/changeJobState", {
+			method: "POST",
+			body: formData
+		})
 
-		// const response = await res.json()
-		// console.log(JSON.stringify(response))
+		const response = await res.json()
+
 		// Notifica all'utente in base al popup e l'esito della chiamata
-		if (whichPopUp === 'full') {
-			notificationStore.showNotification(
-				`Stato di pagamento di ${jobName} aggiornato a ${CODICI_STATODB_MENUMAL[newState]}`,
-				'success'
-			);
-		} else if (whichPopUp === 'trial') {
-			notificationStore.showNotification(`Trial di ${jobName} esteso a ${newDate}`, 'success');
+		if (response.success) {
+			if (whichPopUp === "full") {
+				notificationStore.showNotification(
+					`Stato di pagamento di ${popupData.jobName} aggiornato a ${CODICI_STATODB_MENUMAL[newState]}`,
+					"success"
+				)
+			} else if (whichPopUp === "trial") {
+				notificationStore.showNotification(
+					`Trial di ${popupData.jobName} esteso a ${newDate}`,
+					"success"
+				)
+			}
+		} else if (response.error) {
+			if (whichPopUp === "full") {
+				notificationStore.showNotification(
+					`Errore nell' aggiornamento del pagamento di ${popupData.jobName}: ${response.message}`,
+					"error"
+				)
+			} else if (whichPopUp === "trial") {
+				notificationStore.showNotification(
+					`Errore nell'estenzione del trial di ${popupData.jobName}: ${response.message}`,
+					"error"
+				)
+			}
 		}
-		loading = false;
-		popUpStore.closePopUp();
+
+		loading = false
+		popUpStore.closePopUp()
+		await jobsStore.updateJobs()
 	}
 
-	function delay(time) {
-		return new Promise((resolve) => setTimeout(resolve, time));
-	}
-
-    // chiusura del popup se clicco fuori
+	// chiusura del popup se clicco fuori
 	const outsideClick = (event) => {
-		if (event.target.id == 'popup' && !loading) popUpStore.closePopUp();
-	};
+		if (event.target.id == "popup" && !loading) popUpStore.closePopUp()
+	}
 </script>
 
 {#if open}
@@ -97,11 +110,11 @@
 				<!-- Modal header -->
 				<div class="ml-4 flex items-start justify-between p-4 border-b rounded-t">
 					<h3 class="text-xl font-semibold text-gray-900">
-						{jobName}
-						<JobState {dbState} />
+						{popupData.jobName}
+						<JobState dbState={popupData.dbState} />
 					</h3>
 					<h2 class="ml-7 text-xl font-semibold text-gray-900">
-						{whichPopUp == 'full' ? 'Cambia stato' : 'Estendi trial'}
+						{whichPopUp == "full" ? "Cambia stato" : "Estendi trial"}
 					</h2>
 					<button
 						on:click|preventDefault={popUpStore.closePopUp}
@@ -125,13 +138,15 @@
 					</button>
 				</div>
 				<!-- Modal body -->
-				{#if whichPopUp == 'full'}
+				{#if whichPopUp == "full"}
 					<div class="p-7 space-y-6">
-						<h3 class="text-xl font-semibold text-gray-900">Registrato il {registerDate}</h3>
+						<h3 class="text-xl font-semibold text-gray-900">
+							Registrato il {popupData.registerDate}
+						</h3>
 						<span class="text-xl mr-3 font-semibold text-gray-900">Nuovo stato</span>
 						<select
 							bind:value={newState}
-							on:change={() => (newDate = registerDate)}
+							on:change={() => (newDate = popupData.expireDate)}
 							disabled={loading}
 						>
 							{#each codiciMenumalArray as codice}
@@ -142,15 +157,17 @@
 						</select>
 						<br />
 						<!-- DatePicker, lo mostro solo se aggiorno lo stato a trial o manuale -->
-						{#if newState == '1' || newState == '3'}
+						{#if newState == "1" || newState == "3"}
 							<span class="text-xl mr-2 font-semibold text-gray-900">Nuova scadenza</span>
 							<input type="text" bind:value={newDate} class="mt-4 mb-2 pl-1" disabled={loading} />
 							<DatePicker bind:value={newDate} />
 						{/if}
 					</div>
-				{:else if whichPopUp == 'trial'}
+				{:else if whichPopUp == "trial"}
 					<div class="p-7 space-y-6">
-						<h3 class="text-xl font-semibold text-gray-900 ">Registrato il {registerDate}</h3>
+						<h3 class="text-xl font-semibold text-gray-900 ">
+							Registrato il {popupData.registerDate}
+						</h3>
 						<span class="text-xl mr-2 font-semibold text-gray-900">Nuova scadenza</span>
 						<input type="text" bind:value={newDate} class="mt-4 mb-2 pl-1" disabled={loading} />
 						<DatePicker bind:value={newDate} />
@@ -159,14 +176,16 @@
 
 				<!-- Modal footer -->
 				<div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
-					<LoadingButton {loading} {edited} text="Completa" on:completeCalled={changeState}/> <!-- bottone completa -->
-					 <button 
+					<LoadingButton {loading} {edited} text="Completa" on:completeCalled={changeState} />
+					<!-- bottone completa -->
+					<button
 						on:click|preventDefault={popUpStore.closePopUp}
 						type="button"
 						disabled={loading}
 						class="text-gray-500 ml-3 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
 						>Annulla</button
-					> <!-- bottone annulla -->
+					>
+					<!-- bottone annulla -->
 				</div>
 			</div>
 		</div>
