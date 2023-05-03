@@ -1,13 +1,7 @@
 <script>
-	import { invalidate, invalidateAll } from "$app/navigation"
+	import { invalidateAll } from "$app/navigation"
 
 	import { authUser } from "$lib/client/authStore"
-
-	// controllo per refreshare quando user non autenticato, a volte non passa dalla load e non mostra la navbar
-	$: $authUser,
-		async () => {
-			$authUser == null ? await invalidate() : ""
-		}
 
 	$: logged = $authUser != null
 
