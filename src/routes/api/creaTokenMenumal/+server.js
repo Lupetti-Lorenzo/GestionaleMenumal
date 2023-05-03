@@ -17,7 +17,10 @@ export async function POST({ request }) {
 	})
 	const text = await res.text()
 	//console.log(text)
-	const token = json(JSON.parse(text))
-	// const token = await res.json()
-	return token
+	try {
+		return json(JSON.parse(text))
+		// const token = await res.json()
+	} catch (err) {
+		return json(JSON.parse(err))
+	}
 }

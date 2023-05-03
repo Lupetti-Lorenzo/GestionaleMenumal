@@ -7,9 +7,11 @@
 
 	import { jobsStore, searchHandler } from "$lib/client/jobsStore.js"
 	import { onMount } from "svelte"
+	//import { token } from "$lib/client/tokenMenager"
 
 	// richiedo i jobs dall'api di airtable e li salvo in jobsStore, da cui viene creata la tabella e abilitata la funzionalita di ricerca
 	onMount(async () => {
+		//$token
 		jobsStore.updateJobs()
 		if ($authUser == null) await invalidateAll() // controllo per refreshare quando user non autenticato, a volte non passa dalla load e non mostra la navbar
 	})

@@ -10,10 +10,9 @@ async function getNewToken() {
 		method: "POST",
 		body: formData
 	})
-	const text = await res.text()
-	console.log(text)
-	const token = JSON.parse(text)
-	// const token = await res.json()
+	// const token = await res.text()
+	const token = await res.json()
+	console.log(token)
 	return token
 }
 
@@ -23,7 +22,7 @@ export const token = readable("", function start(set) {
 	getNewToken().then((token) => set(token))
 	const interval = setInterval(() => {
 		getNewToken().then((token) => set(token))
-		// }, 10000) // ogni mezzora refresha il token
-	}, 890000) // ogni mezzora refresha il token
+	}, 10000)
+	// }, 890000) // ogni quarto d'ora refresha il token
 	return () => clearInterval(interval)
 })
