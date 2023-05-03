@@ -1,21 +1,21 @@
 <script>
-	import { deserialize } from '$app/forms';
-	import { goto } from '$app/navigation';
-	import { getFirebase } from '$lib/client/firebase';
-	import { signInWithEmailAndPassword, inMemoryPersistence } from 'firebase/auth';
-	import { invalidateAll } from '$app/navigation';
-	import { notificationStore } from '$lib/client/notificationStore';
+	import { deserialize } from "$app/forms"
+	import { goto } from "$app/navigation"
+	import { getFirebase } from "$lib/client/firebase"
+	import { signInWithEmailAndPassword, inMemoryPersistence } from "firebase/auth"
+	import { invalidateAll } from "$app/navigation"
+	import { notificationStore } from "$lib/client/notificationStore"
 
-	const { auth } = getFirebase();
+	const { auth } = getFirebase()
 
-	let loading = false;
+	let loading = false
 
-	let email, password;
+	let email, password
 	// messaggi di errore
-	$: err = '';
+	$: err = ""
 
 	async function login() {
-		loading = true;
+		loading = true
 		// login con email e password
 		auth.setPersistence(inMemoryPersistence).then(() => {
 			//inMemoryPersistence per non far salvare cookies a firebase
@@ -23,38 +23,37 @@
 				.then(async (userCredentials) => {
 					//  login successfull
 					//  prendo id token dell'utente
-					const token = await userCredentials.user.getIdToken();
-					const uid = userCredentials.user.uid;
+					const token = await userCredentials.user.getIdToken()
+					const uid = userCredentials.user.uid
 					// creo un form con id token, da mandare all'azione default nel page.server.js
-					const formData = new FormData();
-					formData.set('token', token);
-					formData.set('uid', uid);
+					const formData = new FormData()
+					formData.set("token", token)
+					formData.set("uid", uid)
 
 					// mando il messaggio, l'azione crea il session token e setta i cookies
 					const res = await fetch(this.action, {
-						method: 'POST',
+						method: "POST",
 						body: formData
-					});
+					})
 
 					//se sono loggato con successo vado alla dashboard
-					const result = deserialize(await res.text());
-					loading = false;
+					const result = deserialize(await res.text())
 					if (result.data.success) {
 						//login successfull
-						await invalidateAll(); // per richiamare la load, cosí aggiorna user.locals e lo store authUser
-						goto('/');
-						notificationStore.showNotification('Login effettuato con successo!', 'success');
+						await invalidateAll() // per richiamare la load, cosí aggiorna user.locals e lo store authUser
+						goto("/")
+						notificationStore.showNotification("Login effettuato con successo!", "success")
 					} // altrimenti mando errore
-					else throw new Error(result.data.message);
+					else throw new Error(result.data.message)
 				})
 				.catch((error) => {
 					// qui prendo l'errore, setto il messaggio nel loginform
-					loading = false;
-					err = error.message;
-					if (error.message.includes('user-not-found')) err = 'Errore: email non registrata';
-					else if (error.message.includes('password')) err = 'Errore: password errata';
-				});
-		});
+					loading = false
+					err = error.message
+					if (error.message.includes("user-not-found")) err = "Errore: email non registrata"
+					else if (error.message.includes("password")) err = "Errore: password errata"
+				})
+		})
 	}
 </script>
 
@@ -78,7 +77,7 @@
 				</h1>
 				<form class="space-y-4 md:space-y-6" method="POST" on:submit|preventDefault={login}>
 					<div>
-            <!-- Email e password inputfields -->
+						<!-- Email e password inputfields -->
 						<label for="emailInput" class="block mb-2 text-sm font-medium text-gray-900"
 							>Email</label
 						>
@@ -105,7 +104,7 @@
 						/>
 					</div>
 					<!-- Bottone login, compare loader e si disabilita quando viene cliccato mentre viene eseguita la login -->
-          <button
+					<button
 						type="submit"
 						disabled={loading}
 						class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
@@ -135,8 +134,8 @@
 							</div>
 						{/if}
 					</button>
-          <!-- Errore che compare in fondo al form quando c'ene uno nella login -->
-					{#if err !== ''}
+					<!-- Errore che compare in fondo al form quando c'ene uno nella login -->
+					{#if err !== ""}
 						<p style="color: red">{err}</p>
 					{/if}
 				</form>

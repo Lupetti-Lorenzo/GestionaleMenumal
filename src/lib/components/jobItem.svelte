@@ -1,10 +1,10 @@
 <script>
 	import JobState from "./jobState.svelte"
 
-	import { token } from "$lib/client/tokenMenager"
 	import { popUpStore } from "$lib/client/jobPopUpStore"
 
 	export let job
+	export let token
 
 	const jobName = job.fields["Opportunity name"]
 	const dbState = job.fields["StatoDB"] // stato di pagamento in cui è l'utente, 0 a vita, 1 trial, 2 stripe, 3 manuale, 4 disattivato
@@ -13,7 +13,7 @@
 
 	async function apriBackDoor() {
 		// fetcho il token e apro la pagina del job selezionato
-		window.open(`https://menumal.it/areaprivata/login.php?job=${jobName}&token=${$token}`, "_blank")
+		window.open(`https://menumal.it/areaprivata/login.php?job=${jobName}&token=${token}`, "_blank")
 	}
 
 	const apriPopup = (event) => {

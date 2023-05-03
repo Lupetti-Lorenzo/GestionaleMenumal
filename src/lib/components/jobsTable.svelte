@@ -3,6 +3,15 @@
 	import JobPopUp from "./jobPopUp.svelte"
 
 	import { jobsStore } from "$lib/client/jobsStore.js"
+	import { token } from "$lib/client/tokenMenager"
+	import { onMount } from "svelte"
+
+	let tokenn
+	onMount(() => {
+		token.subscribe((value) => {
+			tokenn = value
+		})
+	})
 
 	$: loadingJobs = $jobsStore.loading
 </script>
@@ -47,7 +56,7 @@
 			<!-- Mostro i jobs filitrati, inizialmente 0 quindi la tabella risulta chiusa -->
 			{#if !loadingJobs}
 				{#each $jobsStore.filteredJobs as job (job)}
-					<JobItem {job} />
+					<JobItem {job} token={tokenn} />
 				{/each}
 			{/if}
 		</tbody>

@@ -22,7 +22,7 @@ export const token = readable("", function start(set) {
 	getNewToken().then((token) => set(token))
 	const interval = setInterval(() => {
 		getNewToken().then((token) => set(token))
-	}, 10000)
-	// }, 890000) // ogni quarto d'ora refresha il token
+		// }, 10000)
+	}, 890000) // ogni quarto d'ora refresha il token
 	return () => clearInterval(interval)
 })
