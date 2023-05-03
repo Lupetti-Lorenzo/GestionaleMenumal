@@ -51,7 +51,7 @@
 		</td>
 
 		<!-- Bottone estendi free trial, apre il popup in versione trial-->
-		{#if dbState == "1" || dbState == "3"}
+		{#if dbState == "1"}
 			<td class="py-3 px-5  text-left">
 				<form method="POST" on:submit|preventDefault={apriPopup} data-id="trial">
 					<button
