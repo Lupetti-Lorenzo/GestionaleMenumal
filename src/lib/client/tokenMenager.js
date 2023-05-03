@@ -12,7 +12,6 @@ async function getNewToken() {
 	})
 	// const token = await res.text()
 	const token = await res.json()
-	console.log(token)
 	return token
 }
 
