@@ -1,68 +1,72 @@
-// //console.log("installed")
-// //console.log("fetch")
+/// <reference types="@sveltejs/kit" />
+import { build, files, version } from "$service-worker"
 
-// //console.log("activated")
+// Create a unique cache name for this deployment
+const CACHE = `cache-${version}`
 
-// /// <reference types="@sveltejs/kit" />
-// import { build, files, version } from "$service-worker"
+const ASSETS = [
+	...build, // the app itself
+	...files // everything in `static`
+]
 
-// // Create a unique cache name for this deployment
-// const CACHE = `cache-${version}`
+self.addEventListener("install", (event) => {
+	console.log("installed")
+	// Create a new cache and add all files to it
+	async function addFilesToCache() {
+		const cache = await caches.open(CACHE)
+		await cache.addAll(ASSETS)
+	}
 
-// const ASSETS = [
-// 	...build, // the app itself
-// 	...files // everything in `static`
-// ]
+	event.waitUntil(addFilesToCache())
+	self.skipWaiting()
+})
 
-// self.addEventListener("install", (event) => {
-// 	// Create a new cache and add all files to it
-// 	async function addFilesToCache() {
-// 		const cache = await caches.open(CACHE)
-// 		await cache.addAll(ASSETS)
-// 	}
+self.addEventListener("activate", (event) => {
+	console.log("activated")
+	// Remove previous cached data from disk
+	async function deleteOldCaches() {
+		for (const key of await caches.keys()) {
+			if (key !== CACHE) await caches.delete(key)
+		}
+	}
 
-// 	event.waitUntil(addFilesToCache())
-// })
+	event.waitUntil(deleteOldCaches())
+	self.clients.claim()
+})
 
-// self.addEventListener("activate", (event) => {
-// 	// Remove previous cached data from disk
-// 	async function deleteOldCaches() {
-// 		for (const key of await caches.keys()) {
-// 			if (key !== CACHE) await caches.delete(key)
-// 		}
-// 	}
+self.addEventListener("fetch", (event) => {
+	// ignore POST requests etc
+	if (event.request.method !== "GET") return
+	// if request is made for web page url must contains http.
+	if (!(event.request.url.indexOf("http") === 0)) return // skip the request. if request is not made with http protocol
 
-// 	event.waitUntil(deleteOldCaches())
-// 	self.skipWaiting()
-// })
+	console.log("fetch from " + event.request.url)
 
-// self.addEventListener("fetch", (event) => {
-// 	// ignore POST requests etc
-// 	if (event.request.method !== "GET") return
+	async function respond() {
+		const url = new URL(event.request.url)
+		const cache = await caches.open(CACHE)
 
-// 	async function respond() {
-// 		const url = new URL(event.request.url)
-// 		const cache = await caches.open(CACHE)
+		// CHACHE FIRST -- file della build e statici, json png, js, css
+		// `build`/`files` can always be served from the cache
+		if (ASSETS.includes(url.pathname)) {
+			return cache.match(url.pathname)
+		}
 
-// 		// `build`/`files` can always be served from the cache
-// 		if (ASSETS.includes(url.pathname)) {
-// 			return cache.match(url.pathname)
-// 		}
+		// NETWORK FIRST -- per gli altri file e chiamate GET, solo se sono offline provo a prenderli dalla chache
+		if (cache.match)
+			// for everything else, try the network first, but
+			// fall back to the cache if we're offline
+			try {
+				// se non ce connessione fetch da errore e vado nel catch
+				const response = await fetch(event.request)
+				if (response.status === 200) {
+					cache.put(event.request, response.clone())
+				}
+				return response
+			} catch {
+				return cache.match(event.request)
+			}
+	}
 
-// 		// for everything else, try the network first, but
-// 		// fall back to the cache if we're offline
-// 		try {
-// 			const response = await fetch(event.request)
-
-// 			if (response.status === 200) {
-// 				cache.put(event.request, response.clone())
-// 			}
-
-// 			return response
-// 		} catch {
-// 			return cache.match(event.request)
-// 		}
-// 	}
-
-// 	event.respondWith(respond())
-// })
+	event.respondWith(respond())
+})

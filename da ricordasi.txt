@@ -3,6 +3,7 @@ la logout non elimina la sessione su firebase, se non sono loggato e metto nei c
 session cookie non possono essere revocati, come fo? consigliano di gestirlo nel database con un array di toke e se sono expired dalla logout
 in dashboard if !user await invalidateall invalidateall dopo login? -- oppure modificare userauth subito dopo
 - forse risolto ma devo vedere meglio come comunicare con le azioni
+- invece di onmount quella doopo per la invalidateall?
 
 
 in singup server includere anche la creazione dell'utente con adminsdk
@@ -13,17 +14,21 @@ create user in firebaseAdmin
 se sono in singup mettere in nav il link per andare alla home
 dopo pulire il database di account pacchi
 
-errors.svelte e fare throw error per certe cose
+errors.svelte e --- fare throw error per certe cose---
 LOG server sensati, tipo per login o robe del genere, tipo verifica sbagliata ecc
 
 convertire in TS
+
+updatejobs se da errore prendere il file dallo storage
+tokenmenumal settarlo a ""
+disabilitare interfaccia quando offline
+se non faccio unsub come nel token che succede reddit o stack
 
 aggiorna readme con link al sito online
 
 firebase click
 graph agggiustare che 100 impossibile e testo p  += in settimane
 keyed each dove manca
-getorderedjobs farla solo dove serve, non sempre
 
 COLORI
 
@@ -34,4 +39,4 @@ prima di tutto vedere video sui service worker su svelte
 
 togiere .env e mettere repo pubblic
 
-update jobs e updatejobsload, per il completa non voglio loader - lo includo nel caricamento 
+ancora non va il problema famoso

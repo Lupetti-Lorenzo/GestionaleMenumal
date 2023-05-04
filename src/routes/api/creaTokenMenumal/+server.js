@@ -15,12 +15,14 @@ export async function POST({ request }) {
 		method: "POST",
 		body: formData
 	})
-	const text = await res.text()
-	//console.log(text)
-	try {
-		return json(JSON.parse(text))
-		// const token = await res.json()
-	} catch (err) {
-		return json(JSON.parse(err))
-	}
+	const token = await res.json()
+	return json(token)
+	// const text = await res.text()
+	// //console.log(text)
+	// try {
+	// 	return json(JSON.parse(text))
+	// 	// const token = await res.json()
+	// } catch (err) {
+	// 	return json(JSON.parse(err))
+	// }
 }

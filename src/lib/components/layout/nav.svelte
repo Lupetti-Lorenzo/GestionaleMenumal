@@ -1,6 +1,6 @@
 <script>
 	import { invalidateAll } from "$app/navigation"
-
+	import { online } from "$lib/client/onlineStore"
 	import { authUser } from "$lib/client/authStore"
 
 	$: logged = $authUser != null
@@ -22,9 +22,8 @@
 			on:click|preventDefault={logout}
 			href="/login">LOGOUT</button
 		>
-		<p class="font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-gray-200">
+		<p class="font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-gray-200 whitespace-nowrap">
 			<b>Utente</b>: {$authUser.email}
 		</p>
 	{/if}
-	<!-- con il flag data-sveltekit-prefetch fa il prefetch quando l'utente fa hover sul link -->
 </nav>

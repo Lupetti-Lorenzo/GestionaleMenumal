@@ -10,7 +10,6 @@ async function getNewToken() {
 		method: "POST",
 		body: formData
 	})
-	// const token = await res.text()
 	const token = await res.json()
 	return token
 }

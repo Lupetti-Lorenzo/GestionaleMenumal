@@ -36,7 +36,7 @@ const createJobsStore = () => {
 		const jobs = await res.json()
 		// dopo la chiamata all'api aggiorno lo store
 		// prima parso per aggiungere campi utili e gia computati
-		const parsedJobs = jobs.map((job) => {
+		const parsedJobs = jobs?.map((job) => {
 			// parso il job per agevolare i componenti
 			const newJob = { ...job }
 			newJob.fields["dataRegistrazioneIT"] = transformDate(newJob.fields["Data registrazione"])
