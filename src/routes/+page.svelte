@@ -30,8 +30,8 @@
 
 <!-- DASHBOARD -->
 
-<div id="" class="w-full">
-	<div class="flex items-center flex-col justify-center font-sans">
+<div id="" class="w-full flex items-center flex-col justify-center">
+	<div class="flex items-center flex-col justify-center font-sans w-screen md:max-w-3xl">
 		<MenuSwitch bind:menuSelection />
 		{#if menuSelection === "table"}
 			<JobsTable />

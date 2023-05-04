@@ -31,7 +31,7 @@
 		bind:value={$jobsStore.search}
 	/>
 	<!-- TABLE OF JOBS -->
-	<table class="min-w-max w-full table-auto">
+	<table class="table-auto">
 		<thead>
 			<tr
 				class="{loadingJobs
