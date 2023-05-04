@@ -23,21 +23,22 @@
 </script>
 
 <tr class="border-b border-gray-200">
+	<!-- Nome e icona stato -->
 	<th
 		scope="row"
-		class="pl-2 sm:py-2 md:py-3 lg:py-4 sm:px-3 md:px-5 lg:px-6 text-xs sm:text-s md:text-md lg:text-lg text-left"
+		class="pl-2 sm:py-2 md:py-3 sm:px-3 md:px-5 lg:px-6 text-xs sm:text-s md:text-base text-left"
 	>
 		{jobName}
 		<JobState {dbState} />
 	</th>
-
+	<!-- Bottoni -->
 	<td
-		class="sm:py-2 md:py-3 lg:py-4 sm:px-3 md:px-5 lg:px-6 text-xs sm:text-s md:text-md lg:text-lg lg:whitespace-nowrap text-left"
+		class="sm:py-2 md:py-3 sm:px-3 md:px-5 lg:px-6 text-xs sm:text-s md:text-base lg:whitespace-nowrap text-left"
 	>
 		<form method="POST" on:submit|preventDefault={apriBackDoor}>
 			<button
 				type="submit"
-				class="inline-flex items-center px-4 py-3 lg:py-4 lg:px-5 text-gray-500 bg-gray-200 sm:rounded-md hover:bg-gray-300 hover:text-gray-600"
+				class="inline-flex items-center px-2 py-3 md:py-4 md:px-5  text-gray-500 bg-gray-200 sm:rounded-md hover:bg-gray-300 hover:text-gray-600"
 				>Area privata</button
 			>
 		</form>
@@ -46,12 +47,12 @@
 		<!-- Se non è settato lo stato nel db non faccio vedere i bottoni aggiuntivi -->
 		<!-- Bottone cambia stato, che apre il popup -->
 		<td
-			class="sm:py-2 md:py-3 lg:py-4 sm:px-3 md:px-5 text-xs sm:text-s md:text-md lg:text-lg lg:whitespace-nowrap text-left"
+			class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-s md:text-base lg:whitespace-nowrap text-left"
 		>
 			<form method="POST" on:submit|preventDefault={apriPopup} data-id="full">
 				<button
 					type="submit"
-					class="inline-flex items-center px-4 py-3 lg:py-4 lg:px-5 text-gray-500 bg-gray-200 sm:rounded-md hover:bg-gray-300 hover:text-gray-600"
+					class="inline-flex items-center px-2 py-3 md:py-4 md:px-5 text-gray-500 bg-gray-200 sm:rounded-md hover:bg-gray-300 hover:text-gray-600"
 					>Cambia stato</button
 				>
 			</form>
@@ -60,12 +61,12 @@
 		<!-- Bottone estendi free trial, apre il popup in versione trial-->
 		{#if dbState == "1"}
 			<td
-				class="sm:py-2 md:py-3 lg:py-4 sm:px-3 md:px-5 text-xs sm:text-s md:text-md lg:text-lg lg:whitespace-nowrap text-left"
+				class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-s md:text-base lg:whitespace-nowrap text-left"
 			>
 				<form method="POST" on:submit|preventDefault={apriPopup} data-id="trial">
 					<button
 						type="submit"
-						class="inline-flex items-center px-4 py-3 lg:py-4 lg:px-5 text-gray-500 bg-gray-200 sm:rounded-md hover:bg-gray-300 hover:text-gray-600"
+						class="inline-flex items-center px-2 py-3 md:py-4 md:px-5 text-gray-500 bg-gray-200 sm:rounded-md hover:bg-gray-300 hover:text-gray-600"
 						>Estendi trial</button
 					>
 				</form>

@@ -10,7 +10,7 @@ const ASSETS = [
 ]
 
 self.addEventListener("install", (event) => {
-	console.log("installed")
+	//console.log("installed")
 	// Create a new cache and add all files to it
 	async function addFilesToCache() {
 		const cache = await caches.open(CACHE)
@@ -22,7 +22,7 @@ self.addEventListener("install", (event) => {
 })
 
 self.addEventListener("activate", (event) => {
-	console.log("activated")
+	//console.log("activated")
 	// Remove previous cached data from disk
 	async function deleteOldCaches() {
 		for (const key of await caches.keys()) {
@@ -40,7 +40,7 @@ self.addEventListener("fetch", (event) => {
 	// if request is made for web page url must contains http.
 	if (!(event.request.url.indexOf("http") === 0)) return // skip the request. if request is not made with http protocol
 
-	console.log("fetch from " + event.request.url)
+	//console.log("fetch from " + event.request.url)
 
 	async function respond() {
 		const url = new URL(event.request.url)
@@ -49,6 +49,7 @@ self.addEventListener("fetch", (event) => {
 		// CHACHE FIRST -- file della build e statici, json png, js, css
 		// `build`/`files` can always be served from the cache
 		if (ASSETS.includes(url.pathname)) {
+			//console.log("got it cached! " + event.request.url)
 			return cache.match(url.pathname)
 		}
 
@@ -60,10 +61,12 @@ self.addEventListener("fetch", (event) => {
 				// se non ce connessione fetch da errore e vado nel catch
 				const response = await fetch(event.request)
 				if (response.status === 200) {
+					//console.log("didnt have it, now cached! " + event.request.url)
 					cache.put(event.request, response.clone())
 				}
 				return response
 			} catch {
+				//console.log("offline, got it cached! " + event.request.url)
 				return cache.match(event.request)
 			}
 	}

@@ -25,9 +25,6 @@ disabilitare interfaccia quando offline
 se non faccio unsub come nel token che succede reddit o stack
 
 
-penso basti fare che per i bottoni flex li mette in fila e stretchati, i bottoni con piu width possibile - quella cosa tipo flex 1 
-
-
 aggiorna readme con link al sito online
 
 firebase click
@@ -41,6 +38,28 @@ PWA
 pwa icona, ne prendo una online al momento - chiedere ai raga icona con misure
 prima di tutto vedere video sui service worker su svelte
 
-togiere .env e mettere repo pubblic
+togiere .env, altri punti privati del server e mettere repo pubblic
 
-ancora non va il problema famoso
+
+DOMANI 
+
+buttare giu una nota con cui parlare col prof
+quello che faccio adeso
+strategie di offline che mi vengono in mentevice sworker
+- il fatto di dover refreshare per il nuovo sw - riprovare
+
+chiedere ai ragazzi le icone con le size giuste
+
+responsive stats 
+
+iniziare singup pagina magari
+
+lavatrice 
+
+-- continuo
+
+ricevimento con prof 
+
+subizo funzionalita offline 
+
+

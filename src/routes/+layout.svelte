@@ -9,8 +9,6 @@
 	import { online } from "$lib/client/onlineStore"
 
 	import { authUser } from "$lib/client/authStore"
-	$: logged = $authUser != null
-	$: email = $authUser?.email
 </script>
 
 <!-- Bindo lo stato della connessione del client ad uno store accedibile da ogni componente, per modificare l'interfaccia di conseguenza -->
@@ -21,6 +19,6 @@
 <!-- Se sono offline infondo alla navbar metto un icona di offline -->
 <OfflineIcon />
 
-<Nav {logged} {email} />
+<Nav logged={$authUser != null} email={$authUser?.email} />
 
 <slot />

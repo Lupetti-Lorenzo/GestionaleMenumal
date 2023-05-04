@@ -26,31 +26,31 @@
 <!-- ULTIME REGISTRAZIONI -->
 <!-- Titolo Ultime Registrazioni -->
 <h3
-	class="mt-4 mb-8 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5x underline underline-offset-3 decoration-8 decoration-red-400"
+	class="mt-4 mb-8 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5x"
 >
 	Ultime Registrazioni
 </h3>
 <!-- Tabella popolata da latestJobs -->
-<div class="relative overflow-x-auto">
-	<table class="w-full text-sm text-left text-gray-500">
+<div class="overflow-x-auto">
+	<table class="w-screen sm:max-w-2xl text-sm text-left text-gray-500">
 		<thead class="text-xs text-gray-700 uppercase bg-gray-200 ">
 			<tr>
-				<th scope="col" class="px-6 py-3 rounded-l-lg"> Nome </th>
-				<th scope="col" class="px-6 py-3"> Data Registrazione </th>
-				<th scope="col" class="px-6 py-3 rounded-r-lg"> Email </th>
+				<th scope="col" class="px-1 md:px-6 py-3 rounded-l-lg"> Nome </th>
+				<th scope="col" class="px-1 md:px-6 py-3"> Data Registrazione </th>
+				<th scope="col" class="px-1 md:px-6 py-3 rounded-r-lg"> Email </th>
 			</tr>
 		</thead>
 		<tbody>
 			{#each latestJobs.reverse() as job}
-				<tr class="bg-white">
-					<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+				<tr class="bg-white text-xs sm:text-s md:text-base">
+					<th scope="row" class="px-1 md:px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
 						{job.fields["Opportunity name"]}
-						<JobState dbState={job.fields["StatoDB"] || "1"} />
+						<div class="hidden sm:inline"><JobState dbState={job.fields["StatoDB"]} /></div>
 					</th>
-					<td class="px-6 py-4">
+					<td class="px-1 md:px-6 py-4">
 						{job.fields["dataRegistrazioneIT"]}
 					</td>
-					<td class="px-6 py-4">
+					<td class="px-1 md:px-6 py-4">
 						{job.fields["Email"]}
 					</td>
 				</tr>
