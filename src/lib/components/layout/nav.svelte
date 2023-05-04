@@ -1,9 +1,8 @@
 <script>
 	import { invalidateAll } from "$app/navigation"
-	import { online } from "$lib/client/onlineStore"
-	import { authUser } from "$lib/client/authStore"
 
-	$: logged = $authUser != null
+	export let logged
+	export let email
 
 	const logout = async () => {
 		await fetch("/logout", { method: "POST" })
@@ -23,7 +22,7 @@
 			href="/login">LOGOUT</button
 		>
 		<p class="font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-gray-200 whitespace-nowrap">
-			<b>Utente</b>: {$authUser.email}
+			<b>Utente</b>: {email}
 		</p>
 	{/if}
 </nav>
