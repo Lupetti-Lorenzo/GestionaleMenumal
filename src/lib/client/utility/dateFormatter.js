@@ -1,6 +1,6 @@
 export const parseDate = (dateStr) => {
 	const [year, month, day] = dateStr.split("-")
-	return new Date(year, month, day).toLocaleDateString()
+	return new Date(year, month - 1, day).toLocaleDateString()
 }
 
 export const parseDateFromSlash = (dateStr) => {

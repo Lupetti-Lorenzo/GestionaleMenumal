@@ -33,9 +33,9 @@
 <!-- Tabella popolata da latestJobs -->
 <div class="overflow-x-auto">
 	<table class="w-screen sm:max-w-2xl text-sm text-left text-gray-500">
-		<thead class="text-xs text-gray-700 uppercase bg-gray-200 ">
+		<thead class="text-xs text-gray-700 uppercase bg-gray-200">
 			<tr>
-				<th scope="col" class="px-1 md:px-6 py-3 rounded-l-lg"> Nome </th>
+				<th scope="col" class="pr-1 pl-3 md:px-6 py-3 rounded-l-lg"> Nome </th>
 				<th scope="col" class="px-1 md:px-6 py-3"> Data Registrazione </th>
 				<th scope="col" class="px-1 md:px-6 py-3 rounded-r-lg"> Email </th>
 			</tr>
@@ -43,7 +43,10 @@
 		<tbody>
 			{#each latestJobs.reverse() as job}
 				<tr class="bg-white text-xs sm:text-s md:text-base">
-					<th scope="row" class="px-1 md:px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+					<th
+						scope="row"
+						class="pr-1 pl-3 md:px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+					>
 						{job.fields["Opportunity name"]}
 						<div class="hidden sm:inline"><JobState dbState={job.fields["StatoDB"]} /></div>
 					</th>

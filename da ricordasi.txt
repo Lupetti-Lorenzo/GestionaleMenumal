@@ -34,32 +34,53 @@ keyed each dove manca
 COLORI
 
 
+input sul telefono non zoommare
+bottone loader per logout
+popup nuova scadenza meno padding o comunque no wrap
+se auth == null tokenmenager da "" e va refreshato
+
+buggetti di lollo 
+
+velocizzare l'operazione:
+- optimistic UI, la faccio fare e dopo messaggio 
+- potrei fare una updateJobs in background ogni tot invece di ogni volta e fare il cambiamento locale 
+- cosi posso chiudere subito il popup e mandare la notifica appena ha finito
+
+
+
 PWA
-pwa icona, ne prendo una online al momento - chiedere ai raga icona con misure
-prima di tutto vedere video sui service worker su svelte
-
-togiere .env, altri punti privati del server e mettere repo pubblic
+mettere icone menumal in manifest e in app.html icona - finire opengraph e meta tags
 
 
-DOMANI 
+icona offline resize telefono 
+-- getJobs e getToken metterli GET
+-- changeJobState metti Patch 
 
-buttare giu una nota con cui parlare col prof
-quello che faccio adeso
-strategie di offline che mi vengono in mentevice sworker
-- il fatto di dover refreshare per il nuovo sw - riprovare
+getJobs cached e token metto nella risposta il token vuoto 
 
-chiedere ai ragazzi le icone con le size giuste
-
-responsive stats 
-
-iniziare singup pagina magari
-
-lavatrice 
-
--- continuo
-
-ricevimento con prof 
-
-subizo funzionalita offline 
+funzionalita offline: 
+    logout disabilitato
+    fare il pending delle richieste se sono offline - farle fare al client, il sw mi manda un messaggio con la richiesta da mettere in pending, appena sono online le eseguo tutte insieme e mando notifica 
+    intanto pending, poi vedere se notifiche hanno senso 
+    vedere situa notification e accetta notifiche dal browser 
 
 
+
+
+tabella cambiamenti insieme 
+
+mettere email a tutti e magari altro per md o lg +
+
+bottone setta stato per quelli senza stato 
+
+tabella filtro
+
+
+riorganizzare file in cartelle e anche nomi volendo anche per i loader vedere se posso fare di meglio 
+cambiare da whichpopup a type 
+se posso usare le variabili dello store
+
+
+per transition: 
+<p transition:fade>Fades in and out</p>
+	import { fade } from 'svelte/transition';

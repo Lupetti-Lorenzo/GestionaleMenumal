@@ -1,5 +1,6 @@
 <script>
 	import { popUpStore } from "$lib/client/jobPopUpStore"
+	import { loaderStore } from "$lib/client/globalLoaderStore"
 	import { notificationStore } from "$lib/client/notificationStore"
 	import JobState from "./jobState.svelte"
 	import DatePicker from "$lib/components/datePicker.svelte"
@@ -38,14 +39,17 @@
 		// errore nella new date, rivedere il flow e la loginca
 	}
 
+	let loading = false // variabile per mostrare il loader e disabilitare gli input durante il caricamento
+
 	// variabile per disabilitare il bottone completa se non ho fatto modifiche
 	$: edited = newState != popupData.dbState || newDate != popupData.expireDate // di default non ci sono modifiche quindi disabilitato
 
-	let loading = false // variabile per mostrare il loader e disabilitare gli input durante il caricamento
-
+	// cambia lo stato del job mandando una richiesta all'api in base ai dati scelti
 	async function changeState() {
-		loading = true // far apparire loader e interrompere l'interazione
+		loaderStore.showLoader() // far apparire loader in alto a destra
+		loading = true
 
+		// prima utilizzo i dati del popup poi lo chiudo e mi salvo i dati per il form e la notifica - anche per essere sicuro che non vengano sovrascritti da una riapertura veloce
 		// costruisco il messaggio da mandare all'api
 		const formData = await new FormData()
 		formData.set("id", get(authUser).id)
@@ -53,7 +57,14 @@
 		formData.set("newDate", newDate + " 00:00:00")
 		formData.set("job", popupData.jobName)
 		formData.set("newDateAT", parseDate(newDate))
+		// notify data
+		const notifJobName = popupData.jobName
+		const notifPopupType = whichPopUp
+		const notifState = popupData.dbState
+		loading = false
+		popUpStore.closePopUp()
 
+		// chiamata all'api
 		const res = await fetch("api/changeJobState", {
 			method: "POST",
 			body: formData
@@ -62,36 +73,35 @@
 		const response = await res.json()
 
 		await jobsStore.updateJobs(false)
+		// aspetto la risposta e l'aggiornamento dei job poi chiudo il loader e faccio vedere il messaggio
+		loaderStore.closeLoader()
 
 		// Notifica all'utente in base al popup e l'esito della chiamata
 		if (response.success) {
-			if (whichPopUp === "full") {
+			if (notifPopupType === "full") {
 				notificationStore.showNotification(
-					`Stato di pagamento di ${popupData.jobName} aggiornato a ${CODICI_STATODB_MENUMAL[newState]}`,
+					`Stato di pagamento di ${notifJobName} aggiornato a ${CODICI_STATODB_MENUMAL[notifState]}`,
 					"success"
 				)
-			} else if (whichPopUp === "trial") {
+			} else if (notifPopupType === "trial") {
 				notificationStore.showNotification(
-					`Trial di ${popupData.jobName} esteso a ${newDate}`,
+					`Trial di ${notifJobName} esteso a ${newDate}`,
 					"success"
 				)
 			}
 		} else if (response.error) {
-			if (whichPopUp === "full") {
+			if (notifPopupType === "full") {
 				notificationStore.showNotification(
-					`Errore nell' aggiornamento del pagamento di ${popupData.jobName}: ${response.message}`,
+					`Errore nell' aggiornamento del pagamento di ${notifJobName}: ${response.message}`,
 					"error"
 				)
-			} else if (whichPopUp === "trial") {
+			} else if (notifPopupType === "trial") {
 				notificationStore.showNotification(
-					`Errore nell'estenzione del trial di ${popupData.jobName}: ${response.message}`,
+					`Errore nell'estenzione del trial di ${notifJobName}: ${response.message}`,
 					"error"
 				)
 			}
 		}
-
-		popUpStore.closePopUp()
-		loading = false
 	}
 
 	// chiusura del popup se clicco fuori
@@ -151,8 +161,8 @@
 						<span class="text-xl mr-3 font-semibold text-gray-900">Nuovo stato</span>
 						<select
 							bind:value={newState}
-							on:change={() => (newDate = popupData.expireDate)}
 							disabled={loading}
+							on:change={() => (newDate = popupData.expireDate)}
 						>
 							{#each codiciMenumalArray as codice}
 								<option value={codice.id}>
@@ -164,7 +174,12 @@
 						<!-- DatePicker, lo mostro solo se aggiorno lo stato a trial o manuale -->
 						{#if newState == "1" || newState == "3"}
 							<span class="text-xl mr-2 font-semibold text-gray-900">Nuova scadenza</span>
-							<input type="text" bind:value={newDate} class="mt-4 mb-2 pl-1" disabled={loading} />
+							<input
+								type="text"
+								bind:value={newDate}
+								class="mt-4 mb-2 pl-1 rounded-lg border-1 shadow"
+								disabled={loading}
+							/>
 							<DatePicker bind:value={newDate} />
 						{/if}
 					</div>
@@ -174,14 +189,14 @@
 							Registrato il {popupData.registerDate}
 						</h3>
 						<span class="text-xl mr-2 font-semibold text-gray-900">Nuova scadenza</span>
-						<input type="text" bind:value={newDate} class="mt-4 mb-2 pl-1" disabled={loading} />
+						<input type="text" bind:value={newDate} disabled={loading} class="mt-4 mb-2 pl-1" />
 						<DatePicker bind:value={newDate} />
 					</div>
 				{/if}
 
 				<!-- Modal footer -->
 				<div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
-					<LoadingButton {loading} {edited} text="Completa" on:completeCalled={changeState} />
+					<LoadingButton {loading} {edited} text="Conferma" on:completeCalled={changeState} />
 					<!-- bottone completa -->
 					<!-- <button
 						on:click|preventDefault={popUpStore.closePopUp}

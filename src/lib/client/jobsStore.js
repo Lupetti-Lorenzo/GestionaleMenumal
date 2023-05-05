@@ -63,7 +63,7 @@ export const jobsStore = createJobsStore()
 
 export const searchHandler = (store) => {
 	if (store.search == "") {
-		store.filteredJobs = []
+		store.filteredJobs = store.jobs
 		return
 	}
 

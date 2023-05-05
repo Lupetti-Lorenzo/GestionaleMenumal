@@ -33,7 +33,7 @@
 	</th>
 	<!-- Bottoni -->
 	<td
-		class="sm:py-2 md:py-3 sm:px-3 md:px-5 lg:px-6 text-xs sm:text-s md:text-base lg:whitespace-nowrap text-left"
+		class="sm:py-2 md:py-3 sm:px-3 md:px-5 lg:px-6 text-xs sm:text-s md:text-base md:whitespace-nowrap text-left"
 	>
 		<form method="POST" on:submit|preventDefault={apriBackDoor}>
 			<button
@@ -47,7 +47,7 @@
 		<!-- Se non è settato lo stato nel db non faccio vedere i bottoni aggiuntivi -->
 		<!-- Bottone cambia stato, che apre il popup -->
 		<td
-			class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-s md:text-base lg:whitespace-nowrap text-left"
+			class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-s md:text-base md:whitespace-nowrap text-left"
 		>
 			<form method="POST" on:submit|preventDefault={apriPopup} data-id="full">
 				<button
@@ -61,7 +61,7 @@
 		<!-- Bottone estendi free trial, apre il popup in versione trial-->
 		{#if dbState == "1"}
 			<td
-				class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-s md:text-base lg:whitespace-nowrap text-left"
+				class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-s md:text-base md:whitespace-nowrap text-left"
 			>
 				<form method="POST" on:submit|preventDefault={apriPopup} data-id="trial">
 					<button

@@ -12,12 +12,13 @@
 
 <div class="flex flex-row mb-4 {loadingJobs ? 'animate-pulse opacity-85' : ''}">
 	<button
+		aria-label="bottone tabella"
 		disabled={loadingJobs}
 		class="px-4 py-3 mx-4 rounded-lg transition ease-in-out {loadingJobs
 			? ''
-			: 'hover:scale-105'}  duration-300 {menuSelection === 'table'
-			? 'bg-gray-200 text-gray-600'
-			: 'bg-gray-400 text-gray-800'}} "
+			: 'bg-gray-200 hover:scale-105'}  duration-300 {menuSelection === 'table'
+			? 'bg-gray-400 text-gray-800'
+			: ''}} "
 		on:click={handleSwitch}
 		data-id="table"
 	>
@@ -39,12 +40,13 @@
 		</span>
 	</button>
 	<button
+		aria-label="bottone statistiche"
 		disabled={loadingJobs}
 		class="px-4 py-3 mx-4 rounded-lg transition ease-in-out {loadingJobs
 			? ''
 			: 'hover:scale-105'} duration-300 {menuSelection === 'stats'
-			? 'bg-gray-200 text-gray-600'
-			: 'bg-gray-400 text-gray-800'}}"
+			? 'bg-gray-400 text-gray-600'
+			: 'bg-gray-200 text-gray-800'}}"
 		on:click={handleSwitch}
 		data-id="stats"
 	>
