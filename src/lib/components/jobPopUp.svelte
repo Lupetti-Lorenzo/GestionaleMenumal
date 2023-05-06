@@ -3,10 +3,13 @@
 	import { get } from "svelte/store"
 	// STORES
 	import { popUpStore } from "$lib/client/jobPopUpStore"
-	import { loaderStore } from "$lib/client/globalLoaderStore"
 	import { notificationStore } from "$lib/client/notificationStore"
 	import { jobsStore } from "$lib/client/jobsStore.js"
 	import { authUser } from "$lib/client/authStore.js"
+	import { offlineMenager } from "$lib/client/offlineMenagerStore"
+	import { online } from "$lib/client/onlineStore"
+	import { loaderStore } from "$lib/client/globalLoaderStore"
+
 	// COMPONENTS
 	import JobState from "./jobState.svelte"
 	import DatePicker from "$lib/components/datePicker.svelte"
@@ -50,61 +53,80 @@
 	// cambia lo stato del job mandando una richiesta all'api in base ai dati scelti
 	async function changeState() {
 		loaderStore.showLoader() // far apparire loader in alto a destra
-		loading = true
+		loading = true // per disabilitare l'interazione, mi serve il popup aperto per prendere i  dati
 
 		// prima utilizzo i dati del popup poi lo chiudo e mi salvo i dati per il form e la notifica - anche per essere sicuro che non vengano sovrascritti da una riapertura veloce
 		// costruisco il messaggio da mandare all'api
-		const formData = await new FormData()
-		formData.set("id", get(authUser).id)
-		formData.set("newState", newState)
-		formData.set("newDate", newDate + " 00:00:00")
-		formData.set("job", popupData.jobName)
-		formData.set("newDateAT", parseDate(newDate))
+
 		// notify data
 		const notifJobName = popupData.jobName
 		const notifPopupType = whichPopUp
 		const notifState = newState
+
+		// i dati da mandare nel body
+		const data = {
+			id: get(authUser).id,
+			newState: newState,
+			newDate: newDate + " 00:00:00",
+			job: popupData.jobName,
+			newDateAT: parseDate(newDate)
+		}
+
 		loading = false
 		popUpStore.closePopUp()
 
-		// chiamata all'api
-		const res = await fetch("api/changeJobState", {
-			method: "PATCH",
-			body: formData
-		})
-
-		const response = await res.json()
-
-		await jobsStore.updateJobs(false)
-		// aspetto la risposta e l'aggiornamento dei job poi chiudo il loader e faccio vedere il messaggio
-		loaderStore.closeLoader()
-
-		// Notifica all'utente in base al popup e l'esito della chiamata
-		if (response.success) {
-			if (notifPopupType === "full") {
-				notificationStore.showNotification(
-					`Stato di pagamento di ${notifJobName} aggiornato a ${CODICI_STATODB_MENUMAL[notifState]}`,
-					"success"
-				)
-			} else if (notifPopupType === "trial") {
-				notificationStore.showNotification(
-					`Trial di ${notifJobName} esteso a ${newDate}`,
-					"success"
-				)
-			}
-		} else if (response.error) {
-			if (notifPopupType === "full") {
-				notificationStore.showNotification(
-					`Errore nell' aggiornamento del pagamento di ${notifJobName}: ${response.message}`,
-					"error"
-				)
-			} else if (notifPopupType === "trial") {
-				notificationStore.showNotification(
-					`Errore nell'estenzione del trial di ${notifJobName}: ${response.message}`,
-					"error"
-				)
-			}
+		// se sono offline aggiungo la richiesta alle pending requests e aggiorno la ui manualmente
+		if (!get(online)) {
+			// aggiungo la richiesta alle pending
+			offlineMenager.addRequest({
+				url: "api/changeJobState",
+				method: "PATCH",
+				body: data
+			})
+			// chiudo loader globale e mando notifica di successo - optimistic UI
+			loaderStore.closeLoader()
+			sendPopUpNotification({ success: true }, notifPopupType, notifJobName, notifState)
 		}
+		// se sono online faccio la normale chiamata all'api e aggiornamento con airtable
+		// aspetto la risposta e l'aggiornamento dei job poi chiudo il loader e faccio vedere la notifica
+		else {
+			// chiamata api
+			const formData = new FormData()
+			for (const [key, value] of Object.entries(data)) formData.set(key, value)
+			const res = await fetch("api/changeJobState", {
+				method: "PATCH",
+				body: formData
+			})
+
+			// aggiorno tabella tramite airtable
+			await jobsStore.updateJobs(false)
+			// mando notifica
+			const response = await res.json()
+			// chiudo loader globale e mando notifica
+			loaderStore.closeLoader()
+			sendPopUpNotification(response, notifPopupType, notifJobName, notifState)
+		}
+	}
+
+	const sendPopUpNotification = (response, notifPopupType, notifJobName, notifState) => {
+		// Notifica all'utente in base al popup e l'esito della chiamata
+		if (response.success && notifPopupType === "full")
+			notificationStore.showNotification(
+				`Stato di pagamento di ${notifJobName} aggiornato a ${CODICI_STATODB_MENUMAL[notifState]}`,
+				"success"
+			)
+		else if (response.success && notifPopupType === "trial")
+			notificationStore.showNotification(`Trial di ${notifJobName} esteso a ${newDate}`, "success")
+		else if (response.error && notifPopupType === "full")
+			notificationStore.showNotification(
+				`Errore nell' aggiornamento del pagamento di ${notifJobName}: ${response.message}`,
+				"error"
+			)
+		else if (response.error && notifPopupType === "trial")
+			notificationStore.showNotification(
+				`Errore nell'estenzione del trial di ${notifJobName}: ${response.message}`,
+				"error"
+			)
 	}
 
 	// chiusura del popup se clicco fuori

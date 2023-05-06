@@ -3,7 +3,7 @@
 	import JobPopUp from "./jobPopUp.svelte"
 
 	import { jobsStore } from "$lib/client/jobsStore.js"
-	import { token } from "$lib/client/tokenMenager"
+	import { token } from "$lib/client/tokenMenagerStore"
 	import { onMount } from "svelte"
 
 	let tokenn

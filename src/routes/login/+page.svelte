@@ -2,6 +2,7 @@
 	import { deserialize } from "$app/forms"
 	import { goto } from "$app/navigation"
 	import { getFirebase } from "$lib/client/firebase"
+	import { online } from "$lib/client/onlineStore"
 	import { signInWithEmailAndPassword, inMemoryPersistence } from "firebase/auth"
 	import { invalidateAll } from "$app/navigation"
 	import { notificationStore } from "$lib/client/notificationStore"
@@ -100,8 +101,10 @@
 					<!-- Bottone login, compare loader e si disabilita quando viene cliccato mentre viene eseguita la login -->
 					<button
 						type="submit"
-						disabled={loading}
-						class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+						disabled={loading || !$online}
+						class="{!$online
+							? 'disabled'
+							: 'text-white bg-gray-800 hover:bg-gray-900'}  focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
 					>
 						{#if !loading}
 							Login
@@ -129,11 +132,22 @@
 						{/if}
 					</button>
 					<!-- Errore che compare in fondo al form quando c'ene uno nella login -->
+					<p style="color: rgb(252 211 77);">
+						{!$online ? "Non puoi loggarti se sei offline" : ""}
+					</p>
 					{#if err !== ""}
-						<p style="color: red">{err}</p>
+						<p class="text-rose-700">{err} {!$online ? "Non puoi loggarti se sei offline" : ""}</p>
 					{/if}
 				</form>
 			</div>
 		</div>
 	</div>
 </section>
+
+<style>
+	.disabled {
+		background-color: #a9acb6;
+		color: black;
+		opacity: 85;
+	}
+</style>

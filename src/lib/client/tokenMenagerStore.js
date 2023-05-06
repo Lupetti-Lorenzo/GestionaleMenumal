@@ -1,9 +1,11 @@
 import { authUser } from "./authStore"
+import { online } from "./onlineStore"
+
 import { get } from "svelte/store"
 import { readable } from "svelte/store"
 
 async function getNewToken() {
-	if (get(authUser) == null) return ""
+	if (get(authUser) == null || !get(online)) return ""
 	const formData = new FormData()
 	formData.set("uid", get(authUser).id)
 	const res = await fetch("api/createTokenMenumal", {

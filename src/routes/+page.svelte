@@ -5,9 +5,19 @@
 
 	import { jobsStore, searchHandler } from "$lib/client/jobsStore.js"
 	import { onMount } from "svelte"
+	import { offlineMenager } from "$lib/client/offlineMenagerStore"
 
-	// richiedo i jobs dall'api di airtable e li salvo in jobsStore, da cui viene creata la tabella e abilitata la funzionalita di ricerca
-	onMount(jobsStore.updateJobs)
+	onMount(() => {
+		// richiedo i jobs dall'api di airtable e li salvo in jobsStore, da cui viene creata la tabella e abilitata la funzionalita di ricerca
+		jobsStore.updateJobs()
+
+		// mi sincronizzo con le richieste nel local storage
+		offlineMenager.syncStorage()
+		// ogni volta che ce una nuova richiesta (cambia lo store), aggiorno localStorage con l'array di richieste
+		offlineMenager.subscribe((store) => {
+			localStorage.requestsPending = JSON.stringify(store.requestsPending)
+		})
+	})
 
 	// utilizzo questa sintassi per iscrivere un il search handler ogni volta che cambia jobStore
 	$: searchHandler($jobsStore)

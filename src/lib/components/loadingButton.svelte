@@ -48,6 +48,6 @@
 
 <style>
 	.disabled {
-		background-color: #9ca3af;
+		background-color: #959ba7;
 	}
 </style>

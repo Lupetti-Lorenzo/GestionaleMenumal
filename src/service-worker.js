@@ -62,12 +62,21 @@ self.addEventListener("fetch", (event) => {
 				// se non ce connessione fetch da errore e vado nel catch
 				const response = await fetch(event.request)
 				if (response.status === 200) {
-					//console.log("didnt have it, now cached! " + event.request.url)
+					// console.log("didnt have it, now cached! " + event.request.url)
 					cache.put(event.request, response.clone())
 				}
 				return response
 			} catch {
-				//console.log("offline, got it cached! " + event.request.url)
+				// let res = cache.match(event.request)
+				// if (!res) {
+				// 	// non ho la risposta nella cache, riorno una risposta
+				// 	// per ora l'unica get che faccio dopo la connessione ho è la getJobs
+				// 	console.log("Non cached e offline: " + event.request.url)
+				// 	const fallbackResponse = []
+				// 	return new Response(JSON.stringify(fallbackResponse), {
+				// 		headers: { "Content-Type": "application/json" }
+				// 	})
+				// }
 				return cache.match(event.request)
 			}
 	}

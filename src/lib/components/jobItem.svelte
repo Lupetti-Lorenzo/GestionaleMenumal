@@ -2,6 +2,7 @@
 	import JobState from "./jobState.svelte"
 
 	import { popUpStore } from "$lib/client/jobPopUpStore"
+	import { online } from "$lib/client/onlineStore"
 
 	export let job
 	export let token
@@ -35,13 +36,15 @@
 	<td
 		class="sm:py-2 md:py-3 sm:px-3 md:px-5 lg:px-6 text-xs sm:text-s md:text-base md:whitespace-nowrap text-left"
 	>
-		<form method="POST" on:submit|preventDefault={apriBackDoor}>
-			<button
-				type="submit"
-				class="inline-flex items-center px-2 py-3 md:py-4 md:px-5  text-gray-500 bg-gray-300 sm:rounded-md hover:bg-gray-400 hover:text-gray-600"
-				>Area privata</button
-			>
-		</form>
+		<button
+			on:click|preventDefault={apriBackDoor}
+			disabled={!$online}
+			type="button"
+			class="{!$online
+				? 'disabled'
+				: 'text-gray-500 bg-gray-300 hover:bg-gray-400 hover:text-gray-600'} inline-flex items-center px-2 py-3 md:py-4 md:px-5   sm:rounded-md"
+			>Area privata</button
+		>
 	</td>
 	{#if dbState !== undefined}
 		<!-- Se non è settato lo stato nel db non faccio vedere i bottoni aggiuntivi -->
@@ -74,3 +77,11 @@
 		{/if}
 	{/if}
 </tr>
+
+<style>
+	.disabled {
+		background-color: #e0e2ea;
+		color: black;
+		opacity: 85;
+	}
+</style>

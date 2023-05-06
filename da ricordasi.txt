@@ -29,8 +29,10 @@ graph agggiustare che 100 impossibile e testo p  += in settimane
 keyed each dove manca
 
 se auth == null tokenmenager da "" e va refreshato
-
-
+gestire meglio altri, in base a quanti ne rimangono anche 
+popup fulscreen da sm
+restyling dei colori dei bottoni, disabilitati, offline, renderlo piu uniforme  e riusare il css
+incorporare online in offlinemenager
 DOMANI
 
 PWA
@@ -47,6 +49,9 @@ funzionalita offline:
     vedere situa notification e accetta notifiche dal browser 
     anche icona offline come loader che va sotto alla notifica 
 
+token menager manual reload per quando ritorno online 
+casistica off e on e off subito? sulle richieste li a fa 
+
 mettere icone menumal in manifest e in app.html icona - finire opengraph e meta tags
 icona offline resize telefono 
 w-full invece di screen a tutti 
@@ -62,6 +67,8 @@ notifiche tipo se non sono sulla pagina e rivado online ti manda notifica che ri
 bottone setta stato per quelli senza stato 
 
 tabella filtro
+
+
 
 
 riorganizzare file in cartelle e anche nomi volendo anche per i loader vedere se posso fare di meglio 
