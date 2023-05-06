@@ -14,17 +14,10 @@
 	import { page } from "$app/stores"
 	import { beforeUpdate } from "svelte"
 	import { invalidateAll } from "$app/navigation"
-	import { loaderStore } from "../lib/client/globalLoaderStore"
 
 	// se sono online e ci sono delle pending requests, le eseguo
-	$: if ($online && $offlineMenager.requestsPending.length !== 0) {
-		loaderStore.showLoader()
-		console.log("open")
-		offlineMenager.executeRequestsPending().then(() => {
-			console.log("close")
-			loaderStore.closeLoader()
-		})
-	}
+	$: if ($online && $offlineMenager.requestsPending.length !== 0)
+		offlineMenager.executeRequestsPending()
 
 	// controllo per refreshare quando user non autenticato e non sono in login, a volte non passa dalla load e non mostra la navbar e non si attiva il tokenMenager properly
 	beforeUpdate(async () => {

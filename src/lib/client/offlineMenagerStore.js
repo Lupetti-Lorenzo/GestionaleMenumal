@@ -36,7 +36,6 @@ const createOfflineStore = () => {
 		loaderStore.showLoader() // loader globale per far sapere all'utente che sta sincronizzando
 		//chiamate non andate con successo
 		const requestRemaining = []
-		console.log("there")
 		// per ogni richiesta faccio la fetch
 		for (const request of get(store).requestsPending) {
 			const formData = new FormData()

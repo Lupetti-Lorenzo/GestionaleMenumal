@@ -83,7 +83,8 @@
 				method: "PATCH",
 				body: data
 			})
-			// chiudo loader globale e mando notifica di successo - optimistic UI
+			// aggiornoUI,chiudo loader globale e mando notifica di successo - optimistic UI
+			jobsStore.updateJobState(data.job, newState, newDate)
 			loaderStore.closeLoader()
 			sendPopUpNotification({ success: true }, notifPopupType, notifJobName, notifState)
 		}

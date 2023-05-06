@@ -28,7 +28,6 @@ const createJobsStore = () => {
 				loading
 			}
 		})
-		//set({ jobs: [], orderedJobs: [], filteredJobs: [], search: "", loading: true })
 		// chiamo la api/getJobs
 		const res = await fetch("api/getJobs")
 
@@ -51,10 +50,36 @@ const createJobsStore = () => {
 		})
 	}
 
+	const updateJobState = (jobName, newState, newDate) => {
+		update((store) => {
+			// calcolo il nuovo job
+			const newJob = { ...store.jobs.find((job) => job.fields["Opportunity name"] === jobName) }
+			newJob.fields["dataScadenza"] = newDate
+			newJob.fields["StatoDB"] = newState
+			console.log("newJob: " + newJob.fields["statoDB"])
+			console.log("newJob: " + JSON.stringify(newJob))
+			// calcolo i jobs aggiornati - il job deve essere in un altra posizione, altrimenti la ui rembra che non sia cambiato nulla, lo metto in cima
+			const newJobs = [
+				newJob,
+				...store.jobs.filter((job) => job.fields["Opportunity name"] !== jobName)
+			]
+			const newFilteredJobs = [
+				newJob,
+				...store.filteredJobs.filter((job) => job.fields["Opportunity name"] !== jobName)
+			]
+			// const newJobs = store.jobs.map((job) => job.fields["Opportunity name"] !== jobName ? job: newJob)
+			// const newFilteredJobs = store.filteredJobs.map((job) => job.fields["Opportunity name"] !== jobName ? job: newJob)
+
+			// aggiorno lo store
+			return { ...store, jobs: [...newJobs], filteredJobs: [...newFilteredJobs] }
+		})
+	}
+
 	return {
 		subscribe,
 		set,
-		updateJobs
+		updateJobs,
+		updateJobState
 	}
 }
 
