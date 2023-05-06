@@ -5,15 +5,11 @@
 	import { signInWithEmailAndPassword, inMemoryPersistence } from "firebase/auth"
 	import { invalidateAll } from "$app/navigation"
 	import { notificationStore } from "$lib/client/notificationStore"
-
 	const { auth } = getFirebase()
-
 	let loading = false
-
 	let email, password
 	// messaggi di errore
 	$: err = ""
-
 	async function login() {
 		loading = true
 		// login con email e password
@@ -29,13 +25,11 @@
 					const formData = new FormData()
 					formData.set("token", token)
 					formData.set("uid", uid)
-
 					// mando il messaggio, l'azione crea il session token e setta i cookies
 					const res = await fetch(this.action, {
 						method: "POST",
 						body: formData
 					})
-
 					//se sono loggato con successo vado alla dashboard
 					const result = deserialize(await res.text())
 					if (result.data.success) {
@@ -67,7 +61,7 @@
 			href="https://www.menumal.it/info.html"
 			class="flex items-center mb-6 text-2xl font-semibold text-gray-900"
 		>
-			<!-- <img class="w-8 h-8 mr-2" src="" alt="logo"> -->
+			<img class="w-8 h-8 mr-2" src="/icon512.png" alt="logo" />
 			Menumal
 		</a>
 		<div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">

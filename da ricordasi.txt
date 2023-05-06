@@ -35,8 +35,6 @@ DOMANI
 
 PWA
 
--- getJobs e getToken metterli GET
--- changeJobState metti Patch 
 updatejobs se da errore prendere il file dallo storage
 tokenmenumal settarlo a ""
 disabilitare interfaccia quando offline
@@ -44,7 +42,6 @@ disabilitare interfaccia quando offline
 getJobs cached e token metto nella risposta il token vuoto 
 
 funzionalita offline: 
-    logout e login  disabilitato
     fare il pending delle richieste se sono offline - farle fare al client, il sw mi manda un messaggio con la richiesta da mettere in pending, appena sono online le eseguo tutte insieme e mando notifica 
     intanto pending, poi vedere se notifiche hanno senso 
     vedere situa notification e accetta notifiche dal browser 
@@ -55,6 +52,8 @@ icona offline resize telefono
 w-full invece di screen a tutti 
 
 mettere email a tutti e magari altro per md o lg +
+
+posso fare pure logout, e una richiesta come le altre
 
 
 notifiche tipo se non sono sulla pagina e rivado online ti manda notifica che riprende le operazioni rimaste

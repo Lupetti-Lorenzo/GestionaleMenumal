@@ -1,10 +1,12 @@
 <script>
 	import { CODICI_STATODB_MENUMAL } from "$lib/constants"
+	import { get } from "svelte/store"
 	// STORES
 	import { popUpStore } from "$lib/client/jobPopUpStore"
 	import { loaderStore } from "$lib/client/globalLoaderStore"
 	import { notificationStore } from "$lib/client/notificationStore"
 	import { jobsStore } from "$lib/client/jobsStore.js"
+	import { authUser } from "$lib/client/authStore.js"
 	// COMPONENTS
 	import JobState from "./jobState.svelte"
 	import DatePicker from "$lib/components/datePicker.svelte"
@@ -53,6 +55,7 @@
 		// prima utilizzo i dati del popup poi lo chiudo e mi salvo i dati per il form e la notifica - anche per essere sicuro che non vengano sovrascritti da una riapertura veloce
 		// costruisco il messaggio da mandare all'api
 		const formData = await new FormData()
+		formData.set("id", get(authUser).id)
 		formData.set("newState", newState)
 		formData.set("newDate", newDate + " 00:00:00")
 		formData.set("job", popupData.jobName)
@@ -198,7 +201,12 @@
 
 				<!-- Modal footer -->
 				<div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
-					<LoadingButton {loading} {edited} text="Conferma" on:completeCalled={changeState} />
+					<LoadingButton
+						{loading}
+						disabled={!edited}
+						text="Conferma"
+						on:completeCalled={changeState}
+					/>
 					<!-- bottone completa -->
 					<!-- <button
 						on:click|preventDefault={popUpStore.closePopUp}

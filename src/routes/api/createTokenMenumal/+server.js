@@ -1,8 +1,9 @@
 import { json } from "@sveltejs/kit"
 import { getUser } from "$lib/server/db/db"
 
-export async function GET({ locals }) {
-	const id = locals.user
+export async function POST({ request }) {
+	const formDataId = await request.formData()
+	const id = await formDataId.get("uid")?.valueOf()
 	// prendo i dati dell'API dello user corrente dal db
 	const userDB = await getUser(id)
 	// setto il form con user e pass API
