@@ -1,9 +1,10 @@
 import { json } from "@sveltejs/kit"
 import { getUser } from "$lib/server/db/db"
 
-export async function POST({ request }) {
+export async function PATCH({ request, locals }) {
+	const id = locals.user
+
 	const formDataId = await request.formData()
-	const id = await formDataId.get("id")?.valueOf()
 	const newState = await formDataId.get("newState")?.valueOf()
 	const newDateAT = await formDataId.get("newDateAT")?.valueOf()
 	const newDate =

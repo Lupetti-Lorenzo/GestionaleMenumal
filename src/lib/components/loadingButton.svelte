@@ -1,15 +1,15 @@
 <script>
-    import { createEventDispatcher } from "svelte";
+	import { createEventDispatcher } from "svelte"
 
-    const dispatch = createEventDispatcher()
+	const dispatch = createEventDispatcher()
 
 	export let loading
-	export let edited
-    export let text
+	export let edited = true
+	export let text
 
-    function callComplete() {
-        dispatch("completeCalled")
-    }
+	function callComplete() {
+		dispatch("completeCalled")
+	}
 </script>
 
 <button
@@ -19,7 +19,7 @@
 	class="{!edited
 		? 'disabled'
 		: ''} text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-    >
+>
 	{#if !loading}
 		{text}
 	{:else}
@@ -45,7 +45,6 @@
 		</div>
 	{/if}
 </button>
-
 
 <style>
 	.disabled {

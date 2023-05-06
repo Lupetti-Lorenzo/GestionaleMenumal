@@ -1,23 +1,29 @@
 {
-  "name": "Gestionale Menumal",
-  "short_name": "Menumal",
-  "start_url": "/",
-  "scope": "/",
-  "background_color": "#FFF",
-  "icons": [{
-    "src":"https://community.toph.co/uploads/default/optimized/2X/5/5b9de7676657b71384fb77c662616d73765f0293_2_512x512.png",
-    "type": "image/png",
-    "sizes": "192x192",
-    "purpose": "any maskable"
-  },
-  {
-    "src":"https://community.toph.co/uploads/default/optimized/2X/5/5b9de7676657b71384fb77c662616d73765f0293_2_512x512.png",
-    "type": "image/png",
-    "sizes": "512x512",
-    "purpose": "any maskable"
-  }],
-  "display": "minimal-ui",
-  "theme_color": "#3367D6",
-  "description": "Gestionale menumal",
-  "prefer_related_applications": true
+	"name": "Gestionale Menumal",
+	"short_name": "Menumal",
+	"start_url": "/",
+	"scope": "/",
+	"background_color": "#FFF",
+	"icons": [
+		{
+			"src": "icon192.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "icon512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		},
+		{
+			"src": "icon192.png",
+			"type": "image/png",
+			"sizes": "192x192",
+			"purpose": "maskable"
+		}
+	],
+	"display": "minimal-ui",
+	"theme_color": "#3367D6",
+	"description": "Gestionale menumal",
+	"prefer_related_applications": true
 }

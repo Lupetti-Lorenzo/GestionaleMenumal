@@ -27,7 +27,6 @@
 
 <!-- Bindo lo stato della connessione del client ad uno store accedibile da ogni componente, per modificare l'interfaccia di conseguenza -->
 <svelte:window bind:online={$online} />
-
 <!-- Notifica fixed in alto a destra -->
 <Notification />
 <!-- Loader fixed in alto a destra per operazioni in background -->

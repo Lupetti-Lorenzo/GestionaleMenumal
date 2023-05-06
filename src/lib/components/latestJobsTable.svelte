@@ -6,7 +6,7 @@
 	$: latestJobs = getOrderedJobs($jobsStore.jobs).slice(1).slice(-totJobs)
 
 	// nextJobs, aggiorna latestJobs con 5 risultati in piu
-	const nextJobs = () => (totJobs += 5)
+	const moreJobs = () => (totJobs += 5)
 
 	const getOrderedJobs = (jobs) => {
 		return jobs
@@ -63,7 +63,7 @@
 		<tfoot class="flex flex-row justify-start items-center w-full">
 			<th scope="row" class="px-6 py-3 text-base">
 				<button
-					on:click|preventDefault={nextJobs}
+					on:click|preventDefault={moreJobs}
 					class="font-semibold text-gray-900 mt-1 font-bold py-2 px-4 border-b-4 border-red-400 hover:mt-0 hover:border-t-4 rounded hover:scale-105 "
 				>
 					Altri

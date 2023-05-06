@@ -4,12 +4,9 @@ import { readable } from "svelte/store"
 
 async function getNewToken() {
 	if (get(authUser) == null) return ""
-	const formData = new FormData()
-	formData.set("uid", get(authUser).id)
-	const res = await fetch("api/creaTokenMenumal", {
-		method: "POST",
-		body: formData
-	})
+	// const formData = new FormData()
+	// formData.set("uid", get(authUser).id)
+	const res = await fetch("api/getTokenMenumal")
 	const token = await res.json()
 	return token
 }

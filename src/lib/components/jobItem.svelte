@@ -38,7 +38,7 @@
 		<form method="POST" on:submit|preventDefault={apriBackDoor}>
 			<button
 				type="submit"
-				class="inline-flex items-center px-2 py-3 md:py-4 md:px-5  text-gray-500 bg-gray-200 sm:rounded-md hover:bg-gray-300 hover:text-gray-600"
+				class="inline-flex items-center px-2 py-3 md:py-4 md:px-5  text-gray-500 bg-gray-300 sm:rounded-md hover:bg-gray-400 hover:text-gray-600"
 				>Area privata</button
 			>
 		</form>
@@ -52,7 +52,7 @@
 			<form method="POST" on:submit|preventDefault={apriPopup} data-id="full">
 				<button
 					type="submit"
-					class="inline-flex items-center px-2 py-3 md:py-4 md:px-5 text-gray-500 bg-gray-200 sm:rounded-md hover:bg-gray-300 hover:text-gray-600"
+					class="inline-flex items-center px-2 py-3 md:py-4 md:px-5 text-gray-500 bg-gray-300 sm:rounded-md hover:bg-gray-400 hover:text-gray-600"
 					>Cambia stato</button
 				>
 			</form>
@@ -66,7 +66,7 @@
 				<form method="POST" on:submit|preventDefault={apriPopup} data-id="trial">
 					<button
 						type="submit"
-						class="inline-flex items-center px-2 py-3 md:py-4 md:px-5 text-gray-500 bg-gray-200 sm:rounded-md hover:bg-gray-300 hover:text-gray-600"
+						class="inline-flex items-center px-2 py-3 md:py-4 md:px-5 text-gray-500 bg-gray-300 sm:rounded-md hover:bg-gray-400 hover:text-gray-600"
 						>Estendi trial</button
 					>
 				</form>

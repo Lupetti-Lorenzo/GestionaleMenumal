@@ -1,15 +1,16 @@
 <script>
+	import { CODICI_STATODB_MENUMAL } from "$lib/constants"
+	// STORES
 	import { popUpStore } from "$lib/client/jobPopUpStore"
 	import { loaderStore } from "$lib/client/globalLoaderStore"
 	import { notificationStore } from "$lib/client/notificationStore"
+	import { jobsStore } from "$lib/client/jobsStore.js"
+	// COMPONENTS
 	import JobState from "./jobState.svelte"
 	import DatePicker from "$lib/components/datePicker.svelte"
 	import LoadingButton from "./loadingButton.svelte"
-	import { get } from "svelte/store"
+	// UTILITY
 	import { parseDate, parseDateFromSlash } from "$lib/client/utility/dateFormatter"
-	import { jobsStore } from "$lib/client/jobsStore.js"
-	import { CODICI_STATODB_MENUMAL } from "$lib/constants"
-	import { authUser } from "$lib/client/authStore"
 
 	// variabili usate per renderizzare il popup
 	let open
@@ -52,7 +53,6 @@
 		// prima utilizzo i dati del popup poi lo chiudo e mi salvo i dati per il form e la notifica - anche per essere sicuro che non vengano sovrascritti da una riapertura veloce
 		// costruisco il messaggio da mandare all'api
 		const formData = await new FormData()
-		formData.set("id", get(authUser).id)
 		formData.set("newState", newState)
 		formData.set("newDate", newDate + " 00:00:00")
 		formData.set("job", popupData.jobName)
@@ -60,13 +60,13 @@
 		// notify data
 		const notifJobName = popupData.jobName
 		const notifPopupType = whichPopUp
-		const notifState = popupData.dbState
+		const notifState = newState
 		loading = false
 		popUpStore.closePopUp()
 
 		// chiamata all'api
 		const res = await fetch("api/changeJobState", {
-			method: "POST",
+			method: "PATCH",
 			body: formData
 		})
 
@@ -173,13 +173,15 @@
 						<br />
 						<!-- DatePicker, lo mostro solo se aggiorno lo stato a trial o manuale -->
 						{#if newState == "1" || newState == "3"}
-							<span class="text-xl mr-2 font-semibold text-gray-900">Nuova scadenza</span>
-							<input
-								type="text"
-								bind:value={newDate}
-								class="mt-4 mb-2 pl-1 rounded-lg border-1 shadow"
-								disabled={loading}
-							/>
+							<div class="no-wrap">
+								<span class="text-xl mr-2 font-semibold text-gray-900">Nuova scadenza</span>
+								<input
+									type="text"
+									bind:value={newDate}
+									class="mt-4 mb-2 pl-1 rounded-lg border-1 shadow"
+									disabled={loading}
+								/>
+							</div>
 							<DatePicker bind:value={newDate} />
 						{/if}
 					</div>

@@ -30,9 +30,8 @@ const createJobsStore = () => {
 		})
 		//set({ jobs: [], orderedJobs: [], filteredJobs: [], search: "", loading: true })
 		// chiamo la api/getJobs
-		const res = await fetch("api/getJobs", {
-			method: "POST"
-		})
+		const res = await fetch("api/getJobs")
+
 		const jobs = await res.json()
 		// dopo la chiamata all'api aggiorno lo store
 		// prima parso per aggiungere campi utili e gia computati

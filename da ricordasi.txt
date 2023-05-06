@@ -19,9 +19,6 @@ LOG server sensati, tipo per login o robe del genere, tipo verifica sbagliata ec
 
 convertire in TS
 
-updatejobs se da errore prendere il file dallo storage
-tokenmenumal settarlo a ""
-disabilitare interfaccia quando offline
 se non faccio unsub come nel token che succede reddit o stack
 
 
@@ -31,45 +28,37 @@ firebase click
 graph agggiustare che 100 impossibile e testo p  += in settimane
 keyed each dove manca
 
-COLORI
-
-
-input sul telefono non zoommare
-bottone loader per logout
-popup nuova scadenza meno padding o comunque no wrap
 se auth == null tokenmenager da "" e va refreshato
 
-buggetti di lollo 
 
-velocizzare l'operazione:
-- optimistic UI, la faccio fare e dopo messaggio 
-- potrei fare una updateJobs in background ogni tot invece di ogni volta e fare il cambiamento locale 
-- cosi posso chiudere subito il popup e mandare la notifica appena ha finito
-
-
+DOMANI
 
 PWA
-mettere icone menumal in manifest e in app.html icona - finire opengraph e meta tags
 
-
-icona offline resize telefono 
 -- getJobs e getToken metterli GET
 -- changeJobState metti Patch 
+updatejobs se da errore prendere il file dallo storage
+tokenmenumal settarlo a ""
+disabilitare interfaccia quando offline
 
 getJobs cached e token metto nella risposta il token vuoto 
 
 funzionalita offline: 
-    logout disabilitato
+    logout e login  disabilitato
     fare il pending delle richieste se sono offline - farle fare al client, il sw mi manda un messaggio con la richiesta da mettere in pending, appena sono online le eseguo tutte insieme e mando notifica 
     intanto pending, poi vedere se notifiche hanno senso 
     vedere situa notification e accetta notifiche dal browser 
+    anche icona offline come loader che va sotto alla notifica 
 
-
-
-
-tabella cambiamenti insieme 
+mettere icone menumal in manifest e in app.html icona - finire opengraph e meta tags
+icona offline resize telefono 
+w-full invece di screen a tutti 
 
 mettere email a tutti e magari altro per md o lg +
+
+
+notifiche tipo se non sono sulla pagina e rivado online ti manda notifica che riprende le operazioni rimaste
+
 
 bottone setta stato per quelli senza stato 
 
