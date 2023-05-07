@@ -14,10 +14,12 @@ async function getNewToken() {
 		method: "POST",
 		body: formData
 	})
-	const text = await res.text()
-	return text
-	// const token = await res.json()
-	// return token
+	// const text = await res.text()
+	// console.log(text)
+	// return text
+	const token = await res.json()
+	console.log(token)
+	return token
 }
 
 const createTokenStore = () => {
