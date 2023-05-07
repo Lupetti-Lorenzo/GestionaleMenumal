@@ -19,26 +19,7 @@
 	$: if ($authUser && $online && $offlineMenager.requestsPending.length !== 0)
 		offlineMenager.executeRequestsPending()
 
-	// $: if ($authUser && $online && $offlineMenager.requestsPending.length !== 0)
-
-	// 	const jobsOptimisticUI = JSON.parse(localStorage.jobsOptimisticUI)
-	// 			const index = jobsOptimisticUI.findIndex(
-	// 				(job) =>
-	// 					job.job === response.data.job &&
-	// 					job.newDate === response.data.newDate &&
-	// 					job.newState === response.data.newState
-	// 			)
-	// 			if (index > -1) {
-	// 				indexes.push(index)
-	// 				// only splice array when item is found
-	// 				localStorage.jobsOptimisticUI = JSON.stringify(jobsOptimisticUI.splice(index, 1))
-	// 				// rimuovo anche dallo store
-	// 				update((store) => {
-	// 					return { ...store, jobsOptimisticUI: jobsOptimisticUI.splice(index, 1) }
-	// 				})
-	// 			}
-
-	// controllo per refreshare quando user non autenticato e non sono in login, a volte non passa dalla load e non mostra la navbar e non si attiva il tokenMenager properly
+	// controllo per refreshare quando user non autenticato e non sono in login
 	beforeUpdate(async () => {
 		// console.log("data: " + JSON.stringify(data))
 		// console.log("$authUser " + JSON.stringify($authUser))

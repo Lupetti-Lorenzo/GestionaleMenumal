@@ -43,15 +43,11 @@ cambiare da whichpopup a type
 
 DOMANI
 
-bottone setta stato per quelli senza stato 
-
 posso fare pure logout, e una richiesta come le altre e provare combinazione offline, logout e poi vado alla dashboard, invalidateAll rompe? magari controllo online ? invalidate : goto login
 se non sono passato dalla login non ho la pagina nella cache  - pagina di fallback in static volento - allettante
 
 oppure non lo fo, e bona, le richieste devo essere loggato per eseguirle
 
-mettere email a tutti e magari altro per md o lg +
-bottone altri sparire se non ce ne sono altri
 tabella filtro
 
 se auth == null tokenmenager da "" e va refreshato

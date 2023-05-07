@@ -3,15 +3,15 @@
 	import ChangeStatePopUp from "./changeStatePopUp.svelte"
 
 	import { jobsStore } from "$lib/client/jobsStore.js"
-	import { token } from "$lib/client/tokenMenagerStore"
-	import { onMount } from "svelte"
 
-	let tokenn
-	onMount(() => {
-		token.subscribe((value) => {
-			tokenn = value
-		})
-	})
+	import { online } from "$lib/client/onlineStore"
+	import { browser } from "$app/environment"
+	import { token } from "../client/tokenMenagerStore"
+
+	// se sono sul browser, online e non ho un token lo refresho - anche per quando vado offline appena risono online riparte
+	$: if (browser && $online && $token === "") {
+		token.startInterval()
+	}
 
 	$: loadingJobs = $jobsStore.loading
 
@@ -67,19 +67,21 @@
 			<tbody class="text-gray-600 text-sm font-light">
 				<!-- Mostro i jobs filitrati -->
 				{#each $jobsStore.filteredJobs.slice(0, totJobs) as job (job)}
-					<JobItem {job} token={tokenn} />
+					<JobItem {job} token={$token} />
 				{/each}
 			</tbody>
-			<tfoot class="flex flex-row justify-start items-center w-full">
-				<th scope="row" class="px-1 py-2 lg:px-5 lg:py-3 text-base font-">
-					<button
-						on:click|preventDefault={moreJobs}
-						class="font-semibold text-gray-900 mt-1 font-bold py-2 px-4 border-b-4 border-red-400 hover:mt-0 hover:border-t-4 rounded hover:scale-105 "
-					>
-						Altri
-					</button>
-				</th>
-			</tfoot>
+			{#if $jobsStore.filteredJobs.length > totJobs}
+				<tfoot class="flex flex-row justify-start items-center w-full">
+					<th scope="row" class="px-1 py-2 lg:px-5 lg:py-3 text-base font-">
+						<button
+							on:click|preventDefault={moreJobs}
+							class="font-semibold text-gray-900 mt-1 font-bold py-2 px-4 border-b-4 border-red-400 hover:mt-0 hover:border-t-4 rounded hover:scale-105 "
+						>
+							Altri
+						</button>
+					</th>
+				</tfoot>
+			{/if}
 		{/if}
 	</table>
 </div>
