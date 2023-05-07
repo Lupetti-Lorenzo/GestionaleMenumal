@@ -56,22 +56,18 @@ const createJobsStore = () => {
 			const newJob = { ...store.jobs.find((job) => job.fields["Opportunity name"] === jobName) }
 			newJob.fields["dataScadenza"] = newDate
 			newJob.fields["StatoDB"] = newState
-			console.log("newJob: " + newJob.fields["statoDB"])
-			console.log("newJob: " + JSON.stringify(newJob))
-			// calcolo i jobs aggiornati - il job deve essere in un altra posizione, altrimenti la ui rembra che non sia cambiato nulla, lo metto in cima
+
 			const newJobs = [
-				newJob,
-				...store.jobs.filter((job) => job.fields["Opportunity name"] !== jobName)
+				...store.jobs.map((job) => (job.fields["Opportunity name"] !== jobName ? job : newJob))
 			]
 			const newFilteredJobs = [
-				newJob,
-				...store.filteredJobs.filter((job) => job.fields["Opportunity name"] !== jobName)
+				...store.filteredJobs.map((job) =>
+					job.fields["Opportunity name"] !== jobName ? job : newJob
+				)
 			]
-			// const newJobs = store.jobs.map((job) => job.fields["Opportunity name"] !== jobName ? job: newJob)
-			// const newFilteredJobs = store.filteredJobs.map((job) => job.fields["Opportunity name"] !== jobName ? job: newJob)
 
 			// aggiorno lo store
-			return { ...store, jobs: [...newJobs], filteredJobs: [...newFilteredJobs] }
+			return { ...store, jobs: newJobs, filteredJobs: newFilteredJobs }
 		})
 	}
 

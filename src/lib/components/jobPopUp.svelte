@@ -83,8 +83,12 @@
 				method: "PATCH",
 				body: data
 			})
+			// aggiungo l'update al local storage, al refresh se non mi sono riconnessio riaggiorno la ui con le modifiche fatte offline
+			const jobsOptimisticUI = JSON.parse(localStorage.jobsOptimisticUI)
+			jobsOptimisticUI.push({ job: data.job, newState: data.newState, newDate: data.newDate })
+			localStorage.jobsOptimisticUI = JSON.stringify(jobsOptimisticUI)
 			// aggiornoUI,chiudo loader globale e mando notifica di successo - optimistic UI
-			jobsStore.updateJobState(data.job, newState, newDate)
+			jobsStore.updateJobState(data.job, data.newState, data.newDate)
 			loaderStore.closeLoader()
 			sendPopUpNotification({ success: true }, notifPopupType, notifJobName, notifState)
 		}

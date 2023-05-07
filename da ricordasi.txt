@@ -19,63 +19,52 @@ LOG server sensati, tipo per login o robe del genere, tipo verifica sbagliata ec
 
 convertire in TS
 
-se non faccio unsub come nel token che succede reddit o stack
-
-
 aggiorna readme con link al sito online
 
 firebase click
 graph agggiustare che 100 impossibile e testo p  += in settimane
 keyed each dove manca
 
-se auth == null tokenmenager da "" e va refreshato
-gestire meglio altri, in base a quanti ne rimangono anche 
-popup fulscreen da sm
+
+
 restyling dei colori dei bottoni, disabilitati, offline, renderlo piu uniforme  e riusare il css
-incorporare online in offlinemenager
-DOMANI
+
 
 PWA
 
-updatejobs se da errore prendere il file dallo storage
-tokenmenumal settarlo a ""
-disabilitare interfaccia quando offline
-
-getJobs cached e token metto nella risposta il token vuoto 
-
-funzionalita offline: 
-    fare il pending delle richieste se sono offline - farle fare al client, il sw mi manda un messaggio con la richiesta da mettere in pending, appena sono online le eseguo tutte insieme e mando notifica 
-    intanto pending, poi vedere se notifiche hanno senso 
-    vedere situa notification e accetta notifiche dal browser 
-    anche icona offline come loader che va sotto alla notifica 
-
-token menager manual reload per quando ritorno online 
-casistica off e on e off subito? sulle richieste li a fa 
-
+vedere situa notification e accetta notifiche dal browser 
+    
 mettere icone menumal in manifest e in app.html icona - finire opengraph e meta tags
-icona offline resize telefono 
 w-full invece di screen a tutti 
-
-mettere email a tutti e magari altro per md o lg +
-
-posso fare pure logout, e una richiesta come le altre
-
-
-notifiche tipo se non sono sulla pagina e rivado online ti manda notifica che riprende le operazioni rimaste
-
-
-bottone setta stato per quelli senza stato 
-
-tabella filtro
-
-
-
 
 riorganizzare file in cartelle e anche nomi volendo anche per i loader vedere se posso fare di meglio 
 cambiare da whichpopup a type 
-se posso usare le variabili dello store
 
 
-per transition: 
-<p transition:fade>Fades in and out</p>
-	import { fade } from 'svelte/transition';
+DOMANI
+
+per refresh - oprovare a refresh fopo avere fatto modifica offline 
+Quando richiesta offline mettere in percivedJobsChanged in localstorage, quando ritorno online li leggo e modifico la ui
+quando ho fatto la richiesta appena online elimino anche il job 
+
+anche icona offline come loader che va sotto alla notifica  e loader 
+
+bottone setta stato per quelli senza stato 
+
+posso fare pure logout, e una richiesta come le altre e provare combinazione offline, logout e poi vado alla dashboard, invalidateAll rompe? magari controllo online ? invalidate : goto login
+se non sono passato dalla login non ho la pagina nella cache  - pagina di fallback in static volento - allettante
+
+oppure non lo fo, e bona, le richieste devo essere loggato per eseguirle
+
+ho aggiunto auth user per il executepending, almeno so che le fa solo se sono loggato
+
+mettere email a tutti e magari altro per md o lg +
+
+tabella filtro
+
+se auth == null tokenmenager da "" e va refreshato
+token menager manual reload per quando ritorno online 
+casistica off e on e off subito? sulle richieste li a fa 
+
+gestire meglio altri, e label in base a quanti ne rimangono anche 
+popup fulscreen da sm

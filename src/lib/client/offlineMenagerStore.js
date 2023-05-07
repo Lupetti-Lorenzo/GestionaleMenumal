@@ -7,21 +7,37 @@ import { loaderStore } from "./globalLoaderStore"
 
 const createOfflineStore = () => {
 	const store = writable({
-		requestsPending: [] // array di richieste nella forma - path
+		requestsPending: [], // array di richieste nella forma - path,
+		jobsOptimisticUI: [] // array con le modifiche fatte offline, da rifare quando refresho o riapro l'app
 	})
-	const { subscribe, update, set } = store
+	const { subscribe, update } = store
 
 	const syncStorage = () => {
 		if (browser) {
 			// se non e settato lo metto a [] - lo store è gia inizializzato a []
 			if (!localStorage.requestsPending) {
 				localStorage.requestsPending = JSON.stringify([])
-				return
+			} else {
+				// altrimenti prendo il valore dallo store e aggiorno lo store
+				const requestsPending = JSON.parse(localStorage.requestsPending)
+				update((store) => {
+					return { ...store, requestsPending }
+				})
 			}
-			// altrimenti prendo il valore dallo store e aggiorno lo store
-			const requestsPending = JSON.parse(localStorage.requestsPending)
-			set({ requestsPending })
-		}
+
+			// mi sincronizzo anche con jobsOptimisticUI
+			if (!localStorage.jobsOptimisticUI) {
+				// se non ce inizializzo a []
+				localStorage.jobsOptimisticUI = JSON.stringify([])
+				// store è gia a []
+			} else {
+				// prendo il valore dallo store e aggiorno lo store
+				const jobsOptimisticUI = JSON.parse(localStorage.jobsOptimisticUI)
+				update((store) => {
+					return { ...store, jobsOptimisticUI }
+				})
+			}
+		} else console.log("not online")
 	}
 
 	// aggiungi una richiesta all'array
@@ -32,15 +48,16 @@ const createOfflineStore = () => {
 		})
 	}
 
+	// eseguo le richieste in pending, attivata quando ritorno online - esegue le richieste e ripulisce il local storage
 	const executeRequestsPending = async () => {
 		loaderStore.showLoader() // loader globale per far sapere all'utente che sta sincronizzando
 		//chiamate non andate con successo
 		const requestRemaining = []
+		const indexes = [] // indici delle modifiche da eliminare dal local storage
 		// per ogni richiesta faccio la fetch
 		for (const request of get(store).requestsPending) {
 			const formData = new FormData()
 			for (const [key, value] of Object.entries(request.body)) formData.set(key, value)
-			// console.log(`fetch ${request.method} ${request.url} `)
 			try {
 				const res = await fetch(request.url, {
 					method: request.method,
@@ -49,26 +66,61 @@ const createOfflineStore = () => {
 				const response = await res.json()
 				// notifico l'utente solo se ci sono stati degli errori
 				if (response.error) notificationStore.showNotification(response.message, "error")
+				// per ogni richiesta che non da errore rimuovo anche dal localstorage e aggiorno pure l'array
+				const jobsOptimisticUI = JSON.parse(localStorage.jobsOptimisticUI) || []
+				const index = jobsOptimisticUI.findIndex(
+					(job) =>
+						job.job == request.body.job &&
+						job.newDate == request.body.newDate &&
+						job.newState == request.body.newState
+				)
+
+				if (index > -1) {
+					// aggiorno local storage
+					jobsOptimisticUI.splice(index, 1)
+					localStorage.jobsOptimisticUI = JSON.stringify(jobsOptimisticUI)
+					// rimuovo anche dallo store
+					update((store) => {
+						return { ...store, jobsOptimisticUI: jobsOptimisticUI.splice(index, 1) }
+					})
+				}
 			} catch (err) {
 				// se errore o non connessione la rimetto tra le pending
+				console.log("errore fetch pending request")
 				requestRemaining.push(request)
 			}
 		}
+
 		// schedulo l'update della tabella tra 1 secondo - do il tempo ad airtable di sincronizzare i dati e a me di tornare online per non usare i dati nella cache
 		setTimeout(async () => {
 			await jobsStore.updateJobs(false)
 			loaderStore.closeLoader() // dopo updatejobs l'interfaccia è aggiornata e chiudo il loader
 		}, 1000)
 		// dopo l'update viene automaticamente refreshata la tabella, se non ci sono stati errori il refresh non avra nessun cambiamento, dato che la optimistic ui ha gia cambiato tutto come in successo
-		// inizializzo lo store
-		set({ requestsPending: requestRemaining })
+		// inizializzo le richieste dello store
+		update((store) => {
+			return { ...store, requestsPending: requestRemaining }
+		})
+
+		return indexes
+	}
+
+	// renderizzo i jobs non sincronizzati quando sono offline
+	const renderOptimisticUI = () => {
+		update((store) => {
+			for (const job of store.jobsOptimisticUI) {
+				jobsStore.updateJobState(job.job, job.newState, job.newDate)
+			}
+			return { ...store, jobsOptimisticUI: [] }
+		})
 	}
 
 	return {
 		subscribe,
 		addRequest,
 		executeRequestsPending,
-		syncStorage
+		syncStorage,
+		renderOptimisticUI
 	}
 }
 

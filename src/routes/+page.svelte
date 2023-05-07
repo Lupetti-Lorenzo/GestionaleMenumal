@@ -1,4 +1,6 @@
 <script>
+	import { get } from "svelte/store"
+
 	import JobsTable from "$lib/components/jobsTable.svelte"
 	import MenuSwitch from "$lib/components/menuSwitch.svelte"
 	import StatisticsTable from "../lib/components/statisticsView.svelte"
@@ -6,14 +8,21 @@
 	import { jobsStore, searchHandler } from "$lib/client/jobsStore.js"
 	import { onMount } from "svelte"
 	import { offlineMenager } from "$lib/client/offlineMenagerStore"
+	import { online } from "$lib/client/onlineStore"
 
-	onMount(() => {
+	onMount(async () => {
 		// richiedo i jobs dall'api di airtable e li salvo in jobsStore, da cui viene creata la tabella e abilitata la funzionalita di ricerca
-		jobsStore.updateJobs()
-
+		await jobsStore.updateJobs()
 		// mi sincronizzo con le richieste nel local storage
 		offlineMenager.syncStorage()
-		// ogni volta che ce una nuova richiesta (cambia lo store), aggiorno localStorage con l'array di richieste
+		// // se sono offline e ci sono dei job non sincronizzati per refresh aggiorno la ui
+		// if (!$online && get(offlineMenager).jobsOptimisticUI.lenght !== 0) {
+		// 	const indexes = offlineMenager.renderOptimisticUI()
+		// 	console.log(JSON.stringify(indexes))
+		// 	console.log(JSON.stringify(get(offlineMenager).jobsOptimisticUI))
+		// }
+		if (!get(online)) offlineMenager.renderOptimisticUI()
+		// // ogni volta che ce una nuova richiesta (cambia lo store), aggiorno localStorage con l'array di richieste
 		offlineMenager.subscribe((store) => {
 			localStorage.requestsPending = JSON.stringify(store.requestsPending)
 		})
