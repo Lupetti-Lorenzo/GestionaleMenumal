@@ -19,6 +19,8 @@ LOG server sensati, tipo per login o robe del genere, tipo verifica sbagliata ec
 
 convertire in TS
 
+gestire meglio altri, e label in base a quanti ne rimangono anche 
+
 aggiorna readme con link al sito online
 
 firebase click
@@ -32,8 +34,6 @@ restyling dei colori dei bottoni, disabilitati, offline, renderlo piu uniforme  
 
 PWA
 
-vedere situa notification e accetta notifiche dal browser 
-    
 mettere icone menumal in manifest e in app.html icona - finire opengraph e meta tags
 w-full invece di screen a tutti 
 
@@ -43,20 +43,12 @@ cambiare da whichpopup a type
 
 DOMANI
 
-per refresh - oprovare a refresh fopo avere fatto modifica offline 
-Quando richiesta offline mettere in percivedJobsChanged in localstorage, quando ritorno online li leggo e modifico la ui
-quando ho fatto la richiesta appena online elimino anche il job 
-
-anche icona offline come loader che va sotto alla notifica  e loader 
-
 bottone setta stato per quelli senza stato 
 
 posso fare pure logout, e una richiesta come le altre e provare combinazione offline, logout e poi vado alla dashboard, invalidateAll rompe? magari controllo online ? invalidate : goto login
 se non sono passato dalla login non ho la pagina nella cache  - pagina di fallback in static volento - allettante
 
 oppure non lo fo, e bona, le richieste devo essere loggato per eseguirle
-
-ho aggiunto auth user per il executepending, almeno so che le fa solo se sono loggato
 
 mettere email a tutti e magari altro per md o lg +
 
@@ -66,5 +58,4 @@ se auth == null tokenmenager da "" e va refreshato
 token menager manual reload per quando ritorno online 
 casistica off e on e off subito? sulle richieste li a fa 
 
-gestire meglio altri, e label in base a quanti ne rimangono anche 
 popup fulscreen da sm

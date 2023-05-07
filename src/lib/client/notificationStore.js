@@ -1,35 +1,63 @@
-import { writable } from "svelte/store"
+import { writable, get } from "svelte/store"
 
 // Notification Store - gestisce la notifica che appare nella navbar, basta importarlo e chiamare showNotification con il messaggio e il tipo per far apparire la notifica
 // Migliorie: parametrizzare la durata, opzione per  mettere x per chiudere
 const createNotificationStore = () => {
-	const { subscribe, update, set } = writable({
+	const store = writable({
 		message: "",
 		type: "",
 		open: false,
-		prevTimeoutId: null
+		notifyQueue: []
 	})
+	const { subscribe, update, set } = store
 
-	const showNotification = (message, type) => {
-		//
-		update((store) => {
-			// se ce una notifica in corso interrompo il timeout
-			if (store.prevTimeoutId) {
-				clearTimeout(store.prevTimeoutId)
-			}
-
-			// faccio partire un timeout di 4 secondi che chiude il messaggio settando lo store
-			const newTimeoutId = setTimeout(function () {
-				set({ message: "", type: "", open: false, prevTimeoutId: null })
-			}, 4000)
-
-			return { message, type, open: true, prevTimeoutId: newTimeoutId }
+	const addNotification = (message, type) => {
+		// aggiungo la notifica
+		update((oldStore) => {
+			oldStore.notifyQueue.push({ message, type })
+			console.log("notifyQueue: " + JSON.stringify(oldStore.notifyQueue))
+			return { ...oldStore, notifyQueue: oldStore.notifyQueue }
 		})
+		// se è ciuso, apro la notifica
+		if (!get(store).open) {
+			console.log("Chiuso, diretto showNotification")
+			showNotification()
+		} else {
+			// se ce gia una notifica la metto in coda
+			console.log("Aperto, in coda!")
+		}
+	}
+
+	const showNotification = () => {
+		console.log("Show called")
+		const notifyQueue = get(store).notifyQueue
+		if (notifyQueue.length === 0) {
+			// notifiche finite, chiudo
+			set({ message: "", type: "", open: false, notifyQueue: [] })
+			return
+		}
+
+		// prendo la notifica in testa all'array
+		const newNotification = notifyQueue.shift()
+
+		// setto la notifica e la nuova coda
+		set({
+			message: newNotification.message,
+			type: newNotification.type,
+			open: true,
+			notifyQueue
+		})
+
+		// faccio partire un timeout di 4 secondi che chiama la prossima notifica
+		setTimeout(function () {
+			// next notifica
+			showNotification()
+		}, 4000)
 	}
 
 	return {
 		subscribe,
-		showNotification
+		addNotification
 	}
 }
 

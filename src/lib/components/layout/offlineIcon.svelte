@@ -1,11 +1,20 @@
 <script>
 	import { online } from "$lib/client/onlineStore"
+	import { notificationStore } from "$lib/client/notificationStore"
+	import { loaderStore } from "$lib/client/globalLoaderStore"
+
+	let top = "top-2"
+
+	// si sposta in basso in base a se ce una notifica o loader o entrambi
+	$: if ($notificationStore.open && $loaderStore.loading !== 0) top = "top-24"
+	else if ($notificationStore.open || $loaderStore.loading !== 0) top = "top-14"
+	else top = "top-2"
 </script>
 
 <!-- Se sono offline metto un icona di offline fixata in alto a destra-->
 {#if !$online}
-	<div class="fixed top-2 right-2 flex justify-end items-center">
-		<span class="p-3 bg-gray-200 rounded-lg">
+	<div class="fixed {top} right-2 text-white bg-gray-800 font-medium rounded-lg text-sm px-4 py-2">
+		<span class="w-4 h-4 text-gray-200 animate-spin fill-gray-600">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"

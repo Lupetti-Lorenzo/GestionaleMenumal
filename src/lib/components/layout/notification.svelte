@@ -4,7 +4,7 @@
 </script>
 
 {#if $notificationStore.open}
-	<div class="fixed top-2 right-2 font-medium text-sm -z-2">
+	<div class="fixed top-2 right-2 font-medium text-sm">
 		{#if type === "success"}
 			<p class="px-5 py-2.5 rounded-lg bg-teal-100 border-teal-500 shadow-md">
 				{$notificationStore.message}

@@ -116,19 +116,19 @@
 	const sendPopUpNotification = (response, notifPopupType, notifJobName, notifState) => {
 		// Notifica all'utente in base al popup e l'esito della chiamata
 		if (response.success && notifPopupType === "full")
-			notificationStore.showNotification(
+			notificationStore.addNotification(
 				`Stato di pagamento di ${notifJobName} aggiornato a ${CODICI_STATODB_MENUMAL[notifState]}`,
 				"success"
 			)
 		else if (response.success && notifPopupType === "trial")
-			notificationStore.showNotification(`Trial di ${notifJobName} esteso a ${newDate}`, "success")
+			notificationStore.addNotification(`Trial di ${notifJobName} esteso a ${newDate}`, "success")
 		else if (response.error && notifPopupType === "full")
-			notificationStore.showNotification(
+			notificationStore.addNotification(
 				`Errore nell' aggiornamento del pagamento di ${notifJobName}: ${response.message}`,
 				"error"
 			)
 		else if (response.error && notifPopupType === "trial")
-			notificationStore.showNotification(
+			notificationStore.addNotification(
 				`Errore nell'estenzione del trial di ${notifJobName}: ${response.message}`,
 				"error"
 			)
@@ -149,7 +149,7 @@
 		tabindex="-1"
 		class="fixed top-0 left-0 right-0 z-50 w-screen p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex flex-col items-center justify-center align-center"
 	>
-		<div class="relative w-screen md:max-w-2xl   ">
+		<div class="relative w-screen sm:max-w-2xl   ">
 			<!-- Modal content -->
 			<div class="relative bg-white rounded-lg shadow border-4 border-grey-400">
 				<!-- Modal header -->
