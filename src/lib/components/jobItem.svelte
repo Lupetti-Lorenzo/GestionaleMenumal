@@ -3,9 +3,9 @@
 
 	import { popUpStore } from "$lib/client/changeStatePopUpStore"
 	import { online } from "$lib/client/onlineStore"
+	import { token } from "$lib/client/tokenMenagerStore"
 
 	export let job
-	export let token
 
 	const jobName = job.fields["Opportunity name"]
 	const dbState = job.fields["StatoDB"] // stato di pagamento in cui è l'utente, 0 a vita, 1 trial, 2 stripe, 3 manuale, 4 disattivato
@@ -14,7 +14,7 @@
 
 	async function apriBackDoor() {
 		// fetcho il token e apro la pagina del job selezionato
-		window.open(`https://menumal.it/areaprivata/login.php?job=${jobName}&token=${token}`, "_blank")
+		window.open(`https://menumal.it/areaprivata/login.php?job=${jobName}&token=${$token}`, "_blank")
 	}
 
 	const apriPopup = () => {
@@ -22,7 +22,7 @@
 	}
 </script>
 
-<tr class="border-b border-gray-200">
+<tr class="border-b border-gray-200 overflow-hidden">
 	<!-- Nome e icona stato -->
 	<th
 		scope="row"
@@ -61,7 +61,7 @@
 
 	<!-- Dati dell'utente -->
 	<td
-		class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-center"
+		class="hidden sm:table-cell sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-center"
 	>
 		{expireDate}
 	</td>
@@ -71,7 +71,7 @@
 		{job.fields["Abbonamento €/mese"] || ""}
 	</td> -->
 	<td
-		class="hidden md:table-cell sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-center"
+		class="hidden lg:table-cell sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-center"
 	>
 		{job.fields["Email"] || ""}
 	</td>

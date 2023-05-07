@@ -25,22 +25,20 @@ LOG server sensati, tipo per login o robe del genere, tipo verifica sbagliata ec
 
 convertire in TS
 
-gestire meglio altri, e label in base a quanti ne rimangono anche 
-
 aggiorna readme con link al sito online
 
 firebase click
 aggiustare grafico
 loading button mettere default abilitato e invertire il resto
-keyed each dove manca
+ 
 
-restyling dei colori dei bottoni, disabilitati, offline, renderlo piu uniforme  e riusare il css
+DOMANI
 
-
-PWA
 riorganizzare file in cartelle e anche nomi volendo anche per i loader vedere se posso fare di meglio 
 
 trovare altro meflio di tipo abbonamemto
 
 mettere icone menumal in manifest e in app.html icona - finire opengraph e meta tags
-w-full invece di screen a tutti 
+
+restyling dei colori dei bottoni, disabilitati, offline, renderlo piu uniforme  e riusare il css
+

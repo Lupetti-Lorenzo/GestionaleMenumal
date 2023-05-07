@@ -16,11 +16,6 @@
 		// mi sincronizzo con le richieste nel local storage
 		offlineMenager.syncStorage()
 		// // se sono offline e ci sono dei job non sincronizzati per refresh aggiorno la ui
-		// if (!$online && get(offlineMenager).jobsOptimisticUI.lenght !== 0) {
-		// 	const indexes = offlineMenager.renderOptimisticUI()
-		// 	console.log(JSON.stringify(indexes))
-		// 	console.log(JSON.stringify(get(offlineMenager).jobsOptimisticUI))
-		// }
 		if (!get(online)) offlineMenager.renderOptimisticUI()
 		// // ogni volta che ce una nuova richiesta (cambia lo store), aggiorno localStorage con l'array di richieste
 		offlineMenager.subscribe((store) => {
@@ -40,8 +35,8 @@
 
 <!-- DASHBOARD -->
 
-<div id="" class="w-screen flex items-center flex-col justify-center">
-	<div class="flex items-center flex-col justify-center font-sans w-screen md:max-w-3xl">
+<div class="w-full h-full flex justify-center">
+	<div class="flex items-center flex-col justify-start font-sans w-full md:max-w-3xl h-full">
 		<MenuSwitch bind:menuSelection />
 		{#if menuSelection === "table"}
 			<JobsTable />

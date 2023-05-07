@@ -57,7 +57,7 @@
 </svelte:head>
 
 <section>
-	<div class="mt-20 flex flex-col items-center justify-start px-6 py-8 mx-auto md:h-screen lg:py-0">
+	<div class="mt-20 flex flex-col items-center justify-start px-6 py-8 mx-auto md:h-full lg:py-0">
 		<a
 			href="https://www.menumal.it/info.html"
 			class="flex items-center mb-6 text-2xl font-semibold text-gray-900"

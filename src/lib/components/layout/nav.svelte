@@ -33,7 +33,7 @@
 	}
 </script>
 
-<nav class="flex row justify-start items-center w-screen mb-4 p-2">
+<nav class="flex row justify-start items-center w-full mb-4 p-2">
 	<!-- <a href="/">Home</a> se sono in singin -->
 
 	{#if logged}

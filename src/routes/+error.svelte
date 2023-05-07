@@ -2,7 +2,7 @@
 	import { page } from "$app/stores"
 </script>
 
-<div class="flex items-center justify-center h-screen">
+<div class="flex items-center justify-center h-full">
 	<div class="bg-white">
 		{#if $page?.error}
 			<div class="flex flex-col items-center">

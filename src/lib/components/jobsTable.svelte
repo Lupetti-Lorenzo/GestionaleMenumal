@@ -6,7 +6,7 @@
 
 	import { online } from "$lib/client/onlineStore"
 	import { browser } from "$app/environment"
-	import { token } from "../client/tokenMenagerStore"
+	import { token } from "$lib/client/tokenMenagerStore"
 
 	// se sono sul browser, online e non ho un token lo refresho - anche per quando vado offline appena risono online riparte
 	$: if (browser && $online && $token === "") {
@@ -19,7 +19,7 @@
 
 	let totJobs = 50 // righe della tabella fatte vedere
 	// incrementatore di totjobs, bottone infondo
-	const moreJobs = () => (totJobs += 50)
+	const moreJobs = () => (totJobs += 40)
 </script>
 
 <!-- Popup specializzato per le azioni in questa tabella-->
@@ -53,7 +53,7 @@
 				<th scope="col" class="px-6 py-3">
 					<span class="sr-only">Cambia stato</span>
 				</th>
-				<th scope="col" class="px-6 py-3 sm:flex sm:row">
+				<th scope="col" class="hidden sm:table-cell px-6 py-3 sm:flex sm:row">
 					<span>Data scadenza</span>
 					<!-- bottone per ordinare per data scadenza -->
 					<button
@@ -88,7 +88,7 @@
 				<!-- <th scope="col" class="hidden sm:table-cell px-6 py-3">
 					<span>Tipo Abbonamento</span>
 				</th> -->
-				<th scope="col" class="hidden md:table-cell px-6 py-3">
+				<th scope="col" class="hidden lg:table-cell px-6 py-3">
 					<span>Email</span>
 				</th>
 			</tr>
@@ -97,7 +97,7 @@
 			<tbody class="text-gray-600 text-sm font-light">
 				<!-- Mostro i jobs filitrati -->
 				{#each $jobsStore.filteredJobs.slice(0, totJobs) as job (job)}
-					<JobItem {job} token={$token} />
+					<JobItem {job} />
 				{/each}
 			</tbody>
 			{#if $jobsStore.filteredJobs.length > totJobs}
