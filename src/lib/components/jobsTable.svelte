@@ -4,14 +4,19 @@
 
 	import { jobsStore } from "$lib/client/jobsStore.js"
 
-	import { online } from "$lib/client/onlineStore"
-	import { browser } from "$app/environment"
+	// import { online } from "$lib/client/onlineStore"
+	// import { browser } from "$app/environment"
 	import { token } from "$lib/client/tokenMenagerStore"
+	import { onMount } from "svelte"
+
+	onMount(() => {
+		token.startInterval()
+	})
 
 	// se sono sul browser, online e non ho un token lo refresho - anche per quando vado offline appena risono online riparte
-	$: if (browser && $online && $token === "") {
-		token.startInterval()
-	}
+	// $: if (browser && $online && $token === "") {
+	// 	token.startInterval()
+	// }
 
 	$: loadingJobs = $jobsStore.loading
 

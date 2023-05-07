@@ -13,13 +13,18 @@ async function getNewToken() {
 		method: "POST",
 		body: formData
 	})
-	const token = await res.text()
-	console.log(token)
-	return token
+	try {
+		const token = await res.json()
+		return token
+	} catch (err) {
+		const error = await res.text()
+		return error
+	}
 }
 
 const createTokenStore = () => {
-	const { subscribe, set } = writable("")
+	const store = writable("")
+	const { subscribe, set } = store
 	// si setta e ogni quarto d'ora refresha il token
 	const startInterval = () => {
 		getNewToken().then((token) => set(token))
