@@ -15,9 +15,11 @@
 
 	$: loadingJobs = $jobsStore.loading
 
-	let totJobs = 30 // righe della tabella fatte vedere
+	let dateFilterEnabled = false
+
+	let totJobs = 50 // righe della tabella fatte vedere
 	// incrementatore di totjobs, bottone infondo
-	const moreJobs = () => (totJobs += 15)
+	const moreJobs = () => (totJobs += 50)
 </script>
 
 <!-- Popup specializzato per le azioni in questa tabella-->
@@ -51,14 +53,42 @@
 				<th scope="col" class="px-6 py-3">
 					<span class="sr-only">Cambia stato</span>
 				</th>
-				<th scope="col" class="px-6 py-3">
+				<th scope="col" class="px-6 py-3 sm:flex sm:row">
 					<span>Data scadenza</span>
+					<!-- bottone per ordinare per data scadenza -->
+					<button
+						on:click|preventDefault={() => {
+							jobsStore.toggleDateFilter()
+							dateFilterEnabled = !dateFilterEnabled
+						}}
+						class="sm:ml-3 p-1 md:p-2 text-grey-500 {dateFilterEnabled
+							? 'border-2 border-gray-500 rounded-lg'
+							: ''}"
+						aria-label="ordina per data"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							aria-hidden="true"
+							focusable="false"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="w-5 h-5 md:w-6 md:h-6"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+							/>
+						</svg>
+					</button>
 				</th>
 				<!-- Questi dati non li mostro in mobile -->
-				<th scope="col" class="hidden sm:table-cell px-6 py-3">
+				<!-- <th scope="col" class="hidden sm:table-cell px-6 py-3">
 					<span>Tipo Abbonamento</span>
-				</th>
-				<th scope="col" class="hidden lg:table-cell px-6 py-3">
+				</th> -->
+				<th scope="col" class="hidden md:table-cell px-6 py-3">
 					<span>Email</span>
 				</th>
 			</tr>

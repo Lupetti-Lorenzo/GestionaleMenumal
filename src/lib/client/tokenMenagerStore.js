@@ -15,7 +15,6 @@ async function getNewToken() {
 		body: formData
 	})
 	const token = await res.json()
-	console.log(token)
 	return token
 }
 

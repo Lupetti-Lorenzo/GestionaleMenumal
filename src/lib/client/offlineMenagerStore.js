@@ -55,14 +55,18 @@ const createOfflineStore = () => {
 		const requestRemaining = []
 		const indexes = [] // indici delle modifiche da eliminare dal local storage
 		// per ogni richiesta faccio la fetch
+		// se esiste la logout, la faccio per prima
+
 		for (const request of get(store).requestsPending) {
 			const formData = new FormData()
-			for (const [key, value] of Object.entries(request.body)) formData.set(key, value)
+			for (const [key, value] of Object.entries(request?.body)) formData.set(key, value)
 			try {
 				const res = await fetch(request.url, {
 					method: request.method,
 					body: formData
 				})
+				// console.log(request.url)
+				// if (request.url === "/logout") continue
 				const response = await res.json()
 				// notifico l'utente solo se ci sono stati degli errori
 				if (response.error) notificationStore.addNotification(response.message, "error")
@@ -85,9 +89,10 @@ const createOfflineStore = () => {
 					})
 				}
 			} catch (err) {
-				// se errore o non connessione la rimetto tra le pending
+				// se errore o non connessione la rimetto tra le pending - non bene, se da errore lo ridara molto probabilmente, meglio mandare notifica
 				console.log("errore fetch pending request")
-				requestRemaining.push(request)
+				notificationStore.addNotification(err, "error")
+				//requestRemaining.push(request)
 			}
 		}
 

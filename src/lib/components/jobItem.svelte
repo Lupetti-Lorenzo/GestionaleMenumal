@@ -61,17 +61,17 @@
 
 	<!-- Dati dell'utente -->
 	<td
-		class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-left"
+		class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-center"
 	>
-		{job.fields["Data scadenza"] || ""}
+		{expireDate}
 	</td>
-	<td
-		class="hidden sm:table-cell sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-left"
+	<!-- <td
+		class="hidden sm:table-cell sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-center"
 	>
 		{job.fields["Abbonamento €/mese"] || ""}
-	</td>
+	</td> -->
 	<td
-		class="hidden lg:table-cell sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-left"
+		class="hidden md:table-cell sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-center"
 	>
 		{job.fields["Email"] || ""}
 	</td>

@@ -4,9 +4,10 @@ import { transformDate, parseDateFromSlash } from "$lib/client/utility/dateForma
 const createJobsStore = () => {
 	const { subscribe, set, update } = writable({
 		jobs: [],
-		orderedJobs: [],
 		filteredJobs: [],
 		search: "",
+		stateFilter: "",
+		dateFilter: false,
 		loading: false
 	})
 
@@ -16,9 +17,10 @@ const createJobsStore = () => {
 			if (loading) {
 				return {
 					jobs: [],
-					orderedJobs: [],
 					filteredJobs: [],
 					search: "",
+					stateFilter: "",
+					dateFilter: false,
 					loading
 				}
 			}
@@ -71,11 +73,18 @@ const createJobsStore = () => {
 		})
 	}
 
+	const toggleDateFilter = () => {
+		update((store) => {
+			return { ...store, dateFilter: !store.dateFilter }
+		})
+	}
+
 	return {
 		subscribe,
 		set,
 		updateJobs,
-		updateJobState
+		updateJobState,
+		toggleDateFilter
 	}
 }
 
@@ -84,10 +93,37 @@ export const jobsStore = createJobsStore()
 export const searchHandler = (store) => {
 	if (store.search == "") {
 		store.filteredJobs = store.jobs
-		return
+	} else {
+		// filtro la ricerca
+		store.filteredJobs = store.jobs.filter((job) =>
+			job.fields["Opportunity name"]?.toLowerCase().includes(store.search.toLowerCase())
+		)
 	}
 
-	store.filteredJobs = store.jobs.filter((job) =>
-		job.fields["Opportunity name"]?.toLowerCase().includes(store.search.toLowerCase())
-	)
+	// filtro per stato
+	if (store.stateFilter !== "") {
+		store.filteredJobs = store.filteredJobs.filter((job) =>
+			job.fields["StatoDB"]?.toLowerCase().includes(store.search.toLowerCase())
+		)
+	}
+
+	//ordino per datascadenza piu vicina a oggi se settata
+	if (store.dateFilter) {
+		store.filteredJobs = store.filteredJobs.sort((job1, job2) => {
+			const dataScadenza1 = job1.fields["dataScadenza"]
+			const dataScadenza2 = job2.fields["dataScadenza"]
+			job1 = dataScadenza1.split("-").join("")
+			job2 = dataScadenza2.split("-").join("")
+			return job1 > job2 ? -1 : job1 < job2 ? 1 : 0
+		})
+	} else {
+		// normalmente faccio vedere i jobs filtrati per data registrazione
+		store.filteredJobs = store.filteredJobs.sort((job1, job2) => {
+			const dataRegistrazione1 = job1.fields["dataRegistrazioneIT"]
+			const dataRegistrazione2 = job2.fields["dataRegistrazioneIT"]
+			job1 = dataRegistrazione1.split("-").reverse().join("")
+			job2 = dataRegistrazione2.split("-").reverse().join("")
+			return job1 > job2 ? -1 : job1 < job2 ? 1 : 0
+		})
+	}
 }

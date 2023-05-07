@@ -1,7 +1,11 @@
 <script>
+	import { goto } from "$app/navigation"
 	import { invalidateAll } from "$app/navigation"
+	// import { get } from "svelte/store"
+
 	import LoadingButton from "../loadingButton.svelte"
 	import { online } from "$lib/client/onlineStore"
+	// import { offlineMenager } from "$lib/client/offlineMenagerStore"
 
 	export let logged
 	export let email
@@ -10,8 +14,21 @@
 
 	const logout = async () => {
 		loading = true
+		// se sono offline metto la richiesta in pending e vado nella login
+		// if (!get(online)) {
+		// 	// aggiungo la richiesta alle pending
+		// 	offlineMenager.addRequest({
+		// 		url: "/logout",
+		// 		method: "POST",
+		// 		body: {}
+		// 	})
+		// 	// vado alla login
+		// 	//goto("/login")
+		// 	// settare auth user a null
+		// } else {
 		await fetch("/logout", { method: "POST" })
 		await invalidateAll()
+		// }
 		loading = false
 	}
 </script>
@@ -24,8 +41,8 @@
 		<!-- bottone logout, se sono offline è disabilitato -->
 		<span class="mr-2 mb-2"
 			><LoadingButton
-				text="LOGOUT"
 				disabled={!$online}
+				text="LOGOUT"
 				{loading}
 				on:completeCalled={logout}
 			/></span
