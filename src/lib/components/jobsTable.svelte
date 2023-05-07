@@ -9,9 +9,13 @@
 	import { token } from "$lib/client/tokenMenagerStore"
 	import { onMount } from "svelte"
 
+	let tokenn = ""
+
 	onMount(() => {
-		// inizializzo il token menager
-		token.subscribe((value) => {})
+		//token.startInterval()
+		token.subscribe((value) => {
+			tokenn = value
+		})
 	})
 
 	// se sono sul browser, online e non ho un token lo refresho - anche per quando vado offline appena risono online riparte
@@ -103,7 +107,7 @@
 			<tbody class="text-gray-600 text-sm font-light">
 				<!-- Mostro i jobs filitrati -->
 				{#each $jobsStore.filteredJobs.slice(0, totJobs) as job (job)}
-					<JobItem {job} />
+					<JobItem {job} token={tokenn} />
 				{/each}
 			</tbody>
 			{#if $jobsStore.filteredJobs.length > totJobs}
