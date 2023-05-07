@@ -15,21 +15,15 @@ const createNotificationStore = () => {
 		// aggiungo la notifica
 		update((oldStore) => {
 			oldStore.notifyQueue.push({ message, type })
-			console.log("notifyQueue: " + JSON.stringify(oldStore.notifyQueue))
 			return { ...oldStore, notifyQueue: oldStore.notifyQueue }
 		})
 		// se è ciuso, apro la notifica
 		if (!get(store).open) {
-			console.log("Chiuso, diretto showNotification")
 			showNotification()
-		} else {
-			// se ce gia una notifica la metto in coda
-			console.log("Aperto, in coda!")
 		}
 	}
 
 	const showNotification = () => {
-		console.log("Show called")
 		const notifyQueue = get(store).notifyQueue
 		if (notifyQueue.length === 0) {
 			// notifiche finite, chiudo

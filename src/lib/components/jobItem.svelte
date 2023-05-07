@@ -46,35 +46,34 @@
 			>Area privata</button
 		>
 	</td>
-	{#if dbState !== undefined}
-		<!-- Se non è settato lo stato nel db non faccio vedere i bottoni aggiuntivi -->
-		<!-- Bottone cambia stato, che apre il popup -->
+
+	<!-- Se non è settato lo stato nel db non faccio vedere i bottoni aggiuntivi -->
+	<!-- Bottone cambia stato, che apre il popup -->
+	<td
+		class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-s md:text-base md:whitespace-nowrap text-left"
+	>
+		<form method="POST" on:submit|preventDefault={apriPopup} data-id="full">
+			<button
+				type="submit"
+				class="inline-flex items-center px-2 py-3 md:py-4 md:px-5 text-gray-500 bg-gray-300 sm:rounded-md hover:bg-gray-400 hover:text-gray-600"
+				>Cambia stato</button
+			>
+		</form>
+	</td>
+
+	<!-- Bottone estendi free trial, apre il popup in versione trial-->
+	{#if dbState == "1"}
 		<td
 			class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-s md:text-base md:whitespace-nowrap text-left"
 		>
-			<form method="POST" on:submit|preventDefault={apriPopup} data-id="full">
+			<form method="POST" on:submit|preventDefault={apriPopup} data-id="trial">
 				<button
 					type="submit"
 					class="inline-flex items-center px-2 py-3 md:py-4 md:px-5 text-gray-500 bg-gray-300 sm:rounded-md hover:bg-gray-400 hover:text-gray-600"
-					>Cambia stato</button
+					>Estendi trial</button
 				>
 			</form>
 		</td>
-
-		<!-- Bottone estendi free trial, apre il popup in versione trial-->
-		{#if dbState == "1"}
-			<td
-				class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-s md:text-base md:whitespace-nowrap text-left"
-			>
-				<form method="POST" on:submit|preventDefault={apriPopup} data-id="trial">
-					<button
-						type="submit"
-						class="inline-flex items-center px-2 py-3 md:py-4 md:px-5 text-gray-500 bg-gray-300 sm:rounded-md hover:bg-gray-400 hover:text-gray-600"
-						>Estendi trial</button
-					>
-				</form>
-			</td>
-		{/if}
 	{/if}
 </tr>
 

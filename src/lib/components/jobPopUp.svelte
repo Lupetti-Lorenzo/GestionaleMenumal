@@ -37,7 +37,7 @@
 		open = popUpStore.open
 		whichPopUp = popUpStore.whichPopUp
 		popupData = { ...popUpStore.data }
-		newState = popupData.dbState
+		newState = popupData.dbState || "3"
 		popupData.expireDate =
 			popupData.expireDate || parseDateFromSlash(new Date().toLocaleDateString())
 		newDate = popupData.expireDate
