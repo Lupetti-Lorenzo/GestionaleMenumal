@@ -7,16 +7,15 @@ const createPopUpsStore = () => {
 		// jobName: "",
 		// registerDate: "",
 		// expireDate:
-		whichPopUp: "",
 		open: false
 	})
 
-	const showPopUp = (whichPopUp, data) => {
-		set({ open: true, data, whichPopUp })
+	const showPopUp = (data) => {
+		set({ open: true, data })
 	}
 
 	const closePopUp = () => {
-		set({ open: false, data: {}, whichPopUp: "" })
+		set({ open: false, data: {} })
 	}
 
 	return {

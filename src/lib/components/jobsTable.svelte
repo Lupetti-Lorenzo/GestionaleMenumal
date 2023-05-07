@@ -1,6 +1,6 @@
 <script>
 	import JobItem from "./jobItem.svelte"
-	import JobPopUp from "./jobPopUp.svelte"
+	import ChangeStatePopUp from "./changeStatePopUp.svelte"
 
 	import { jobsStore } from "$lib/client/jobsStore.js"
 	import { token } from "$lib/client/tokenMenagerStore"
@@ -15,13 +15,13 @@
 
 	$: loadingJobs = $jobsStore.loading
 
-	let totJobs = 20 // righe della tabella fatte vedere
+	let totJobs = 30 // righe della tabella fatte vedere
 	// incrementatore di totjobs, bottone infondo
-	const moreJobs = () => (totJobs += 10)
+	const moreJobs = () => (totJobs += 15)
 </script>
 
 <!-- Popup specializzato per le azioni in questa tabella-->
-<JobPopUp />
+<ChangeStatePopUp />
 
 <div class="{loadingJobs ? 'animate-pulse opacity-85' : ''} bg-white shadow-md my-4">
 	<!-- SEARCH FIELD -->
@@ -52,14 +52,20 @@
 					<span class="sr-only">Cambia stato</span>
 				</th>
 				<th scope="col" class="px-6 py-3">
-					<span class="sr-only">Estendi free trial</span>
+					<span>Data scadenza</span>
+				</th>
+				<!-- Questi dati non li mostro in mobile -->
+				<th scope="col" class="hidden sm:table-cell px-6 py-3">
+					<span>Tipo Abbonamento</span>
+				</th>
+				<th scope="col" class="hidden lg:table-cell px-6 py-3">
+					<span>Email</span>
 				</th>
 			</tr>
 		</thead>
 		{#if !loadingJobs}
 			<tbody class="text-gray-600 text-sm font-light">
-				<!-- Mostro i jobs filitrati, inizialmente 0 quindi la tabella risulta chiusa -->
-
+				<!-- Mostro i jobs filitrati -->
 				{#each $jobsStore.filteredJobs.slice(0, totJobs) as job (job)}
 					<JobItem {job} token={tokenn} />
 				{/each}

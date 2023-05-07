@@ -65,7 +65,7 @@ const createOfflineStore = () => {
 				})
 				const response = await res.json()
 				// notifico l'utente solo se ci sono stati degli errori
-				if (response.error) notificationStore.showNotification(response.message, "error")
+				if (response.error) notificationStore.addNotification(response.message, "error")
 				// per ogni richiesta che non da errore rimuovo anche dal localstorage e aggiorno pure l'array
 				const jobsOptimisticUI = JSON.parse(localStorage.jobsOptimisticUI) || []
 				const index = jobsOptimisticUI.findIndex(

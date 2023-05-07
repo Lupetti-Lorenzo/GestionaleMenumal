@@ -51,11 +51,9 @@ se non sono passato dalla login non ho la pagina nella cache  - pagina di fallba
 oppure non lo fo, e bona, le richieste devo essere loggato per eseguirle
 
 mettere email a tutti e magari altro per md o lg +
-
+bottone altri sparire se non ce ne sono altri
 tabella filtro
 
 se auth == null tokenmenager da "" e va refreshato
 token menager manual reload per quando ritorno online 
 casistica off e on e off subito? sulle richieste li a fa 
-
-popup fulscreen da sm

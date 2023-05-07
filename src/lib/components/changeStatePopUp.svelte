@@ -2,7 +2,7 @@
 	import { CODICI_STATODB_MENUMAL } from "$lib/constants"
 	import { get } from "svelte/store"
 	// STORES
-	import { popUpStore } from "$lib/client/jobPopUpStore"
+	import { popUpStore } from "$lib/client/changeStatePopUpStore"
 	import { notificationStore } from "$lib/client/notificationStore"
 	import { jobsStore } from "$lib/client/jobsStore.js"
 	import { authUser } from "$lib/client/authStore.js"
@@ -19,7 +19,6 @@
 
 	// variabili usate per renderizzare il popup
 	let open
-	let whichPopUp
 	let popupData
 
 	// nuovo stato, selezionato tramite select
@@ -31,18 +30,15 @@
 	//nuova data di scadenza, selezionato con DatePicker
 	let newDate // data bindata al datepicker
 
-	// quando cambia il contenuto  del popup aggiorno la ui
+	// viene chiamata quando clicco il bottone per aprire il popup, resetta il popup in base a chi ho cliccato
 	$: aggiornaUI($popUpStore)
 	function aggiornaUI(popUpStore) {
 		open = popUpStore.open
-		whichPopUp = popUpStore.whichPopUp
 		popupData = { ...popUpStore.data }
 		newState = popupData.dbState || "3"
 		popupData.expireDate =
 			popupData.expireDate || parseDateFromSlash(new Date().toLocaleDateString())
 		newDate = popupData.expireDate
-		//console.log(popupData.expireDate)
-		// errore nella new date, rivedere il flow e la loginca
 	}
 
 	let loading = false // variabile per mostrare il loader e disabilitare gli input durante il caricamento
@@ -60,7 +56,6 @@
 
 		// notify data
 		const notifJobName = popupData.jobName
-		const notifPopupType = whichPopUp
 		const notifState = newState
 
 		// i dati da mandare nel body
@@ -83,21 +78,21 @@
 				method: "PATCH",
 				body: data
 			})
-			// aggiungo l'update al local storage, al refresh se non mi sono riconnessio riaggiorno la ui con le modifiche fatte offline
+			// aggiungo l'update al local storage, al refresh se non mi sono riconnesso alla rete riaggiorno la ui con le modifiche fatte offline
 			const jobsOptimisticUI = JSON.parse(localStorage.jobsOptimisticUI)
 			jobsOptimisticUI.push({ job: data.job, newState: data.newState, newDate: data.newDate })
 			localStorage.jobsOptimisticUI = JSON.stringify(jobsOptimisticUI)
 			// aggiornoUI,chiudo loader globale e mando notifica di successo - optimistic UI
 			jobsStore.updateJobState(data.job, data.newState, data.newDate)
 			loaderStore.closeLoader()
-			sendPopUpNotification({ success: true }, notifPopupType, notifJobName, notifState)
+			sendPopUpNotification({ success: true }, notifJobName, notifState)
 		}
 		// se sono online faccio la normale chiamata all'api e aggiornamento con airtable
 		// aspetto la risposta e l'aggiornamento dei job poi chiudo il loader e faccio vedere la notifica
 		else {
 			// chiamata api
 			const formData = new FormData()
-			for (const [key, value] of Object.entries(data)) formData.set(key, value)
+			for (const [key, value] of Object.entries(data)) formData.set(key, value) // setto il form data in base alla costante data
 			const res = await fetch("api/changeJobState", {
 				method: "PATCH",
 				body: formData
@@ -109,25 +104,27 @@
 			const response = await res.json()
 			// chiudo loader globale e mando notifica
 			loaderStore.closeLoader()
-			sendPopUpNotification(response, notifPopupType, notifJobName, notifState)
+			sendPopUpNotification(response, notifJobName, notifState)
 		}
 	}
 
-	const sendPopUpNotification = (response, notifPopupType, notifJobName, notifState) => {
+	const sendPopUpNotification = (response, notifJobName, notifState) => {
 		// Notifica all'utente in base al popup e l'esito della chiamata
-		if (response.success && notifPopupType === "full")
+		if (response.success && notifState != 1)
 			notificationStore.addNotification(
 				`Stato di pagamento di ${notifJobName} aggiornato a ${CODICI_STATODB_MENUMAL[notifState]}`,
 				"success"
 			)
-		else if (response.success && notifPopupType === "trial")
+		else if (response.success && notifState == 1)
 			notificationStore.addNotification(`Trial di ${notifJobName} esteso a ${newDate}`, "success")
-		else if (response.error && notifPopupType === "full")
+		else if (response.error && notifState != 1)
+			// cambio di stato
 			notificationStore.addNotification(
 				`Errore nell' aggiornamento del pagamento di ${notifJobName}: ${response.message}`,
 				"error"
 			)
-		else if (response.error && notifPopupType === "trial")
+		else if (response.error && notifState == 1)
+			// trial
 			notificationStore.addNotification(
 				`Errore nell'estenzione del trial di ${notifJobName}: ${response.message}`,
 				"error"
@@ -149,18 +146,19 @@
 		tabindex="-1"
 		class="fixed top-0 left-0 right-0 z-50 w-screen p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex flex-col items-center justify-center align-center"
 	>
-		<div class="relative w-screen sm:max-w-2xl   ">
+		<div class="relative w-screen sm:max-w-2xl">
 			<!-- Modal content -->
 			<div class="relative bg-white rounded-lg shadow border-4 border-grey-400">
-				<!-- Modal header -->
+				<!-- Modal heade con nome, stato, messaggio e icona per chiudere -->
 				<div class="ml-4 flex items-start justify-between p-4 border-b rounded-t">
 					<h3 class="text-xl font-semibold text-gray-900">
 						{popupData.jobName}
 						<JobState dbState={popupData.dbState} />
 					</h3>
 					<h2 class="ml-7 text-xl font-semibold text-gray-900">
-						{whichPopUp == "full" ? "Cambia stato" : "Estendi trial"}
+						{popupData.dbState != "1" ? "Cambia stato" : "Modifica trial"}
 					</h2>
+					<!-- Bottone X in alto a destra del popup per chiudere -->
 					<button
 						on:click|preventDefault={popUpStore.closePopUp}
 						disabled={loading}
@@ -182,67 +180,47 @@
 						<span class="sr-only">Close modal</span>
 					</button>
 				</div>
-				<!-- Modal body -->
-				{#if whichPopUp == "full"}
-					<div class="p-7 space-y-6">
-						<h3 class="text-xl font-semibold text-gray-900">
-							Registrato il {popupData.registerDate}
-						</h3>
-						<span class="text-xl mr-3 font-semibold text-gray-900">Nuovo stato</span>
-						<select
-							bind:value={newState}
-							disabled={loading}
-							on:change={() => (newDate = popupData.expireDate)}
-						>
-							{#each codiciMenumalArray as codice}
-								<option value={codice.id}>
-									{codice.value}
-								</option>
-							{/each}
-						</select>
-						<br />
-						<!-- DatePicker, lo mostro solo se aggiorno lo stato a trial o manuale -->
-						{#if newState == "1" || newState == "3"}
-							<div class="no-wrap">
-								<span class="text-xl mr-2 font-semibold text-gray-900">Nuova scadenza</span>
-								<input
-									type="text"
-									bind:value={newDate}
-									class="mt-4 mb-2 pl-1 rounded-lg border-1 shadow"
-									disabled={loading}
-								/>
-							</div>
-							<DatePicker bind:value={newDate} />
-						{/if}
-					</div>
-				{:else if whichPopUp == "trial"}
-					<div class="p-7 space-y-6">
-						<h3 class="text-xl font-semibold text-gray-900 ">
-							Registrato il {popupData.registerDate}
-						</h3>
-						<span class="text-xl mr-2 font-semibold text-gray-900">Nuova scadenza</span>
-						<input type="text" bind:value={newDate} disabled={loading} class="mt-4 mb-2 pl-1" />
+				<!-- Modal body-->
+				<div class="p-7 space-y-6">
+					<h3 class="text-xl font-semibold text-gray-900">
+						Registrato il {popupData.registerDate}
+					</h3>
+					<span class="text-xl mr-3 font-semibold text-gray-900">Nuovo stato</span>
+					<select
+						bind:value={newState}
+						disabled={loading}
+						on:change={() => (newDate = popupData.expireDate)}
+					>
+						{#each codiciMenumalArray as codice}
+							<option value={codice.id}>
+								{codice.value}
+							</option>
+						{/each}
+					</select>
+					<br />
+					<!-- DatePicker, lo mostro solo se aggiorno lo stato a trial o manuale -->
+					{#if newState == "1" || newState == "3"}
+						<div class="no-wrap">
+							<span class="text-xl mr-2 font-semibold text-gray-900">Nuova scadenza</span>
+							<input
+								type="text"
+								bind:value={newDate}
+								class="mt-4 mb-2 pl-1 rounded-lg border-1 shadow"
+								disabled={loading}
+							/>
+						</div>
 						<DatePicker bind:value={newDate} />
-					</div>
-				{/if}
-
+					{/if}
+				</div>
 				<!-- Modal footer -->
 				<div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
+					<!-- bottone completa -->
 					<LoadingButton
 						{loading}
 						disabled={!edited}
 						text="Conferma"
 						on:completeCalled={changeState}
 					/>
-					<!-- bottone completa -->
-					<!-- <button
-						on:click|preventDefault={popUpStore.closePopUp}
-						type="button"
-						disabled={loading}
-						class="text-gray-500 ml-3 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
-						>Annulla</button
-					> -->
-					<!-- bottone annulla -->
 				</div>
 			</div>
 		</div>

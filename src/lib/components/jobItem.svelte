@@ -1,7 +1,7 @@
 <script>
 	import JobState from "./jobState.svelte"
 
-	import { popUpStore } from "$lib/client/jobPopUpStore"
+	import { popUpStore } from "$lib/client/changeStatePopUpStore"
 	import { online } from "$lib/client/onlineStore"
 
 	export let job
@@ -17,9 +17,8 @@
 		window.open(`https://menumal.it/areaprivata/login.php?job=${jobName}&token=${token}`, "_blank")
 	}
 
-	const apriPopup = (event) => {
-		const whichPopup = event.target.dataset.id
-		popUpStore.showPopUp(whichPopup, { jobName, registerDate, dbState, expireDate })
+	const apriPopup = () => {
+		popUpStore.showPopUp({ jobName, registerDate, dbState, expireDate })
 	}
 </script>
 
@@ -27,14 +26,15 @@
 	<!-- Nome e icona stato -->
 	<th
 		scope="row"
-		class="pl-2 sm:py-2 md:py-3 sm:px-3 md:px-5 lg:px-6 text-xs sm:text-s md:text-base text-left"
+		class="pl-2 sm:py-2 md:py-3 sm:px-3 md:px-5 lg:px-6 text-xs sm:text-sm md:text-base text-left"
 	>
 		{jobName}
 		<JobState {dbState} />
 	</th>
 	<!-- Bottoni -->
+	<!-- Bottone area privata -->
 	<td
-		class="sm:py-2 md:py-3 sm:px-3 md:px-5 lg:px-6 text-xs sm:text-s md:text-base md:whitespace-nowrap text-left"
+		class="p-1 sm:py-2 md:py-3 sm:px-3 md:px-5 lg:px-6 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-left"
 	>
 		<button
 			on:click|preventDefault={apriBackDoor}
@@ -42,39 +42,39 @@
 			type="button"
 			class="{!$online
 				? 'disabled'
-				: 'text-gray-500 bg-gray-300 hover:bg-gray-400 hover:text-gray-600'} inline-flex items-center px-2 py-3 md:py-4 md:px-5   sm:rounded-md"
+				: 'text-gray-500 bg-gray-300 hover:bg-gray-400 hover:text-gray-600'} inline-flex items-center px-2 py-3 md:py-4 md:px-5 rounded-md"
 			>Area privata</button
 		>
 	</td>
-
-	<!-- Se non è settato lo stato nel db non faccio vedere i bottoni aggiuntivi -->
 	<!-- Bottone cambia stato, che apre il popup -->
 	<td
-		class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-s md:text-base md:whitespace-nowrap text-left"
+		class="p-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-left"
 	>
-		<form method="POST" on:submit|preventDefault={apriPopup} data-id="full">
+		<form method="POST" on:submit|preventDefault={apriPopup}>
 			<button
 				type="submit"
-				class="inline-flex items-center px-2 py-3 md:py-4 md:px-5 text-gray-500 bg-gray-300 sm:rounded-md hover:bg-gray-400 hover:text-gray-600"
-				>Cambia stato</button
+				class="inline-flex items-center px-2 py-3 md:py-4 md:px-5 text-gray-500 bg-gray-300 rounded-md hover:bg-gray-400 hover:text-gray-600"
+				>{dbState != "1" ? "Cambia stato" : "Modifica trial"}</button
 			>
 		</form>
 	</td>
 
-	<!-- Bottone estendi free trial, apre il popup in versione trial-->
-	{#if dbState == "1"}
-		<td
-			class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-s md:text-base md:whitespace-nowrap text-left"
-		>
-			<form method="POST" on:submit|preventDefault={apriPopup} data-id="trial">
-				<button
-					type="submit"
-					class="inline-flex items-center px-2 py-3 md:py-4 md:px-5 text-gray-500 bg-gray-300 sm:rounded-md hover:bg-gray-400 hover:text-gray-600"
-					>Estendi trial</button
-				>
-			</form>
-		</td>
-	{/if}
+	<!-- Dati dell'utente -->
+	<td
+		class="sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-left"
+	>
+		{job.fields["Data scadenza"] || ""}
+	</td>
+	<td
+		class="hidden sm:table-cell sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-left"
+	>
+		{job.fields["Abbonamento €/mese"] || ""}
+	</td>
+	<td
+		class="hidden lg:table-cell sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-left"
+	>
+		{job.fields["Email"] || ""}
+	</td>
 </tr>
 
 <style>
