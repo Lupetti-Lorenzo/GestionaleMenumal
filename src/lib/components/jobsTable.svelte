@@ -10,12 +10,13 @@
 	import { onMount } from "svelte"
 
 	onMount(() => {
-		token.startInterval()
+		// inizializzo il token menager
+		token.subscribe((value) => {})
 	})
 
 	// se sono sul browser, online e non ho un token lo refresho - anche per quando vado offline appena risono online riparte
 	// $: if (browser && $online && $token === "") {
-	// 	token.startInterval()
+
 	// }
 
 	$: loadingJobs = $jobsStore.loading
