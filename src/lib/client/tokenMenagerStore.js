@@ -7,7 +7,6 @@ import { writable } from "svelte/store"
 async function getNewToken() {
 	// non loggato o offline non faccio chiamata
 	if (get(authUser) == null || !get(online)) return ""
-	console.log()
 	const formData = new FormData()
 	formData.set("uid", get(authUser).id)
 	const res = await fetch("api/createTokenMenumal", {
@@ -15,6 +14,7 @@ async function getNewToken() {
 		body: formData
 	})
 	const token = await res.text()
+	console.log(token)
 	return token
 }
 
