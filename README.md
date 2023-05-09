@@ -1,14 +1,14 @@
-## Developing
+# Developing
 
 Appena scaricata la repository Runnare `npm install` per installare le dipendenze
 start a development server:
 
 ```bash
-`npm run dev` 
+`npm run dev`
 `npm run dev -- --open` per aprirlo automaticamente in una pagina sul browser
 ```
 
-## Building
+# Building
 
 To create a production version of your app:
 
@@ -34,3 +34,7 @@ You can preview the production build with `npm run preview`.
     # `--mount type=bind,source="$(pwd)"/data/,target=/app/data/ \`
     `gestionale`
 ```
+
+## Link al sito in production
+
+[https://gestionale-menumal.vercel.app/](https://gestionale-menumal.vercel.app/)

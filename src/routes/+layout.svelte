@@ -12,7 +12,7 @@
 	import { offlineMenager } from "$lib/client/offlineMenagerStore"
 
 	import { page } from "$app/stores"
-	import { beforeUpdate, onMount } from "svelte"
+	import { afterUpdate } from "svelte"
 	import { invalidateAll } from "$app/navigation"
 
 	// se sono online e ci sono delle pending requests, le eseguo
@@ -20,21 +20,11 @@
 		offlineMenager.executeRequestsPending()
 
 	// controllo per refreshare quando user non autenticato e non sono in login
-	beforeUpdate(async () => {
+	afterUpdate(async () => {
 		if ($authUser == null && $page.url.pathname !== "/login") {
 			console.log("$authUser == null e non in login")
 			await invalidateAll()
 		}
-	})
-
-	// se non settato, richiede il permesso di mandare notifiche
-	onMount(() => {
-		if (
-			"Notification" in window &&
-			window.Notification.permission !== "granted" &&
-			window.Notification.permission !== "denied"
-		)
-			window.Notification.requestPermission()
 	})
 </script>
 

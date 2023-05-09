@@ -53,10 +53,8 @@ const createOfflineStore = () => {
 		loaderStore.showLoader() // loader globale per far sapere all'utente che sta sincronizzando
 		//chiamate non andate con successo
 		const requestRemaining = []
-		const indexes = [] // indici delle modifiche da eliminare dal local storage
 		// per ogni richiesta faccio la fetch
-		// se esiste la logout, la faccio per prima
-
+		let fetchCompleted = 0
 		for (const request of get(store).requestsPending) {
 			const formData = new FormData()
 			for (const [key, value] of Object.entries(request?.body)) formData.set(key, value)
@@ -70,7 +68,7 @@ const createOfflineStore = () => {
 				const response = await res.json()
 				// notifico l'utente solo se ci sono stati degli errori
 				if (response.error) notificationStore.addNotification(response.message, "error")
-				// per ogni richiesta che non da errore rimuovo anche dal localstorage e aggiorno pure l'array
+				//  rimuovo la richiesta dal localStorage se l'avevo renderizzata senza connessione - nel jobsOptimisticUi
 				const jobsOptimisticUI = JSON.parse(localStorage.jobsOptimisticUI) || []
 				const index = jobsOptimisticUI.findIndex(
 					(job) =>
@@ -88,6 +86,7 @@ const createOfflineStore = () => {
 						return { ...store, jobsOptimisticUI: jobsOptimisticUI.splice(index, 1) }
 					})
 				}
+				fetchCompleted++ // aggiorno il count di richieste completate
 			} catch (err) {
 				// se errore o non connessione la rimetto tra le pending - non bene, se da errore lo ridara molto probabilmente, meglio mandare notifica
 				console.log("errore fetch pending request")
@@ -96,6 +95,7 @@ const createOfflineStore = () => {
 			}
 		}
 
+		const totFetchs = get(store).requestsPending.length // numero delle chiamate per la notifica
 		// schedulo l'update della tabella tra 1 secondo - do il tempo ad airtable di sincronizzare i dati e a me di tornare online per non usare i dati nella cache
 		setTimeout(async () => {
 			await jobsStore.updateJobs(false)
@@ -104,7 +104,7 @@ const createOfflineStore = () => {
 			if ("Notification" in window && window.Notification.permission === "granted") {
 				new window.Notification("Modifiche offline eseguite", {
 					lang: "it",
-					body: "Sei ritornato online e ti sei sincronizzato con successo!",
+					body: `Sei ritornato online e ti sei sincronizzato con successo! \n${fetchCompleted}/${totFetchs} andate a buon fine.`,
 					icon: "./icon192.png",
 					vibrate: [200, 100, 200]
 				})
@@ -115,8 +115,6 @@ const createOfflineStore = () => {
 		update((store) => {
 			return { ...store, requestsPending: requestRemaining }
 		})
-
-		return indexes
 	}
 
 	// renderizzo i jobs non sincronizzati quando sono offline

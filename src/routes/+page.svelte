@@ -10,14 +10,14 @@
 	import { offlineMenager } from "$lib/client/offlineMenagerStore"
 	import { online } from "$lib/client/onlineStore"
 
-	onMount(() => {
+	onMount(async () => {
 		// richiedo i jobs dall'api di airtable e li salvo in jobsStore, da cui viene creata la tabella e abilitata la funzionalita di ricerca
-		jobsStore.updateJobs()
+		await jobsStore.updateJobs()
 		// mi sincronizzo con le richieste nel local storage
 		offlineMenager.syncStorage()
 		// // se sono offline e ci sono dei job non sincronizzati per refresh aggiorno la ui
 		if (!get(online)) offlineMenager.renderOptimisticUI()
-		// // ogni volta che ce una nuova richiesta (cambia lo store), aggiorno localStorage con l'array di richieste
+		// // ogni volta che aggiungo una nuova richiesta, aggiorno localStorage con l'array di richieste
 		offlineMenager.subscribe((store) => {
 			localStorage.requestsPending = JSON.stringify(store.requestsPending)
 		})

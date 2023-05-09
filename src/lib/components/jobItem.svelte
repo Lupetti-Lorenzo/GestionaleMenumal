@@ -65,15 +65,15 @@
 	>
 		{expireDate}
 	</td>
-	<!-- <td
-		class="hidden sm:table-cell sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-center"
-	>
-		{job.fields["Abbonamento €/mese"] || ""}
-	</td> -->
 	<td
 		class="hidden lg:table-cell sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-center"
 	>
 		{job.fields["Email"] || ""}
+	</td>
+	<td
+		class="hidden xl:table-cell sm:py-2 md:py-3 sm:px-3 md:px-5 text-xs sm:text-sm md:text-base md:whitespace-nowrap text-center"
+	>
+		{job.fields["Status"] || ""}
 	</td>
 </tr>
 

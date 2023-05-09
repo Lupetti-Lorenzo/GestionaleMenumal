@@ -72,6 +72,14 @@
 
 		// se sono offline aggiungo la richiesta alle pending requests e aggiorno la ui manualmente
 		if (!get(online)) {
+			// chiedo all'utente se vuole ricevere notifiche sugli aggiornamenti completati in background
+			// se le notifiche non sono settate
+			if (
+				"Notification" in window &&
+				window.Notification.permission !== "granted" &&
+				window.Notification.permission !== "denied"
+			)
+				window.Notification.requestPermission()
 			// aggiungo la richiesta alle pending
 			offlineMenager.addRequest({
 				url: "api/changeJobState",

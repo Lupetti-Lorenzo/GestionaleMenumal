@@ -4,24 +4,12 @@
 
 	import { jobsStore } from "$lib/client/jobsStore.js"
 
-	// import { online } from "$lib/client/onlineStore"
-	// import { browser } from "$app/environment"
-	import { token } from "$lib/client/tokenMenagerStore"
-	import { onMount } from "svelte"
-
-	let tokenn = ""
-
-	onMount(() => {
-		//token.startInterval()
-		token.subscribe((value) => {
-			tokenn = value
-		})
-	})
+	import { online } from "$lib/client/onlineStore"
+	import { browser } from "$app/environment"
+	import { token } from "$lib/client/tokenAreaPrivataStore"
 
 	// se sono sul browser, online e non ho un token lo refresho - anche per quando vado offline appena risono online riparte
-	// $: if (browser && $online && $token === "") {
-
-	// }
+	$: if (browser && $online && $token === "") token.setToken()
 
 	$: loadingJobs = $jobsStore.loading
 
@@ -63,6 +51,7 @@
 				<th scope="col" class="px-6 py-3">
 					<span class="sr-only">Cambia stato</span>
 				</th>
+				<!-- Questi dati non li mostro in mobile -->
 				<th scope="col" class="hidden sm:table-cell px-6 py-3 sm:flex sm:row">
 					<span>Data scadenza</span>
 					<!-- bottone per ordinare per data scadenza -->
@@ -94,12 +83,11 @@
 						</svg>
 					</button>
 				</th>
-				<!-- Questi dati non li mostro in mobile -->
-				<!-- <th scope="col" class="hidden sm:table-cell px-6 py-3">
-					<span>Tipo Abbonamento</span>
-				</th> -->
 				<th scope="col" class="hidden lg:table-cell px-6 py-3">
 					<span>Email</span>
+				</th>
+				<th scope="col" class="hidden xl:table-cell px-6 py-3">
+					<span>Status</span>
 				</th>
 			</tr>
 		</thead>
@@ -107,7 +95,7 @@
 			<tbody class="text-gray-600 text-sm font-light">
 				<!-- Mostro i jobs filitrati -->
 				{#each $jobsStore.filteredJobs.slice(0, totJobs) as job (job)}
-					<JobItem {job} token={tokenn} />
+					<JobItem {job} token={$token} />
 				{/each}
 			</tbody>
 			{#if $jobsStore.filteredJobs.length > totJobs}
