@@ -1,10 +1,6 @@
 
 la logout non elimina la sessione su firebase, se non sono loggato e metto nei cookies la mia sessione precedente funziona ancora...
 session cookie non possono essere revocati, come fo? consigliano di gestirlo nel database con un array di toke e se sono expired dalla logout
-in dashboard if !user await invalidateall invalidateall dopo login? -- oppure modificare userauth subito dopo
-- forse risolto ma devo vedere meglio come comunicare con le azioni
-- invece di onmount quella doopo per la invalidateall?
-
 
 in singup server includere anche la creazione dell'utente con adminsdk
 creare l'utente con admin sdk potrebbe essere una soluzione, cosi creo utente, prendo uid, creo database user e se ce errore lo elimino
@@ -15,17 +11,14 @@ se sono in singup mettere in nav il link per andare alla home
 dopo pulire il database di account pacchi
 
 posso fare pure logout, e una richiesta come le altre e provare combinazione offline, logout e poi vado alla dashboard, invalidateAll rompe? magari controllo online ? invalidate : goto login
-se non sono passato dalla login non ho la pagina nella cache  - pagina di fallback in static volento - allettante
-oppure non lo fo, e bona, le richieste devo essere loggato per eseguirle
-logout ci ho provato ma e un po piu un casino col settare i cookies
+se non sono passato dalla login non ho la pagina nella cache  - pagina di fallback in static volento 
+logout ci ho provato ma e un po piu un casino col settare i cookies dato che non lho messo in api 
 logout if offline  e !authuser goto(./paginaFallback)
 
 errors.svelte e --- fare throw error per certe cose---
 LOG server sensati, tipo per login o robe del genere, tipo verifica sbagliata ecc
 
 convertire in TS
-
-aggiorna readme con link al sito online
 
 firebase click
 aggiustare grafico
@@ -34,11 +27,15 @@ loading button mettere default abilitato e invertire il resto
 
 DOMANI
 
-riorganizzare file in cartelle e anche nomi volendo anche per i loader vedere se posso fare di meglio 
-
 trovare altro meflio di tipo abbonamemto
 
 mettere icone menumal in manifest e in app.html icona - finire opengraph e meta tags
 
 restyling dei colori dei bottoni, disabilitati, offline, renderlo piu uniforme  e riusare il css
+
+vedere se tokenmenageer con onmount qualcosaltro posso fare con offfline
+
+aggiorna readme con link al sito online
+
+prove finali e consegna
 

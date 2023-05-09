@@ -2,8 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+	--blue: #1e90ff;
+	--bg: ##dee3c1;
+	--red: #c64749;
+}
+
 html,
 body {
 	width: 100%;
 	height: 100%;
+	background-color: var(--bg);
 }

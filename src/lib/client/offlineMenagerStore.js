@@ -100,6 +100,15 @@ const createOfflineStore = () => {
 		setTimeout(async () => {
 			await jobsStore.updateJobs(false)
 			loaderStore.closeLoader() // dopo updatejobs l'interfaccia è aggiornata e chiudo il loader
+			// mando notifica di sincronizzazione
+			if ("Notification" in window && window.Notification.permission === "granted") {
+				new window.Notification("Modifiche offline eseguite", {
+					lang: "it",
+					body: "Sei ritornato online e ti sei sincronizzato con successo!",
+					icon: "./icon192.png",
+					vibrate: [200, 100, 200]
+				})
+			}
 		}, 1000)
 		// dopo l'update viene automaticamente refreshata la tabella, se non ci sono stati errori il refresh non avra nessun cambiamento, dato che la optimistic ui ha gia cambiato tutto come in successo
 		// inizializzo le richieste dello store
