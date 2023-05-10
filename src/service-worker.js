@@ -67,17 +67,16 @@ self.addEventListener("fetch", (event) => {
 				}
 				return response
 			} catch {
-				let res = cache.match(event.request)
-				if (!res) {
-					// non ho la risposta nella cache, riorno una risposta
-					// per ora l'unica get che faccio dopo la connessione ho è la getJobs
-					console.log("Non cached e offline: " + event.request.url)
-					const fallbackResponse = []
-					return new Response(JSON.stringify(fallbackResponse), {
-						headers: { "Content-Type": "application/json" }
-					})
-				}
 				return cache.match(event.request)
+				// if (!res) {
+				// 	// non ho la risposta nella cache, riorno la pagina di fallback
+				// 	//return caches.match("/offline.html")
+				// 	// console.log("Non cached e offline: " + event.request.url)
+				// 	const fallbackResponse = []
+				// 	return new Response(JSON.stringify(fallbackResponse), {
+				// 		headers: { "Content-Type": "application/json" }
+				// 	})
+				// } else return res
 			}
 	}
 

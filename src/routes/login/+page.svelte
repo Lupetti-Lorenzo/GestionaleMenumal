@@ -38,7 +38,7 @@
 					const result = deserialize(await res.text())
 					if (result.data.success) {
 						//login successfull
-						offlineMenager.setClientLogout(false)
+						offlineMenager.setClientLogout("no") // setto a false per sicurezza
 						await invalidateAll() // per richiamare la load, cosí aggiorna user.locals e lo store authUser
 						goto("/")
 						notificationStore.showNotification("Login effettuato con successo!", "success")

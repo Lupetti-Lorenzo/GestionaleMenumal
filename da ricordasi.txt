@@ -23,7 +23,7 @@ loading button mettere default abilitato e invertire chi lo chiama
 
 DOMANI
 
-local storage logout
+local storage logout - per impedire la navigazione rimuovo dai cookies la pagina?
 
 restyling dei colori dei bottoni, disabilitati, offline, renderlo piu uniforme  e riusare il css
 

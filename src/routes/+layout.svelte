@@ -12,11 +12,17 @@
 	import { offlineMenager } from "$lib/client/offlineMenagerStore"
 
 	import { page } from "$app/stores"
-	//import { goto } from "$app/navigation"
-
-	//import { afterUpdate } from "svelte"
 	import { invalidateAll } from "$app/navigation"
+	import { onMount } from "svelte"
 
+	onMount(async () => {
+		// mi sincronizzo con i dati offline nel local storage
+		offlineMenager.syncStorage()
+		// sincronizzo lo store con il local storage
+		offlineMenager.subscribe((store) => {
+			localStorage.clientLogout = store.clientLogout
+		})
+	})
 	// se sono online e ci sono delle pending requests, le eseguo
 	$: if ($authUser && $online && $offlineMenager.requestsPending.length !== 0)
 		offlineMenager.executeRequestsPending()
@@ -28,7 +34,7 @@
 	}
 
 	// per offline - appena ritorno online dopo un logout da offline faccio la fetch /logout
-	$: if ($offlineMenager.clientLogout && $online) {
+	$: if ($offlineMenager.clientLogout === "yes" && $online) {
 		fetch("api/logout", { method: "POST" }).then(() => {
 			offlineMenager.setClientLogout(false)
 			invalidateAll()

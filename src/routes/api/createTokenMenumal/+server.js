@@ -19,7 +19,7 @@ export async function POST({ request }) {
 		const token = await res.json()
 		return json(token)
 	} catch (err) {
-		const error = await res.text()
+		const error = ""
 		return json(error)
 	}
 }

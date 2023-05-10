@@ -6,7 +6,7 @@ export const authUser = derived(
 	[page, offlineMenager],
 	($values, set) => {
 		// se faccio logout da offline setto questa variabile per  "simulare" il non loggato
-		if ($values[1].clientLogout) {
+		if ($values[1].clientLogout === "yes") {
 			set(null)
 			return
 		}

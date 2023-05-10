@@ -20,14 +20,14 @@
 		if (!get(online)) {
 			// vado alla login
 			goto("/login")
-			// setto user a null
-			offlineMenager.setClientLogout(true)
-			// mostro notifica
-			notificationStore.addNotification(`Logout effettuato con successo!`, "success")
+			// setto logout
+			offlineMenager.setClientLogout("yes")
 		} else {
 			await fetch("api/logout", { method: "POST" })
 			await invalidateAll()
 		}
+		// mostro notifica e disabilito il loader
+		notificationStore.addNotification(`Logout effettuato con successo!`, "success")
 		loading = false
 	}
 </script>

@@ -9,7 +9,7 @@ const createOfflineStore = () => {
 	const store = writable({
 		requestsPending: [], // array di richieste nella forma - path,
 		jobsOptimisticUI: [], // array con le modifiche fatte offline, da rifare quando refresho o riapro l'app
-		clientLogout: false
+		clientLogout: "no"
 	})
 	const { subscribe, update } = store
 
@@ -36,6 +36,15 @@ const createOfflineStore = () => {
 				const jobsOptimisticUI = JSON.parse(localStorage.jobsOptimisticUI)
 				update((store) => {
 					return { ...store, jobsOptimisticUI }
+				})
+			}
+			if (!localStorage.clientLogout) {
+				localStorage.clientLogout = "no"
+			} else {
+				// prendo il valore dallo store e aggiorno lo store
+				const clientLogout = localStorage.clientLogout
+				update((store) => {
+					return { ...store, clientLogout }
 				})
 			}
 		} else console.log("not online")
