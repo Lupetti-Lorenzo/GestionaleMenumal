@@ -12,20 +12,28 @@
 	import { offlineMenager } from "$lib/client/offlineMenagerStore"
 
 	import { page } from "$app/stores"
-	import { afterUpdate } from "svelte"
+	//import { goto } from "$app/navigation"
+
+	//import { afterUpdate } from "svelte"
 	import { invalidateAll } from "$app/navigation"
 
 	// se sono online e ci sono delle pending requests, le eseguo
 	$: if ($authUser && $online && $offlineMenager.requestsPending.length !== 0)
 		offlineMenager.executeRequestsPending()
 
-	// controllo per refreshare quando user non autenticato e non sono in login
-	afterUpdate(async () => {
-		if ($authUser == null && $page.url.pathname !== "/login") {
-			console.log("$authUser == null e non in login")
-			await invalidateAll()
-		}
-	})
+	// controllo per refreshare quando user non autenticato e non sono in login - se faccio logout col client non mi interessa
+	$: if (!$authUser && $page.url.pathname !== "/login" && !$offlineMenager.clientLogout) {
+		console.log("$authUser == null e non in login")
+		invalidateAll()
+	}
+
+	// per offline - appena ritorno online dopo un logout da offline faccio la fetch /logout
+	$: if ($offlineMenager.clientLogout && $online) {
+		fetch("api/logout", { method: "POST" }).then(() => {
+			offlineMenager.setClientLogout(false)
+			invalidateAll()
+		})
+	}
 </script>
 
 <!-- Bindo lo stato della connessione del client ad uno store accedibile da ogni componente, per modificare l'interfaccia di conseguenza -->

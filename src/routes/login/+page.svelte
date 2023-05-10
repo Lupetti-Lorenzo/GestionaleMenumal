@@ -6,7 +6,10 @@
 	import { signInWithEmailAndPassword, inMemoryPersistence } from "firebase/auth"
 	import { invalidateAll } from "$app/navigation"
 	import { notificationStore } from "$lib/client/notificationStore"
+	import { offlineMenager } from "$lib/client/offlineMenagerStore"
+
 	const { auth } = getFirebase()
+
 	let loading = false
 	let email, password
 	// messaggi di errore
@@ -35,6 +38,7 @@
 					const result = deserialize(await res.text())
 					if (result.data.success) {
 						//login successfull
+						offlineMenager.setClientLogout(false)
 						await invalidateAll() // per richiamare la load, cosí aggiorna user.locals e lo store authUser
 						goto("/")
 						notificationStore.showNotification("Login effettuato con successo!", "success")

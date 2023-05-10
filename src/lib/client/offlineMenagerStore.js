@@ -8,7 +8,8 @@ import { loaderStore } from "./globalLoaderStore"
 const createOfflineStore = () => {
 	const store = writable({
 		requestsPending: [], // array di richieste nella forma - path,
-		jobsOptimisticUI: [] // array con le modifiche fatte offline, da rifare quando refresho o riapro l'app
+		jobsOptimisticUI: [], // array con le modifiche fatte offline, da rifare quando refresho o riapro l'app
+		clientLogout: false
 	})
 	const { subscribe, update } = store
 
@@ -63,8 +64,7 @@ const createOfflineStore = () => {
 					method: request.method,
 					body: formData
 				})
-				// console.log(request.url)
-				// if (request.url === "/logout") continue
+
 				const response = await res.json()
 				// notifico l'utente solo se ci sono stati degli errori
 				if (response.error) notificationStore.addNotification(response.message, "error")
@@ -113,7 +113,7 @@ const createOfflineStore = () => {
 		// dopo l'update viene automaticamente refreshata la tabella, se non ci sono stati errori il refresh non avra nessun cambiamento, dato che la optimistic ui ha gia cambiato tutto come in successo
 		// inizializzo le richieste dello store
 		update((store) => {
-			return { ...store, requestsPending: requestRemaining }
+			return { ...store, requestsPending: requestRemaining, clientLogout: false }
 		})
 	}
 
@@ -127,12 +127,20 @@ const createOfflineStore = () => {
 		})
 	}
 
+	// per settare offline e online la variabile clientLogout
+	const setClientLogout = (offline) => {
+		update((store) => {
+			return { ...store, clientLogout: offline }
+		})
+	}
+
 	return {
 		subscribe,
 		addRequest,
 		executeRequestsPending,
 		syncStorage,
-		renderOptimisticUI
+		renderOptimisticUI,
+		setClientLogout
 	}
 }
 

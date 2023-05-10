@@ -42,7 +42,6 @@ const createTokenStore = () => {
 	const setToken = async () => {
 		const token = await getNewToken()
 		set(token)
-		console.log(token)
 		// dopo circa 15 minuti lo resetto
 		setInterval(() => {
 			set("")
