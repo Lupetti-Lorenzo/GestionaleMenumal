@@ -19,19 +19,3 @@ convertire in TS
 firebase click
 aggiustare grafico
 loading button mettere default abilitato e invertire chi lo chiama
- 
-
-DOMANI
-
-local storage logout - per impedire la navigazione rimuovo dai cookies la pagina?
-
-restyling dei colori dei bottoni, disabilitati, offline, renderlo piu uniforme  e riusare il css
-
-posso fare pure logout, e una richiesta come le altre e provare combinazione offline, logout e poi vado alla dashboard, invalidateAll rompe? magari controllo online ? invalidate : goto login
-se non sono passato dalla login non ho la pagina nella cache  - pagina di fallback in static volento 
-logout ci ho provato ma e un po piu un casino col settare i cookies dato che non lho messo in api 
-logout if offline  e !authuser goto(./paginaFallback)
-
-
-prove finali e consegna
-

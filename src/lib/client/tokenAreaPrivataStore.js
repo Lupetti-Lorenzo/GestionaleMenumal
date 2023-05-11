@@ -15,12 +15,12 @@ async function getNewToken() {
 	})
 	try {
 		const token = await res.json()
-		console.log("non error")
+		// console.log("non error")
 		return token
 	} catch (err) {
 		console.log("error: " + err)
-		const error = await res.text()
-		return JSON.parse(error)
+		// const error = await res.text()
+		return JSON.parse(err)
 	}
 }
 

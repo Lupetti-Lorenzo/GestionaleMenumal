@@ -30,7 +30,7 @@
 </script>
 
 <svelte:head>
-	<title>Dashboard</title>
+	<title>Backdoor</title>
 </svelte:head>
 
 <!-- DASHBOARD -->

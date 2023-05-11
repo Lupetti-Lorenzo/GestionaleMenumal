@@ -77,6 +77,7 @@ const createOfflineStore = () => {
 				const response = await res.json()
 				// notifico l'utente solo se ci sono stati degli errori
 				if (response.error) notificationStore.addNotification(response.message, "error")
+				else fetchCompleted++ // aggiorno il count di richieste completate
 				//  rimuovo la richiesta dal localStorage se l'avevo renderizzata senza connessione - nel jobsOptimisticUi
 				const jobsOptimisticUI = JSON.parse(localStorage.jobsOptimisticUI) || []
 				const index = jobsOptimisticUI.findIndex(
@@ -95,7 +96,6 @@ const createOfflineStore = () => {
 						return { ...store, jobsOptimisticUI: jobsOptimisticUI.splice(index, 1) }
 					})
 				}
-				fetchCompleted++ // aggiorno il count di richieste completate
 			} catch (err) {
 				// se errore o non connessione la rimetto tra le pending - non bene, se da errore lo ridara molto probabilmente, meglio mandare notifica
 				console.log("errore fetch pending request")

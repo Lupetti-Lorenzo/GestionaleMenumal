@@ -41,7 +41,7 @@
 			disabled={!$online}
 			type="button"
 			class="{!$online
-				? 'disabled'
+				? 'disabled text-gray-600'
 				: 'text-gray-500 bg-gray-300 hover:bg-gray-400 hover:text-gray-600'} inline-flex items-center px-2 py-3 md:py-4 md:px-5 rounded-md"
 			>Area privata</button
 		>
@@ -79,8 +79,6 @@
 
 <style>
 	.disabled {
-		background-color: #e0e2ea;
-		color: black;
-		opacity: 85;
+		background-color: #43454a5d;
 	}
 </style>
