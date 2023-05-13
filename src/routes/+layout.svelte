@@ -24,20 +24,25 @@
 		})
 	})
 	// se sono online e ci sono delle pending requests, le eseguo
-	$: if ($authUser && $online && $offlineMenager.requestsPending.length !== 0)
+	$: if (
+		$authUser &&
+		$online &&
+		$offlineMenager.requestsPending.length !== 0 &&
+		$offlineMenager.clientLogout === "no"
+	) {
 		offlineMenager.executeRequestsPending()
-
+	}
 	// controllo per refreshare quando user non autenticato e non sono in login - se faccio logout col client non mi interessa
-	$: if (!$authUser && $page.url.pathname !== "/login" && !$offlineMenager.clientLogout) {
+	$: if (!$authUser && $page.url.pathname !== "/login" && $offlineMenager.clientLogout === "no") {
 		console.log("$authUser == null e non in login")
 		invalidateAll()
 	}
 
 	// per offline - appena ritorno online dopo un logout da offline faccio la fetch /logout
 	$: if ($offlineMenager.clientLogout === "yes" && $online) {
-		fetch("api/logout", { method: "POST" }).then(() => {
-			offlineMenager.setClientLogout(false)
-			invalidateAll()
+		fetch("api/logout", { method: "POST" }).then(async () => {
+			await invalidateAll()
+			offlineMenager.setClientLogout("no")
 		})
 	}
 </script>

@@ -107,22 +107,27 @@ const createOfflineStore = () => {
 		const totFetchs = get(store).requestsPending.length // numero delle chiamate per la notifica
 		// schedulo l'update della tabella tra 1 secondo - do il tempo ad airtable di sincronizzare i dati e a me di tornare online per non usare i dati nella cache
 		setTimeout(async () => {
-			await jobsStore.updateJobs(false)
-			loaderStore.closeLoader() // dopo updatejobs l'interfaccia è aggiornata e chiudo il loader
-			// mando notifica di sincronizzazione
-			if ("Notification" in window && window.Notification.permission === "granted") {
-				new window.Notification("Modifiche offline eseguite", {
-					lang: "it",
-					body: `Sei ritornato online e ti sei sincronizzato con successo! \n${fetchCompleted}/${totFetchs} andate a buon fine.`,
-					icon: "./icon192.png",
-					vibrate: [200, 100, 200]
+			jobsStore
+				.updateJobs(false)
+				.then(() => {})
+				.catch(() => {})
+				.finally(() => {
+					// mando notifica di sincronizzazione
+					if ("Notification" in window && window.Notification.permission === "granted") {
+						new window.Notification("Modifiche offline eseguite", {
+							lang: "it",
+							body: `Sei ritornato online e ti sei sincronizzato con successo! \n${fetchCompleted}/${totFetchs} andate a buon fine.`,
+							icon: "./icon192.png",
+							vibrate: [200, 100, 200]
+						})
+					}
+					loaderStore.closeLoader() // dopo updatejobs l'interfaccia è aggiornata e chiudo il loader
 				})
-			}
 		}, 1000)
 		// dopo l'update viene automaticamente refreshata la tabella, se non ci sono stati errori il refresh non avra nessun cambiamento, dato che la optimistic ui ha gia cambiato tutto come in successo
 		// inizializzo le richieste dello store
 		update((store) => {
-			return { ...store, requestsPending: requestRemaining, clientLogout: false }
+			return { ...store, requestsPending: requestRemaining, clientLogout: "no" }
 		})
 	}
 

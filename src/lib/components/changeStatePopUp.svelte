@@ -116,7 +116,7 @@
 				})
 				.catch((e) => {
 					loaderStore.closeLoader()
-					sendPopUpNotification({ message: "Errore: " + e, error: true }, notifJobName, notifState)
+					notificationStore.addNotification("Errore: " + e, "error")
 				})
 		}
 	}
