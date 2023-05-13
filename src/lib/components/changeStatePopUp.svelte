@@ -101,18 +101,23 @@
 			// chiamata api
 			const formData = new FormData()
 			for (const [key, value] of Object.entries(data)) formData.set(key, value) // setto il form data in base alla costante data
-			const res = await fetch("api/changeJobState", {
+			fetch("api/changeJobState", {
 				method: "PATCH",
 				body: formData
 			})
-
-			// aggiorno tabella tramite airtable
-			await jobsStore.updateJobs(false)
-			// mando notifica
-			const response = await res.json()
-			// chiudo loader globale e mando notifica
-			loaderStore.closeLoader()
-			sendPopUpNotification(response, notifJobName, notifState)
+				.then(async (res) => {
+					// aggiorno tabella tramite airtable
+					await jobsStore.updateJobs(false)
+					// mando notifica
+					const response = await res.json()
+					// chiudo loader globale e mando notifica
+					loaderStore.closeLoader()
+					sendPopUpNotification(response, notifJobName, notifState)
+				})
+				.catch((e) => {
+					loaderStore.closeLoader()
+					sendPopUpNotification({ message: "Errore: " + e, error: true }, notifJobName, notifState)
+				})
 		}
 	}
 

@@ -1,48 +1,48 @@
 {
-  "name": "gestionale",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "preview": "vite preview",
-    "lint": "prettier --plugin-search-dir . --check . && eslint .",
-    "format": "prettier --plugin-search-dir . --write ."
-  },
-  "devDependencies": {
-    "@sveltejs/adapter-auto": "^2.0.0",
-    "@sveltejs/adapter-node": "^1.2.1",
-    "@sveltejs/kit": "^1.5.0",
-    "autoprefixer": "^10.4.14",
-    "carbon-components-svelte": "^0.73.5",
-    "eslint": "^8.28.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-svelte3": "^4.0.0",
-    "postcss": "^8.4.21",
-    "prettier": "^2.8.0",
-    "prettier-plugin-svelte": "^2.8.1",
-    "svelte": "^3.54.0",
-    "tailwindcss": "^3.2.7",
-    "vite": "^4.0.0"
-  },
-  "type": "module",
-  "dependencies": {
-    "@sveltejs/package": "^2.0.2",
-    "@sveltejs/pancake": "^0.0.18",
-    "firebase": "^9.17.1",
-    "firebase-admin": "^11.5.0",
-    "mongoose": "^6.10.0"
-  },
-  "description": "Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).",
-  "main": "svelte.config.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Lupetti-Lorenzo/GestionaleMenumal.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Lupetti-Lorenzo/GestionaleMenumal/issues"
-  },
-  "homepage": "https://github.com/Lupetti-Lorenzo/GestionaleMenumal#readme"
+	"name": "gestionale",
+	"version": "2.0",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"lint": "prettier --plugin-search-dir . --check . && eslint .",
+		"format": "prettier --plugin-search-dir . --write ."
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/adapter-node": "^1.2.1",
+		"@sveltejs/kit": "^1.5.0",
+		"autoprefixer": "^10.4.14",
+		"carbon-components-svelte": "^0.73.5",
+		"eslint": "^8.28.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-svelte3": "^4.0.0",
+		"postcss": "^8.4.21",
+		"prettier": "^2.8.0",
+		"prettier-plugin-svelte": "^2.8.1",
+		"svelte": "^3.54.0",
+		"tailwindcss": "^3.2.7",
+		"vite": "^4.0.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"@sveltejs/package": "^2.0.2",
+		"@sveltejs/pancake": "^0.0.18",
+		"firebase": "^9.17.1",
+		"firebase-admin": "^11.5.0",
+		"mongoose": "^6.10.0"
+	},
+	"description": "Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).",
+	"main": "svelte.config.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Lupetti-Lorenzo/GestionaleMenumal.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Lupetti-Lorenzo/GestionaleMenumal/issues"
+	},
+	"homepage": "https://github.com/Lupetti-Lorenzo/GestionaleMenumal#readme"
 }
