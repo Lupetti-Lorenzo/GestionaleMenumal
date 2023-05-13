@@ -38,3 +38,7 @@ You can preview the production build with `npm run preview`.
 ## Link al sito in production
 
 [https://gestionale-menumal.vercel.app/](https://gestionale-menumal.vercel.app/)
+
+## Important notes
+
+La WebApp non funzionerà semplicemente facendo git clone, manca .env per le chiavi del server
