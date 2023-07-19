@@ -3,6 +3,7 @@
 
 	import { popUpStore } from "$lib/client/changeStatePopUpStore"
 	import { online } from "$lib/client/onlineStore"
+	import { token as tokenStore } from "$lib/client/tokenAreaPrivataStore"
 
 	export let job
 	export let token
@@ -14,6 +15,7 @@
 
 	async function apriBackDoor() {
 		// fetcho il token e apro la pagina del job selezionato
+		if (token == "") await tokenStore.setToken()
 		window.open(`https://menumal.it/areaprivata/login.php?job=${jobName}&token=${token}`, "_blank")
 	}
 

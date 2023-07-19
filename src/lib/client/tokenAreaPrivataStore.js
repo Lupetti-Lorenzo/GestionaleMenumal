@@ -6,9 +6,17 @@ import { writable } from "svelte/store"
 
 async function getNewToken() {
 	// non loggato o offline non faccio chiamata
+	// console.log(
+	// 	`get(authUser) == null (${get(authUser)}) || !get(online) (${!get(online)}) = ${
+	// 		get(authUser) == null || !get(online)
+	// 	}`
+	// )
 	if (get(authUser) == null || !get(online)) return ""
+
 	const formData = new FormData()
 	formData.set("uid", get(authUser).id)
+	//console.log(`get(authUser).id: (${get(authUser).id})`)
+
 	const res = await fetch("api/createTokenMenumal", {
 		method: "POST",
 		body: formData
@@ -41,6 +49,7 @@ const createTokenStore = () => {
 
 	const setToken = async () => {
 		const token = await getNewToken()
+		console.log(token)
 		set(token)
 		// dopo circa 15 minuti lo resetto
 		setInterval(() => {

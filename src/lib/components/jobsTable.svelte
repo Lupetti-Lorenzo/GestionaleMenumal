@@ -4,13 +4,26 @@
 
 	import { jobsStore } from "$lib/client/jobsStore.js"
 
+	import { onMount } from "svelte"
+
 	import { online } from "$lib/client/onlineStore"
 	import { browser } from "$app/environment"
 	import { token } from "$lib/client/tokenAreaPrivataStore"
 	import { authUser } from "$lib/client/authStore"
 
 	// se sono sul browser, online e non ho un token lo refresho - anche per quando vado offline appena risono online riparte
-	$: if ($authUser && browser && $online && $token === "") token.setToken()
+	// $: if ($authUser && browser && $online && $token === "") {
+	// 	// console.log(
+	// 	// 	`New token - $authUser (${$authUser}) && browser (${browser}) && $online (${$online}) && $token === '' (${$token})`
+	// 	// )
+	// 	token.setToken()
+	// }
+
+	onMount(() => {
+		if ($authUser && browser && $online) {
+			token.setToken()
+		}
+	})
 
 	$: loadingJobs = $jobsStore.loading
 
