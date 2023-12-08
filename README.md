@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="static/icon512.png" alt="Kubernetes Logo" width="160">
+  <img src="static/icon512.png" alt="Menumal Logo" width="160">
   <h1>Menumal Menagement Platform - deprecated</h1>
-	<p>A platform to manage subscriptions expirings and backdoor the accounts for faster customer service - deprecated by airtable</p>
+	<p>A platform for Menumal to manage subscriptions expirings and backdoor the accounts for faster customer service - deprecated by airtable</p>
 </div>
 <br>
 
@@ -12,7 +12,7 @@
 - **_Authentication_** with FirebaseAuth
 - MongoDB **_Database_** with Mongoose
 - Integration with Airtable
-- **_Progressive Web app_** with caching and optimistic UI - when offline uses the local store to store the requests and when back online makes them and notifies the user only if there was an error
+- **_Progressive Web app_** with caching and optimistic UI - static file caching with service worker, when offline uses the local store to store the requests and when back online makes them and notifies the user only if there was an error
 - **_CI/CD_** with GitHub and Vercel
 
 ## 💻 Tech & Stuff used for this project
